@@ -26,6 +26,9 @@ APlayerCharacter::APlayerCharacter()
 	CameraComponent->bUsePawnControlRotation = false;
 	CameraComponent->SetProjectionMode(ECameraProjectionMode::Type::Orthographic);
 	CameraComponent->SetOrthoWidth(4000.0f);
+
+	// Create Health Component
+	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health Component"));
 }
 
 void APlayerCharacter::BeginPlay()
