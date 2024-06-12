@@ -27,9 +27,6 @@ APlayerCharacter::APlayerCharacter()
 	CameraComponent->SetProjectionMode(ECameraProjectionMode::Type::Orthographic);
 	CameraComponent->SetOrthoWidth(4000.0f);
 
-	// Create Health Component
-	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health Component"));
-
 	// Create EXP Component
 	EXPComponent = CreateDefaultSubobject<UEXPComponent>(TEXT("EXP Component"));
 }

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "HealthComponent.h"
 #include "VampireCharacter.generated.h"
 
 UCLASS()
@@ -11,6 +12,11 @@ class VAMPIRES_API AVampireCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+protected:
+
+	UPROPERTY()
+	UHealthComponent* HealthComponent;
+	
 public:
 	// Sets default values for this character's properties
 	AVampireCharacter();

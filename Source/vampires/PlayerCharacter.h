@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "EXPComponent.h"
-#include "HealthComponent.h"
 #include "VampireCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -35,8 +34,6 @@ public:
 	UInputAction* MovementAction;
 
 protected:
-	UPROPERTY()
-	UHealthComponent* HealthComponent;
 
 	UPROPERTY()
 	UEXPComponent* EXPComponent;
