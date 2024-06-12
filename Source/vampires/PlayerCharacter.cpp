@@ -17,7 +17,7 @@ APlayerCharacter::APlayerCharacter()
 	CameraSpringArmComponent->bUsePawnControlRotation = false;
 	CameraSpringArmComponent->TargetArmLength = 1000;
 	CameraSpringArmComponent->bEnableCameraLag = false;
-	CameraSpringArmComponent->SocketOffset = { 0.0f, 0.0f, 0.0f };
+	CameraSpringArmComponent->SocketOffset = {0.0f, 0.0f, 0.0f};
 	CameraSpringArmComponent->SetRelativeRotation({-90.0, 0.0f, 0.0f});
 
 	// Create Camera
@@ -29,6 +29,9 @@ APlayerCharacter::APlayerCharacter()
 
 	// Create Health Component
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health Component"));
+
+	// Create EXP Component
+	EXPComponent = CreateDefaultSubobject<UEXPComponent>(TEXT("EXP Component"));
 }
 
 void APlayerCharacter::BeginPlay()
@@ -42,12 +45,13 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	if (AVampirePlayerController* TankPlayerController = Cast<AVampirePlayerController>(GetController()))
 	{
-		if (UEnhancedInputLocalPlayerSubsystem* InputSystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(TankPlayerController->GetLocalPlayer()))
+		if (UEnhancedInputLocalPlayerSubsystem* InputSystem = ULocalPlayer::GetSubsystem<
+			UEnhancedInputLocalPlayerSubsystem>(TankPlayerController->GetLocalPlayer()))
 		{
 			if (!InputMappingContext.IsNull())
 			{
 				InputSystem->AddMappingContext(InputMappingContext.LoadSynchronous(), 0);
-			}	
+			}
 		}
 	}
 
@@ -66,7 +70,7 @@ void APlayerCharacter::MovementCallback(const FInputActionInstance& Instance)
 
 	if (vec2.Size() != 0.0f)
 	{
-		AddMovementInput({0.0f,1.0f,0.0f}, vec2.Y);
-		AddMovementInput({1.0f,0.0f,0.0f}, vec2.X);
+		AddMovementInput({0.0f, 1.0f, 0.0f}, vec2.Y);
+		AddMovementInput({1.0f, 0.0f, 0.0f}, vec2.X);
 	}
 }

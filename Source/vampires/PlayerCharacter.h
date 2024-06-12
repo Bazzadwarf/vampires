@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "EXPComponent.h"
 #include "HealthComponent.h"
 #include "VampireCharacter.h"
 #include "Camera/CameraComponent.h"
@@ -21,7 +22,6 @@ class VAMPIRES_API APlayerCharacter : public AVampireCharacter
 	GENERATED_BODY()
 
 public:
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USpringArmComponent* CameraSpringArmComponent = nullptr;
 
@@ -34,11 +34,14 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	UInputAction* MovementAction;
 
+protected:
 	UPROPERTY()
 	UHealthComponent* HealthComponent;
 
+	UPROPERTY()
+	UEXPComponent* EXPComponent;
+
 public:
-	
 	APlayerCharacter();
 
 protected:
@@ -48,9 +51,6 @@ public:
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
 private:
-
 	UFUNCTION()
 	void MovementCallback(const FInputActionInstance& Instance);
 };
-
-
