@@ -34,3 +34,8 @@ void AVampireCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 }
 
+UHealthComponent* AVampireCharacter::GetHealthComponent()
+{
+	return HealthComponent;
+}
+

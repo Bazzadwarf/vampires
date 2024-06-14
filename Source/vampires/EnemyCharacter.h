@@ -18,7 +18,7 @@ class VAMPIRES_API AEnemyCharacter : public AVampireCharacter
 private:
 
 	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true"))
-	UBehaviorTree* BehaviourTree;
+	UBehaviorTree* BehaviorTree;
 	
 public:
 	AEnemyCharacter(const FObjectInitializer& ObjectInitializer);
@@ -28,4 +28,12 @@ protected:
 
 public:
 	virtual void Tick(float DeltaTime) override;
+
+	UBehaviorTree* GetBehaviorTree();
+
+	UFUNCTION()
+	virtual void OnDamaged();
+
+	UFUNCTION()
+	virtual void OnDeath();
 };

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
+#include "EnemyCharacter.h"
 #include "HealthComponent.h"
 #include "PlayerCharacter.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
@@ -23,6 +24,8 @@ private:
 	UBehaviorTreeComponent* BehaviorTree;
 
 	APlayerCharacter* PlayerCharacter;
+
+	AEnemyCharacter* EnemyCharacter;
 
 public:
 	AVampireAIController(const FObjectInitializer& object_initializer);
