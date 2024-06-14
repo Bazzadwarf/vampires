@@ -22,6 +22,13 @@ void AVampireAIController::BeginPlay()
 void AVampireAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (AVampireCharacter* Player = Cast<AVampireCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)))
+	{
+		Blackboard->SetValueAsObject("Player", Player);
+		auto location = Player->GetActorLocation();
+		Blackboard->SetValueAsVector("PlayerLocation", location);
+	}
 }
 
 void AVampireAIController::OnPossess(APawn* InPawn)
@@ -38,7 +45,6 @@ void AVampireAIController::OnPossess(APawn* InPawn)
 		Blackboard->InitializeBlackboard(*bt->BlackboardAsset);
 		BehaviorTree->StartTree(*bt);
 		Blackboard->SetValueAsObject("SelfActor", EnemyCharacter);
-		Blackboard->SetValueAsObject("Player", UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 	}
 }
 
