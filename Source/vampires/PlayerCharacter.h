@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "EnemyCharacter.h"
 #include "EXPComponent.h"
+#include "GoldComponent.h"
 #include "VampireCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "Components/SphereComponent.h"
@@ -50,6 +51,9 @@ protected:
 
 	UPROPERTY()
 	TArray<AEnemyCharacter*> OverlappedEnemies;
+
+	UPROPERTY()
+	UGoldComponent* GoldComponent;
 
 private:
 	FTimerHandle GarlicTimerHandle;

@@ -31,6 +31,9 @@ APlayerCharacter::APlayerCharacter()
 	// Create EXP Component
 	EXPComponent = CreateDefaultSubobject<UEXPComponent>(TEXT("EXP Component"));
 
+	// Create Gold Component
+	GoldComponent = CreateDefaultSubobject<UGoldComponent>(TEXT("Gold Component"));
+
 	// Create Garlic Sphere Component
 	GarlicSphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Garlic Sphere Component"));
 	GarlicSphereComponent->SetupAttachment(RootComponent);
