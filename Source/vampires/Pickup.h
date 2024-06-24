@@ -27,6 +27,7 @@ protected:
 public:
 	virtual void Tick(float DeltaSeconds) override;
 
+	UFUNCTION()
 	virtual void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	                            UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
 	                            const FHitResult& SweepResult);
