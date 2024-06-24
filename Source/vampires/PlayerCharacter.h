@@ -67,6 +67,8 @@ protected:
 public:
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
+	UEXPComponent* GetEXPComponent();
+
 private:
 	UFUNCTION()
 	void MovementCallback(const FInputActionInstance& Instance);
