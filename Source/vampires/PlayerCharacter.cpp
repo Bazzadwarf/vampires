@@ -79,6 +79,11 @@ UEXPComponent* APlayerCharacter::GetEXPComponent()
 	return EXPComponent;
 }
 
+UGoldComponent* APlayerCharacter::GetGoldComponent()
+{
+	return GoldComponent;
+}
+
 void APlayerCharacter::MovementCallback(const FInputActionInstance& Instance)
 {
 	FVector2D vec2 = Instance.GetValue().Get<FVector2D>();

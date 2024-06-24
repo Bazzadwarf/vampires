@@ -69,6 +69,8 @@ public:
 
 	UEXPComponent* GetEXPComponent();
 
+	UGoldComponent* GetGoldComponent();
+
 private:
 	UFUNCTION()
 	void MovementCallback(const FInputActionInstance& Instance);
