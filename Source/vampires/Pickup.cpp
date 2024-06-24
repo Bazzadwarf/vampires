@@ -4,13 +4,14 @@
 #include "Pickup.h"
 
 #include "PlayerCharacter.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 APickup::APickup()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
-	
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = true;
+
 	// Create Sphere Component
 	SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere Component"));
 	SphereComponent->SetupAttachment(RootComponent);
@@ -29,10 +30,22 @@ void APickup::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 
 	// TODO: Move actor towards player when in range
+	FVector actorLocation = GetActorLocation();
+	FVector playerLocation = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation();
+	double currentDistance = FVector::Distance(actorLocation, playerLocation);
+
+	if (currentDistance <= PickupMovementRange)
+	{
+		double speed = 400 / currentDistance;
+		UE_LOG(LogTemp, Warning, TEXT("The integer value is: %f"), speed);
+		FVector location = FMath::VInterpTo(actorLocation, playerLocation, DeltaSeconds, speed);
+		SetActorLocation(location);
+	}
 }
 
 void APickup::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-                             UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                             UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+                             const FHitResult& SweepResult)
 {
 	if (APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor))
 	{
@@ -40,4 +53,3 @@ void APickup::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* O
 		Destroy();
 	}
 }
-

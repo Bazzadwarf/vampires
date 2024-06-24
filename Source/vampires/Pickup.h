@@ -12,6 +12,14 @@ class VAMPIRES_API APickup : public AActor
 {
 	GENERATED_BODY()
 
+public:
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	double PickupMovementRange = 500;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	double PickupMovementSpeed = 1000;
+	
 private:
 	UPROPERTY()
 	USphereComponent* SphereComponent;
