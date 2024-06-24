@@ -14,6 +14,11 @@ class VAMPIRES_API AGoldPickup : public APickup
 {
 	GENERATED_BODY()
 
+public:
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	int Gold = 1;
+	
 protected:
 	virtual void BeginPlay() override;
 

@@ -3,6 +3,10 @@
 
 #include "GoldPickup.h"
 
+#include "PlayerCharacter.h"
+
+class APlayerCharacter;
+
 void AGoldPickup::BeginPlay()
 {
 	Super::BeginPlay();
@@ -16,7 +20,9 @@ void AGoldPickup::Tick(float DeltaSeconds)
 void AGoldPickup::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	// TODO: Add Gold to player Gold component
-	
-	Super::OnBeginOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
+	if (APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor))
+	{
+		PlayerCharacter->GetGoldComponent()->IncrementGold(Gold);
+		Super::OnBeginOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
+	}
 }
