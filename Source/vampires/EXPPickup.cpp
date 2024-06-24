@@ -3,6 +3,8 @@
 
 #include "EXPPickup.h"
 
+#include "PlayerCharacter.h"
+
 void AEXPPickup::BeginPlay()
 {
 	Super::BeginPlay();
@@ -16,7 +18,9 @@ void AEXPPickup::Tick(float DeltaSeconds)
 void AEXPPickup::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	// TODO: Add EXP to player EXP component
-	
-	Super::OnBeginOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
+	if (APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor))
+	{
+		PlayerCharacter->GetEXPComponent()->IncrementEXP(EXP);
+		Super::OnBeginOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
+	}
 }
