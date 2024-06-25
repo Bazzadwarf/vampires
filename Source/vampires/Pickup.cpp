@@ -37,7 +37,6 @@ void APickup::Tick(float DeltaSeconds)
 	if (currentDistance <= PickupMovementRange)
 	{
 		double speed = 400 / currentDistance;
-		UE_LOG(LogTemp, Warning, TEXT("The integer value is: %f"), speed);
 		FVector location = FMath::VInterpTo(actorLocation, playerLocation, DeltaSeconds, speed);
 		SetActorLocation(location);
 	}
