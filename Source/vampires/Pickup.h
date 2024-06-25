@@ -20,8 +20,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	double PickupMovementSpeed = 1000;
 	
-private:
-	UPROPERTY()
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	USphereComponent* SphereComponent;
 	
 public:	
