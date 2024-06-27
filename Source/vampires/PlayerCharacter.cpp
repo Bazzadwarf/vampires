@@ -115,25 +115,33 @@ void APlayerCharacter::OnGarlicEndOverlap(UPrimitiveComponent* OverlappedComp, A
 }
 
 void APlayerCharacter::GarlicUpdate()
-{	
-	for (int i = 0; i < OverlappedEnemies.Num(); i++)
+{
+	TArray<AEnemyCharacter*> OverlappedEnemiesCache = OverlappedEnemies;
+
+	for (int i = 0; i < OverlappedEnemiesCache.Num(); i++)
 	{
 		bool deadCheck = false;
-		UHealthComponent* EnemyHealthComponent = OverlappedEnemies[i]->GetHealthComponent();
+		UHealthComponent* EnemyHealthComponent = OverlappedEnemiesCache[i]->GetHealthComponent();
 
 		if (!EnemyHealthComponent->GetIsDead())
 		{
+			FVector Direction = OverlappedEnemiesCache[i]->GetActorLocation() - this->GetActorLocation();
+			Direction.Normalize();
+			float distance = GarlicSphereComponent->GetScaledSphereRadius();
+			Direction *= distance;
+			OverlappedEnemiesCache[i]->SetActorLocation(OverlappedEnemiesCache[i]->GetActorLocation() + Direction);
+			
 			if (EnemyHealthComponent->GetCurrentHealth() < GarlicDamage)
 			{
 				deadCheck = true;
 			}
 			
-			EnemyHealthComponent->TakeDamage(OverlappedEnemies[i], GarlicDamage, nullptr, GetController(), this);
+			EnemyHealthComponent->TakeDamage(OverlappedEnemiesCache[i], GarlicDamage, nullptr, GetController(), this);
 		}
 
 		if (deadCheck)
 		{
 			i -= 1;
 		}
-	}
+	}	
 }
