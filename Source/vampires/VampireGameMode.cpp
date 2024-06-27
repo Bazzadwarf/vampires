@@ -3,6 +3,7 @@
 
 #include "VampireGameMode.h"
 
+#include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 void AVampireGameMode::BeginPlay()
@@ -59,6 +60,11 @@ void AVampireGameMode::SpawnEnemy()
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	
-	AEnemyCharacter* actor = GetWorld()->SpawnActor<AEnemyCharacter>(EnemyTemplate, Transform, SpawnParameters);
-	actor->SpawnDefaultController();
+	AEnemyCharacter* Actor = GetWorld()->SpawnActor<AEnemyCharacter>(EnemyTemplate, Transform, SpawnParameters);
+	float CapsuleRadius = Actor->GetCapsuleComponent()->GetScaledCapsuleRadius();
+	FVector Direction = SpawnLocation - PlayerCharacter->GetActorLocation();
+	Direction.Normalize();
+	Direction *= CapsuleRadius;
+	Actor->SetActorLocation(SpawnLocation + Direction);
+	Actor->SpawnDefaultController();
 }
