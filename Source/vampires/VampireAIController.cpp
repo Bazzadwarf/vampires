@@ -17,6 +17,7 @@ AVampireAIController::AVampireAIController(const FObjectInitializer& object_init
 void AVampireAIController::BeginPlay()
 {
 	Super::BeginPlay();
+	GetWorldTimerManager().SetTimer(PawnMoveToTimerHandle, this, &AVampireAIController::PawnMoveTo, 0.25f, true);
 }
 
 void AVampireAIController::Tick(float DeltaTime)
@@ -69,6 +70,12 @@ void AVampireAIController::OnDeath(FDamageInfo info)
 		characterMovementComponent->StopActiveMovement();
 		characterMovementComponent->SetComponentTickEnabled(false);
 	}
+	GetWorldTimerManager().ClearTimer(PawnMoveToTimerHandle);
 
 	EnemyCharacter->SetLifeSpan(0.1f);
+}
+
+void AVampireAIController::PawnMoveTo()
+{
+	MoveToActor(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0), 5);
 }

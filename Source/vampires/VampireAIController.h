@@ -27,6 +27,8 @@ private:
 
 	AEnemyCharacter* EnemyCharacter;
 
+	FTimerHandle PawnMoveToTimerHandle;
+
 public:
 	AVampireAIController(const FObjectInitializer& object_initializer);
 
@@ -45,4 +47,8 @@ public:
 
 	UFUNCTION()
 	virtual void OnDeath(FDamageInfo info);
+
+private:
+	UFUNCTION()
+	virtual void PawnMoveTo();
 };
