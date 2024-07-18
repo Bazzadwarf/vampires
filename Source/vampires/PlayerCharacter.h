@@ -7,6 +7,7 @@
 #include "EXPComponent.h"
 #include "GoldComponent.h"
 #include "VampireCharacter.h"
+#include "WeaponInventoryComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -41,19 +42,21 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	float GarlicUpdateTime = 1.0f;
-
-protected:
-	UPROPERTY()
-	UEXPComponent* EXPComponent;
-
+	
 	UPROPERTY(VisibleAnywhere)
 	USphereComponent* GarlicSphereComponent;
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<AEnemyCharacter*> OverlappedEnemies;
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UEXPComponent* EXPComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UGoldComponent* GoldComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UWeaponInventoryComponent* WeaponInventoryComponent;
 
 private:
 	FTimerHandle GarlicTimerHandle;

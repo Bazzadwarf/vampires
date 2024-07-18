@@ -38,6 +38,9 @@ APlayerCharacter::APlayerCharacter()
 	GarlicSphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Garlic Sphere Component"));
 	GarlicSphereComponent->SetupAttachment(RootComponent);
 	GarlicSphereComponent->SetSphereRadius(150.0f);
+
+	//Create Weapon Inventory Component
+	WeaponInventoryComponent = CreateDefaultSubobject<UWeaponInventoryComponent>(TEXT("Weapon Inventory Component"));
 }
 
 void APlayerCharacter::BeginPlay()
