@@ -17,14 +17,15 @@ void UEXPComponent::IncrementEXP(int value)
 {
 	// TODO: I should be updating the level here
 	CurrentEXP += value;
-	OnEXPGained.ExecuteIfBound();
+	OnEXPGained.ExecuteIfBound(value);
+	OnEXPLevelUp.ExecuteIfBound(CurrentLevel);
 }
 
 void UEXPComponent::SetCurrentEXP(int value)
 {
 	// TODO: I should be updating the level here
 	CurrentEXP = value;
-	OnEXPGained.ExecuteIfBound();
+	OnEXPGained.ExecuteIfBound(value);
 }
 
 int UEXPComponent::GetCurrentEXP()
@@ -41,6 +42,8 @@ void UEXPComponent::Reset()
 {
 	CurrentEXP = 0;
 	CurrentLevel = 0;
+	OnEXPGained.ExecuteIfBound(CurrentEXP);
+	OnEXPLevelUp.ExecuteIfBound(CurrentLevel);
 }
 
 // Called when the game starts

@@ -6,8 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "EXPComponent.generated.h"
 
-DECLARE_DELEGATE(FOnEXPGainedDelegate)
-DECLARE_DELEGATE(FOnEXPLevelUpDelegate)
+DECLARE_DELEGATE_OneParam(FOnEXPGainedDelegate, int)
+DECLARE_DELEGATE_OneParam(FOnEXPLevelUpDelegate, int)
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class VAMPIRES_API UEXPComponent : public UActorComponent
