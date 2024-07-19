@@ -12,22 +12,24 @@ class VAMPIRES_API AWeapon : public AActor
 	GENERATED_BODY()
 
 public:
-
 	UPROPERTY()
 	float WeaponCooldown = 1.0f;
-	
+
+	UPROPERTY()
+	float Damage;
+
 private:
 	FTimerHandle WeaponTimerHandle;
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	AWeapon();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
 public:
-	
 	UFUNCTION(BlueprintCallable)
 	virtual void FireWeaponAction();
 

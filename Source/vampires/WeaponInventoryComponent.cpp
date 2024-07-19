@@ -3,8 +3,6 @@
 
 #include "WeaponInventoryComponent.h"
 
-#include "Kismet/GameplayStatics.h"
-
 // Sets default values for this component's properties
 UWeaponInventoryComponent::UWeaponInventoryComponent()
 {
@@ -21,8 +19,7 @@ void UWeaponInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
-	
+	InitializeInventory();
 }
 
 void UWeaponInventoryComponent::InitializeInventory()
@@ -37,10 +34,10 @@ void UWeaponInventoryComponent::InitializeInventory()
 
 void UWeaponInventoryComponent::AddWeaponToInventory(TSubclassOf<AWeapon> Weapon)
 {
-	AWeapon* weapon = GetWorld()->SpawnActor<AWeapon>(Weapon);
-	weapon->SetActorTransform(GetOwner()->GetTransform());
-	weapon->SetOwner(GetOwner());
+	FActorSpawnParameters SpawnParameters;
+	SpawnParameters.Owner = GetOwner();
+	
+	AWeapon* weapon = GetWorld()->SpawnActor<AWeapon>(Weapon, GetOwner()->GetTransform(), SpawnParameters);
 	weapon->AttachToActor(GetOwner(), FAttachmentTransformRules::KeepRelativeTransform);
 	inventory.Add(weapon);
 }
-

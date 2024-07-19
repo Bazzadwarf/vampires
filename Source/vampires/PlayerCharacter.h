@@ -3,13 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "EnemyCharacter.h"
 #include "EXPComponent.h"
 #include "GoldComponent.h"
 #include "VampireCharacter.h"
 #include "WeaponInventoryComponent.h"
 #include "Camera/CameraComponent.h"
-#include "Components/SphereComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "PlayerCharacter.generated.h"
 
@@ -36,18 +34,6 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	UInputAction* MovementAction;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	float GarlicDamage = 51.0f;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	float GarlicUpdateTime = 1.0f;
-	
-	UPROPERTY(VisibleAnywhere)
-	USphereComponent* GarlicSphereComponent;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<AEnemyCharacter*> OverlappedEnemies;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UEXPComponent* EXPComponent;
@@ -77,16 +63,4 @@ public:
 private:
 	UFUNCTION()
 	void MovementCallback(const FInputActionInstance& Instance);
-
-	UFUNCTION()
-	void OnGarlicBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	                          UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
-	                          const FHitResult& SweepResult);
-
-	UFUNCTION()
-	void OnGarlicEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-	                        int32 OtherBodyIndex);
-
-	UFUNCTION()
-	void GarlicUpdate();
 };

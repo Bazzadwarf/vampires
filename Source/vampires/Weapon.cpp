@@ -18,6 +18,7 @@ void AWeapon::BeginPlay()
 	Super::BeginPlay();
 	GetWorldTimerManager().SetTimer(WeaponTimerHandle, this, &AWeapon::FireWeaponAction, WeaponCooldown, true);
 	UEXPComponent* expcomponent = GetOwner()->GetComponentByClass<UEXPComponent>();
+
 	if (expcomponent)
 	{
 		expcomponent->OnEXPLevelUp.BindUObject(this, &AWeapon::UpgradeWeapon);
