@@ -27,7 +27,7 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-	virtual void FireWeaponAction() override;
+	virtual void FireWeaponAction_Implementation() override;
 
 protected:
 	UFUNCTION()

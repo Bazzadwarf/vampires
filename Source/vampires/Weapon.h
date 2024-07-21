@@ -12,10 +12,10 @@ class VAMPIRES_API AWeapon : public AActor
 	GENERATED_BODY()
 
 public:
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float WeaponCooldown = 1.0f;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float Damage;
 
 private:
@@ -30,8 +30,10 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-	UFUNCTION(BlueprintCallable)
-	virtual void FireWeaponAction();
+	
+	UFUNCTION(BlueprintNativeEvent)
+	void FireWeaponAction();
+	virtual void FireWeaponAction_Implementation();
 
 	UFUNCTION()
 	virtual void UpgradeWeapon(int newLevel);

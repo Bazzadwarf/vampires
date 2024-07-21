@@ -25,8 +25,9 @@ void AWeapon::BeginPlay()
 	}
 }
 
-void AWeapon::FireWeaponAction()
+void AWeapon::FireWeaponAction_Implementation()
 {
+	// Do stuff
 }
 
 void AWeapon::UpgradeWeapon(int newLevel)

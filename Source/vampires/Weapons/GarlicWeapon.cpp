@@ -18,7 +18,7 @@ void AGarlicWeapon::BeginPlay()
 	SphereComponent->OnComponentEndOverlap.AddDynamic(this, &AGarlicWeapon::OnEndOverlap);
 }
 
-void AGarlicWeapon::FireWeaponAction()
+void AGarlicWeapon::FireWeaponAction_Implementation()
 {
 	TArray<AEnemyCharacter*> OverlappedEnemiesCache = OverlappedEnemies;
 
@@ -54,8 +54,6 @@ void AGarlicWeapon::FireWeaponAction()
 			i -= 1;
 		}
 	}
-
-	Super::FireWeaponAction();
 }
 
 void AGarlicWeapon::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
