@@ -3,8 +3,7 @@
 
 #include "Projectile.h"
 
-#include "EnemyCharacter.h"
-#include "Weapons/MagicWandWeapon.h"
+#include "Weapons/ProjectileWeapon.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -13,7 +12,7 @@ AProjectile::AProjectile()
 	PrimaryActorTick.bCanEverTick = true;
 
 	SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere Component"));
-	SphereComponent->SetupAttachment(RootComponent);
+	SetRootComponent(SphereComponent);
 	SphereComponent->SetSphereRadius(50.0f);
 }
 
@@ -21,8 +20,8 @@ AProjectile::AProjectile()
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-	AMagicWandWeapon* OwnerWeapon = Cast<AMagicWandWeapon>(GetOwner()); 
-	SphereComponent->OnComponentBeginOverlap.AddDynamic(OwnerWeapon, &AMagicWandWeapon::OnProjectileBeginOverlap);
+	AProjectileWeapon* OwnerWeapon = Cast<AProjectileWeapon>(GetOwner()); 
+	SphereComponent->OnComponentBeginOverlap.AddDynamic(OwnerWeapon, &AProjectileWeapon::OnProjectileBeginOverlap);
 }
 
 // Called every frame

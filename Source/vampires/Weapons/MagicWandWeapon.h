@@ -3,29 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "../Weapon.h"
-#include "Components/SphereComponent.h"
-#include "vampires/Projectile.h"
+#include "ProjectileWeapon.h"
 #include "MagicWandWeapon.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class VAMPIRES_API AMagicWandWeapon : public AWeapon
+class VAMPIRES_API AMagicWandWeapon : public AProjectileWeapon
 {
 	GENERATED_BODY()
 
-public:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	USphereComponent* SphereComponent = nullptr;
-
-	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
-	TSubclassOf<AProjectile> ProjectileTemplate = nullptr;
-
-private:
-	TArray<AActor*> OverlappedEnemies = TArray<AActor*>();
-	
 public:
 	AMagicWandWeapon();
 
@@ -34,17 +22,4 @@ protected:
 
 public:
 	virtual void FireWeaponAction_Implementation() override;
-
-	UFUNCTION()
-	void OnWeaponBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-						UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
-						const FHitResult& SweepResult);
-
-	UFUNCTION()
-	void OnWeaponEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-					  int32 OtherBodyIndex);
-	
-	UFUNCTION()
-	void OnProjectileBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 };
