@@ -44,6 +44,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UWeaponInventoryComponent* WeaponInventoryComponent;
 
+	FVector2D PreviousMovementDirection = FVector2d(1.0f, 0.0f);
+
 private:
 	FTimerHandle GarlicTimerHandle;
 

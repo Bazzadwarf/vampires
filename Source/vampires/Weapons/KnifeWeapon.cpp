@@ -1,39 +1,37 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "FireWandWeapon.h"
+#include "KnifeWeapon.h"
 
-#include "Kismet/KismetMathLibrary.h"
+#include "Kismet/GameplayStatics.h"
+#include "vampires/PlayerCharacter.h"
 
-AFireWandWeapon::AFireWandWeapon()
+AKnifeWeapon::AKnifeWeapon()
 {
 }
 
-void AFireWandWeapon::BeginPlay()
+void AKnifeWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
-void AFireWandWeapon::FireWeaponAction_Implementation()
+void AKnifeWeapon::FireWeaponAction_Implementation()
 {
 	Super::FireWeaponAction_Implementation();
-	
-	if (IsValid(ProjectileTemplate) && OverlappedEnemies.Num() > 0)
+
+	APlayerCharacter* playerCharacter = Cast<APlayerCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	if (IsValid(ProjectileTemplate) && playerCharacter)
 	{
 		FActorSpawnParameters actorSpawnParameters;
 		actorSpawnParameters.Owner = this;
 		actorSpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 		actorSpawnParameters.TransformScaleMethod = ESpawnActorScaleMethod::MultiplyWithRoot;
-		
+
 		AProjectile* projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileTemplate, GetOwner()->GetTransform(),
-																	  actorSpawnParameters);
+		                                                              actorSpawnParameters);
 
-		AActor* target = OverlappedEnemies[FMath::RandRange(0, OverlappedEnemies.Num() - 1)];
-		FVector direction = UKismetMathLibrary::GetDirectionUnitVector(
-			GetActorLocation(), target->GetActorLocation());
-		direction.Z = 0.0;
+		FVector direction = FVector(playerCharacter->PreviousMovementDirection, 0.0);
 		direction.Normalize();
-
 		projectile->TargetDirection = direction;
 	}
 }

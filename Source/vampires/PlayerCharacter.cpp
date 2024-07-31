@@ -79,11 +79,11 @@ UGoldComponent* APlayerCharacter::GetGoldComponent()
 
 void APlayerCharacter::MovementCallback(const FInputActionInstance& Instance)
 {
-	FVector2D vec2 = Instance.GetValue().Get<FVector2D>();
+	PreviousMovementDirection = Instance.GetValue().Get<FVector2D>();
 
-	if (vec2.Size() != 0.0f)
+	if (PreviousMovementDirection.Size() != 0.0f)
 	{
-		AddMovementInput({0.0f, 1.0f, 0.0f}, vec2.Y);
-		AddMovementInput({1.0f, 0.0f, 0.0f}, vec2.X);
+		AddMovementInput({0.0f, 1.0f, 0.0f}, PreviousMovementDirection.Y);
+		AddMovementInput({1.0f, 0.0f, 0.0f}, PreviousMovementDirection.X);
 	}
 }
