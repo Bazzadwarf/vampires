@@ -16,6 +16,8 @@ AWeapon::AWeapon()
 void AWeapon::BeginPlay()
 {
 	Super::BeginPlay();
+
+	TArray<AWeapon*> example;
 	GetWorldTimerManager().SetTimer(WeaponTimerHandle, this, &AWeapon::FireWeaponAction, WeaponCooldown, true);
 	UEXPComponent* expcomponent = GetOwner()->GetComponentByClass<UEXPComponent>();
 
