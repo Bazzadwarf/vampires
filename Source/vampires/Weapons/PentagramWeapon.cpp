@@ -31,6 +31,7 @@ void APentagramWeapon::BeginPlay()
 	APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 	AVampirePlayerController* PlayerController = Cast<AVampirePlayerController>(
 		UGameplayStatics::GetPlayerController(PlayerCharacter, 0));
+
 	PlayerController->DeprojectScreenPositionToWorld(0, 0, TopLeft, TopLeftDir);
 	PlayerController->DeprojectScreenPositionToWorld(ViewportSize.X, 0, TopRight, TopRightDir);
 	PlayerController->DeprojectScreenPositionToWorld(0, ViewportSize.Y, BottomLeft, BottomLeftDir);

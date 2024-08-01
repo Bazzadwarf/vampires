@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "../Weapon.h"
+#include "Components/BoxComponent.h"
 #include "vampires/Projectile.h"
 #include "ProjectileWeapon.generated.h"
 
@@ -16,7 +17,7 @@ class VAMPIRES_API AProjectileWeapon : public AWeapon
 	GENERATED_BODY()
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	USphereComponent* SphereComponent = nullptr;
+	UBoxComponent* BoxComponent = nullptr;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
 	TSubclassOf<AProjectile> ProjectileTemplate = nullptr;
