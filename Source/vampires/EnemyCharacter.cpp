@@ -5,13 +5,13 @@
 
 AEnemyCharacter::AEnemyCharacter(const FObjectInitializer& ObjectInitializer)
 {
-	GetHealthComponent()->OnDamaged.BindUFunction(this, "OnDamaged");
-	GetHealthComponent()->OnDeath.BindUFunction(this, "OnDeath");
 }
 
 void AEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	GetHealthComponent()->OnDamaged.BindUFunction(this, "OnDamaged");
+	GetHealthComponent()->OnDeath.BindUFunction(this, "OnDeath");
 }
 
 void AEnemyCharacter::Tick(float DeltaTime)
@@ -30,4 +30,14 @@ void AEnemyCharacter::OnDamaged()
 
 void AEnemyCharacter::OnDeath()
 {
+	//if (IsValid(EXPPickupTemplate))
+	//{
+		FActorSpawnParameters actorSpawnParameters;
+		actorSpawnParameters.Owner = this;
+		actorSpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		actorSpawnParameters.TransformScaleMethod = ESpawnActorScaleMethod::MultiplyWithRoot;
+
+		GetWorld()->SpawnActor<AEXPPickup>(EXPPickupTemplate, GetActorLocation(), FRotator::ZeroRotator,
+		                                   actorSpawnParameters);
+	//}
 }

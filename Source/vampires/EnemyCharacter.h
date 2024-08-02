@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "EXPPickup.h"
 #include "VampireCharacter.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "EnemyCharacter.generated.h"
@@ -15,10 +16,14 @@ class VAMPIRES_API AEnemyCharacter : public AVampireCharacter
 {
 	GENERATED_BODY()
 
+public:
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AEXPPickup> EXPPickupTemplate = nullptr;
+	
 private:
 
 	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true"))
-	UBehaviorTree* BehaviorTree;
+	UBehaviorTree* BehaviorTree = nullptr;
 	
 public:
 	AEnemyCharacter(const FObjectInitializer& ObjectInitializer);
