@@ -9,6 +9,7 @@
 #include "WeaponInventoryComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Blueprint/UserWidget.h"
 #include "PlayerCharacter.generated.h"
 
 class UInputMappingContext;
@@ -46,8 +47,13 @@ public:
 
 	FVector2D PreviousMovementDirection = FVector2d(1.0f, 0.0f);
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TSubclassOf<UUserWidget> PlayerHUD = nullptr;
+
 private:
 	FTimerHandle GarlicTimerHandle;
+
+	UUserWidget* currentPlayerHUD = nullptr;
 
 public:
 	APlayerCharacter();

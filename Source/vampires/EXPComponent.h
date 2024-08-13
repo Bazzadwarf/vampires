@@ -27,19 +27,19 @@ public:
 	// Sets default values for this component's properties
 	UEXPComponent();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void IncrementEXP(int value);
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void SetCurrentEXP(int value);
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, BlueprintPure)
 	int GetCurrentEXP();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, BlueprintPure)
 	int GetCurrentLevel();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void Reset();
 
 protected:
