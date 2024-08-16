@@ -15,6 +15,8 @@ class VAMPIRES_API AEXPPickup : public APickup
 	GENERATED_BODY()
 
 public:
+	
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Pickup")
 	int EXP = 1;
 
 protected:
