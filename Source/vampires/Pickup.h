@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/Actor.h"
+#include "PaperSpriteComponent.h"
 #include "Pickup.generated.h"
 
 UCLASS()
@@ -21,7 +22,10 @@ public:
 	double PickupMovementSpeed = 1000;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	USphereComponent* SphereComponent;
+	USphereComponent* SphereComponent = nullptr;
+		
+	UPROPERTY(EditAnywhere)
+	UPaperSpriteComponent* SpriteComponent = nullptr;
 	
 public:	
 	// Sets default values for this actor's properties

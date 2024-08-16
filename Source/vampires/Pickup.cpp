@@ -5,6 +5,7 @@
 
 #include "PlayerCharacter.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 APickup::APickup()
@@ -14,8 +15,13 @@ APickup::APickup()
 
 	// Create Sphere Component
 	SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere Component"));
-	SphereComponent->SetupAttachment(RootComponent);
+	SetRootComponent(SphereComponent);
 	SphereComponent->SetSphereRadius(25.0f);
+
+	SpriteComponent = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("Sprite Component"));
+	SpriteComponent->SetRelativeRotation(FRotator(0.0f, 90.0f,-90.0f));
+	SpriteComponent->SetRelativeScale3D(FVector(.5f, .5f, .5f));
+	SpriteComponent->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
