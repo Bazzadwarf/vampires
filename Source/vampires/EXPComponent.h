@@ -42,6 +42,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Reset();
 
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	float GetCurrentLevelPercent();
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

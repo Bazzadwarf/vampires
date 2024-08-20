@@ -15,17 +15,35 @@ UEXPComponent::UEXPComponent()
 
 void UEXPComponent::IncrementEXP(int value)
 {
-	// TODO: I should be updating the level here
+	int oldEXP = CurrentEXP;
+	int oldLevel = CurrentLevel;
+	
 	CurrentEXP += value;
 	OnEXPGained.ExecuteIfBound(value);
-	OnEXPLevelUp.ExecuteIfBound(CurrentLevel);
+
+	CurrentLevel = FMath::Floor(CurrentEXP / 100.0f);
+	
+	if (CurrentLevel != oldLevel)
+	{
+		OnEXPLevelUp.ExecuteIfBound(CurrentLevel);
+	}
 }
 
 void UEXPComponent::SetCurrentEXP(int value)
 {
+	int oldEXP = CurrentEXP;
+	int oldLevel = CurrentLevel;
+	
 	// TODO: I should be updating the level here
 	CurrentEXP = value;
 	OnEXPGained.ExecuteIfBound(value);
+
+	CurrentLevel = FMath::Floor(CurrentEXP / 100.0f);
+	
+	if (CurrentLevel != oldLevel)
+	{
+		OnEXPLevelUp.ExecuteIfBound(CurrentLevel);
+	}
 }
 
 int UEXPComponent::GetCurrentEXP()
@@ -44,6 +62,11 @@ void UEXPComponent::Reset()
 	CurrentLevel = 0;
 	OnEXPGained.ExecuteIfBound(CurrentEXP);
 	OnEXPLevelUp.ExecuteIfBound(CurrentLevel);
+}
+
+float UEXPComponent::GetCurrentLevelPercent()
+{
+	return (CurrentEXP % 100) / 100.0f;
 }
 
 // Called when the game starts
