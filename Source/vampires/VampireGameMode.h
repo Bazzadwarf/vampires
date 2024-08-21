@@ -28,9 +28,20 @@ private:
 
 	FTimerHandle SpawnEnemyTimerDelegate;
 
+	int EnemyDeathCount = 0;
+
 protected:
 	virtual void BeginPlay() override;
 
+public:
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	int GetEnemyDeathCount();
+	
+	UFUNCTION()
+	void IncrementEnemyDeathCount();
+
+protected:
+	
 	UFUNCTION()
 	void SpawnEnemy();
 };

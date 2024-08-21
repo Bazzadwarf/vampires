@@ -16,6 +16,11 @@ void AVampireGameMode::BeginPlay()
 	GetWorldTimerManager().SetTimer(SpawnEnemyTimerDelegate, this, &AVampireGameMode::SpawnEnemy, 1.0f, true);
 }
 
+int AVampireGameMode::GetEnemyDeathCount()
+{
+	return EnemyDeathCount;
+}
+
 void AVampireGameMode::SpawnEnemy()
 {
 	FVector TopLeft, TopLeftDir;
@@ -67,4 +72,9 @@ void AVampireGameMode::SpawnEnemy()
 	Direction *= CapsuleRadius;
 	Actor->SetActorLocation(SpawnLocation + Direction);
 	Actor->SpawnDefaultController();
+}
+
+void AVampireGameMode::IncrementEnemyDeathCount()
+{
+	EnemyDeathCount++;
 }

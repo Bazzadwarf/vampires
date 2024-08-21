@@ -3,6 +3,9 @@
 
 #include "EnemyCharacter.h"
 
+#include "VampireGameMode.h"
+#include "Kismet/GameplayStatics.h"
+
 AEnemyCharacter::AEnemyCharacter(const FObjectInitializer& ObjectInitializer)
 {
 }
@@ -39,5 +42,8 @@ void AEnemyCharacter::OnDeath()
 
 		GetWorld()->SpawnActor<AEXPPickup>(EXPPickupTemplate, GetActorLocation(), FRotator::ZeroRotator,
 		                                   actorSpawnParameters);
+
+		AVampireGameMode* gamemode = Cast<AVampireGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+		gamemode->IncrementEnemyDeathCount();
 	//}
 }
