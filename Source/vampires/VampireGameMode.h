@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "EnemyCharacter.h"
+#include "ObjectPoolManager.h"
 #include "PlayerCharacter.h"
 #include "VampirePlayerController.h"
 #include "GameFramework/GameMode.h"
@@ -30,18 +31,21 @@ private:
 
 	int EnemyDeathCount = 0;
 
+	AObjectPoolManager* EnemyObjectPoolManager = nullptr;
+
 protected:
 	virtual void BeginPlay() override;
 
 public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	int GetEnemyDeathCount();
-	
+
 	UFUNCTION()
 	void IncrementEnemyDeathCount();
 
+	AObjectPoolManager* GetEnemyObjectPoolManager();
+
 protected:
-	
 	UFUNCTION()
 	void SpawnEnemy();
 };

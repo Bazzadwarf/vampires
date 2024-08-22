@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "EXPPickup.h"
+#include "ObjectPoolComponent.h"
 #include "VampireCharacter.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "EnemyCharacter.generated.h"
@@ -19,12 +20,13 @@ class VAMPIRES_API AEnemyCharacter : public AVampireCharacter
 public:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AEXPPickup> EXPPickupTemplate = nullptr;
-	
-private:
 
+private:
 	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true"))
 	UBehaviorTree* BehaviorTree = nullptr;
-	
+
+	UObjectPoolComponent* ObjectPoolComponent = nullptr;
+
 public:
 	AEnemyCharacter(const FObjectInitializer& ObjectInitializer);
 
@@ -41,4 +43,8 @@ public:
 
 	UFUNCTION()
 	virtual void OnDeath();
+
+private:
+	UFUNCTION()
+	void ResetHealth();
 };

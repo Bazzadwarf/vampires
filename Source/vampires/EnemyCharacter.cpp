@@ -8,6 +8,7 @@
 
 AEnemyCharacter::AEnemyCharacter(const FObjectInitializer& ObjectInitializer)
 {
+	ObjectPoolComponent = CreateDefaultSubobject<UObjectPoolComponent>(TEXT("Object Pool Component"));
 }
 
 void AEnemyCharacter::BeginPlay()
@@ -15,6 +16,8 @@ void AEnemyCharacter::BeginPlay()
 	Super::BeginPlay();
 	GetHealthComponent()->OnDamaged.BindUFunction(this, "OnDamaged");
 	GetHealthComponent()->OnDeath.BindUFunction(this, "OnDeath");
+
+	ObjectPoolComponent->OnRetrieve.BindUFunction(this, "ResetHealth");
 }
 
 void AEnemyCharacter::Tick(float DeltaTime)
@@ -33,17 +36,20 @@ void AEnemyCharacter::OnDamaged()
 
 void AEnemyCharacter::OnDeath()
 {
-	//if (IsValid(EXPPickupTemplate))
-	//{
-		FActorSpawnParameters actorSpawnParameters;
-		actorSpawnParameters.Owner = this;
-		actorSpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-		actorSpawnParameters.TransformScaleMethod = ESpawnActorScaleMethod::MultiplyWithRoot;
+	FActorSpawnParameters actorSpawnParameters;
+	actorSpawnParameters.Owner = this;
+	actorSpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	actorSpawnParameters.TransformScaleMethod = ESpawnActorScaleMethod::MultiplyWithRoot;
 
-		GetWorld()->SpawnActor<AEXPPickup>(EXPPickupTemplate, GetActorLocation(), FRotator::ZeroRotator,
-		                                   actorSpawnParameters);
+	GetWorld()->SpawnActor<AEXPPickup>(EXPPickupTemplate, GetActorLocation(), FRotator::ZeroRotator,
+	                                   actorSpawnParameters);
 
-		AVampireGameMode* gamemode = Cast<AVampireGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-		gamemode->IncrementEnemyDeathCount();
-	//}
+	AVampireGameMode* gamemode = Cast<AVampireGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	gamemode->IncrementEnemyDeathCount();
+	gamemode->GetEnemyObjectPoolManager()->ReturnObject(this);
+}
+
+void AEnemyCharacter::ResetHealth()
+{
+	GetHealthComponent()->ResetHealth();
 }

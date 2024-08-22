@@ -70,6 +70,7 @@ void UHealthComponent::SetCurrentHealth(float value)
 void UHealthComponent::ResetHealth()
 {
 	CurrentHealth = MaxHealth;
+	IsDead = false;
 }
 
 void UHealthComponent::RecoverHealth(float value)

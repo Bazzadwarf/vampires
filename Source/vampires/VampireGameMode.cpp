@@ -57,21 +57,37 @@ void AVampireGameMode::SpawnEnemy()
 		UE_LOG(LogTemp, Warning, TEXT("Something broke"));
 		break;
 	}
-	
+
 	SpawnLocation.Z = PlayerCharacter->GetActorLocation().Z;
 	FTransform Transform;
 	Transform.SetLocation(SpawnLocation);
-	
+
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	
-	AEnemyCharacter* Actor = GetWorld()->SpawnActor<AEnemyCharacter>(EnemyTemplate, Transform, SpawnParameters);
-	float CapsuleRadius = Actor->GetCapsuleComponent()->GetScaledCapsuleRadius();
-	FVector Direction = SpawnLocation - PlayerCharacter->GetActorLocation();
-	Direction.Normalize();
-	Direction *= CapsuleRadius;
-	Actor->SetActorLocation(SpawnLocation + Direction);
-	Actor->SpawnDefaultController();
+
+	if (AActor* object = GetEnemyObjectPoolManager()->GetObject())
+	{
+		AEnemyCharacter* Actor = Cast<AEnemyCharacter>(object);
+		Actor->SetActorTransform(Transform);
+		float CapsuleRadius = Actor->GetCapsuleComponent()->GetScaledCapsuleRadius();
+		FVector Direction = SpawnLocation - PlayerCharacter->GetActorLocation();
+		Direction.Normalize();
+		Direction *= CapsuleRadius;
+		Actor->SetActorLocation(SpawnLocation + Direction);
+		Actor->SpawnDefaultController();
+	}
+}
+
+AObjectPoolManager* AVampireGameMode::GetEnemyObjectPoolManager()
+{
+	if (EnemyObjectPoolManager == nullptr)
+	{
+		EnemyObjectPoolManager = GetWorld()->SpawnActor<AObjectPoolManager>();
+		TSubclassOf<AActor> enemyTemplate = EnemyTemplate;
+		EnemyObjectPoolManager->InitializeObjectPool(enemyTemplate);
+	}
+
+	return EnemyObjectPoolManager;
 }
 
 void AVampireGameMode::IncrementEnemyDeathCount()

@@ -61,7 +61,7 @@ void AVampireAIController::OnDeath(FDamageInfo info)
 {
 	// TODO: Do stuff here
 	EnemyCharacter->OnDeath();
-	EnemyCharacter->DetachFromControllerPendingDestroy();
+	/*EnemyCharacter->DetachFromControllerPendingDestroy();
 	EnemyCharacter->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	EnemyCharacter->GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Ignore);
 
@@ -72,7 +72,7 @@ void AVampireAIController::OnDeath(FDamageInfo info)
 		characterMovementComponent->SetComponentTickEnabled(false);
 	}
 	GetWorldTimerManager().ClearTimer(PawnMoveToTimerHandle);
-	EnemyCharacter->SetLifeSpan(0.1f);
+	EnemyCharacter->SetLifeSpan(0.1f);*/
 }
 
 void AVampireAIController::PawnMoveTo()
