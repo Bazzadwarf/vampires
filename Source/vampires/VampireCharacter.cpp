@@ -11,6 +11,11 @@ AVampireCharacter::AVampireCharacter()
 
 	// Create Health Component
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health Component"));
+
+	PaperFlipbookComponent = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("Paper Flipbook Component"));
+	PaperFlipbookComponent->SetRelativeRotation(FRotator(0.0f, 90.0f,-90.0f));
+	PaperFlipbookComponent->SetRelativeScale3D(FVector(0.2f, 0.2f, 0.2f));
+	PaperFlipbookComponent->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned

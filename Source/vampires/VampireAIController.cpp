@@ -38,6 +38,7 @@ void AVampireAIController::OnPossess(APawn* InPawn)
 
 	EnemyCharacter = Cast<AEnemyCharacter>(InPawn);
 	check(EnemyCharacter);
+	EnemyCharacter->bUseControllerRotationYaw = false;
 	EnemyCharacter->GetHealthComponent()->OnDamaged.BindUFunction(this, "OnDamaged");
 	EnemyCharacter->GetHealthComponent()->OnDeath.BindUFunction(this, "OnDeath");
 

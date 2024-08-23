@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "HealthComponent.h"
+#include "PaperFlipbookComponent.h"
 #include "VampireCharacter.generated.h"
 
 UCLASS()
@@ -12,11 +13,14 @@ class VAMPIRES_API AVampireCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
-protected:
+public:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPaperFlipbookComponent* PaperFlipbookComponent;
 
+protected:
 	UPROPERTY()
 	UHealthComponent* HealthComponent;
-	
+
 public:
 	// Sets default values for this character's properties
 	AVampireCharacter();
@@ -25,7 +29,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -33,5 +37,4 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UHealthComponent* GetHealthComponent();
-
 };
