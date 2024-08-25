@@ -26,6 +26,9 @@ public:
 		
 	UPROPERTY(EditAnywhere)
 	UPaperSpriteComponent* SpriteComponent = nullptr;
+
+	UPROPERTY(EditDefaultsOnly)
+	USoundBase* PickupSoundBase = nullptr;
 	
 public:	
 	// Sets default values for this actor's properties

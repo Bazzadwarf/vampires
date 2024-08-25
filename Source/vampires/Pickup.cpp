@@ -53,8 +53,13 @@ void APickup::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* O
                              const FHitResult& SweepResult)
 {
 	if (APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor))
-	{
+	{		
 		// TODO: Add extra functionality
+		if (PickupSoundBase)
+		{
+			UGameplayStatics::PlaySound2D(GetWorld(), PickupSoundBase);
+		}
+
 		Destroy();
 	}
 }
