@@ -4,11 +4,11 @@
 #include "VampireAIController.h"
 
 #include "BehaviorTree/BlackboardComponent.h"
-#include "Components/CapsuleComponent.h"
-#include "GameFramework/PawnMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Navigation/CrowdFollowingComponent.h"
 
-AVampireAIController::AVampireAIController(const FObjectInitializer& object_initializer)
+AVampireAIController::AVampireAIController(const FObjectInitializer& object_initializer) : Super(
+	object_initializer.SetDefaultSubobjectClass<UCrowdFollowingComponent>(TEXT("Path Following Component")))
 {
 	Blackboard = CreateDefaultSubobject<UBlackboardComponent>(TEXT("Blackboard"));
 	BehaviorTree = CreateDefaultSubobject<UBehaviorTreeComponent>(TEXT("Behavior Tree"));
@@ -18,6 +18,13 @@ void AVampireAIController::BeginPlay()
 {
 	Super::BeginPlay();
 	GetWorldTimerManager().SetTimer(PawnMoveToTimerHandle, this, &AVampireAIController::PawnMoveTo, 0.25f, true);
+
+	if (UCrowdFollowingComponent* CrowdFollowingComponent = FindComponentByClass<UCrowdFollowingComponent>())
+	{
+		CrowdFollowingComponent->SetCrowdSeparation(true);
+		CrowdFollowingComponent->SetCrowdAvoidanceQuality(ECrowdAvoidanceQuality::Good);
+		CrowdFollowingComponent->SetCrowdSeparationWeight(10.0f);
+	}
 }
 
 void AVampireAIController::Tick(float DeltaTime)

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
+#include "DetourCrowdAIController.h"
 #include "EnemyCharacter.h"
 #include "HealthComponent.h"
 #include "PlayerCharacter.h"
