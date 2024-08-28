@@ -19,7 +19,6 @@ class VAMPIRES_API AVampireAIController : public AAIController
 {
 	GENERATED_BODY()
 
-private:
 	UBlackboardComponent* Blackboard;
 
 	UBehaviorTreeComponent* BehaviorTree;

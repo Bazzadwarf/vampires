@@ -10,6 +10,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/WidgetComponent.h"
 #include "PlayerCharacter.generated.h"
 
 class UInputMappingContext;
@@ -49,6 +50,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TSubclassOf<UUserWidget> PlayerHUD = nullptr;
+
+	UPROPERTY(EditAnywhere)
+	UWidgetComponent* HealthBarWidgetComponent;
 
 private:
 	FTimerHandle GarlicTimerHandle;

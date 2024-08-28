@@ -35,6 +35,13 @@ APlayerCharacter::APlayerCharacter()
 
 	//Create Weapon Inventory Component
 	WeaponInventoryComponent = CreateDefaultSubobject<UWeaponInventoryComponent>(TEXT("Weapon Inventory Component"));
+
+	// Create HealthBar Widget Component
+	HealthBarWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("Healthbar"));
+	HealthBarWidgetComponent->SetupAttachment(RootComponent);
+	HealthBarWidgetComponent->SetRelativeLocation(FVector(0,0,90));
+	HealthBarWidgetComponent->SetTwoSided(true);
+	HealthBarWidgetComponent->SetBackgroundColor(FLinearColor(1,1,1,0));
 }
 
 void APlayerCharacter::BeginPlay()
