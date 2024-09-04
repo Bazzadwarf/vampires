@@ -20,40 +20,6 @@ void AGarlicWeapon::BeginPlay()
 
 void AGarlicWeapon::FireWeaponAction_Implementation()
 {
-	TArray<AEnemyCharacter*> OverlappedEnemiesCache = OverlappedEnemies;
-
-	for (int i = 0; i < OverlappedEnemiesCache.Num(); i++)
-	{
-		bool deadCheck = false;
-		UHealthComponent* EnemyHealthComponent = OverlappedEnemiesCache[i]->GetHealthComponent();
-
-		if (!EnemyHealthComponent->GetIsDead())
-		{
-			FVector Direction = OverlappedEnemiesCache[i]->GetActorLocation() - this->GetActorLocation();
-			Direction.Normalize();
-			float distance = SphereComponent->GetScaledSphereRadius();
-			Direction *= distance;
-			OverlappedEnemiesCache[i]->SetActorLocation(OverlappedEnemiesCache[i]->GetActorLocation() + Direction);
-
-			if (EnemyHealthComponent->GetCurrentHealth() < Damage)
-			{
-				deadCheck = true;
-			}
-			
-			AController* ownerController = nullptr;
-			if (AVampireCharacter* character = Cast<AVampireCharacter>(GetOwner()))
-			{
-				ownerController = character->GetController();
-			}
-
-			EnemyHealthComponent->TakeDamage(OverlappedEnemiesCache[i], Damage, nullptr, ownerController, this);
-		}
-
-		if (deadCheck)
-		{
-			i -= 1;
-		}
-	}
 }
 
 void AGarlicWeapon::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -62,7 +28,15 @@ void AGarlicWeapon::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAc
 {
 	if (AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(OtherActor))
 	{
-		OverlappedEnemies.Add(Enemy);
+		FOverlappedEnemy overlappedEnemy = FOverlappedEnemy(Enemy);
+
+
+		GetWorldTimerManager().SetTimer(overlappedEnemy.OverlappedTimerHandle,
+		                                FTimerDelegate::CreateUObject(this, &AGarlicWeapon::GarlicFireWeaponAction,
+		                                                              overlappedEnemy),
+		                                WeaponCooldown,
+		                                true);
+		OverlappedEnemies.Add(overlappedEnemy);
 	}
 }
 
@@ -71,6 +45,42 @@ void AGarlicWeapon::OnEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* Ot
 {
 	if (AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(OtherActor))
 	{
-		OverlappedEnemies.Remove(Enemy);
+		for (int i = 0; i < OverlappedEnemies.Num(); i++)
+		{
+			if (Enemy == OverlappedEnemies[i].OverlappedEnemyCharacter)
+			{
+				GetWorldTimerManager().ClearTimer(OverlappedEnemies[i].OverlappedTimerHandle);
+				OverlappedEnemies.RemoveAt(i);
+				return;
+			}
+		}
+	}
+}
+
+void AGarlicWeapon::GarlicFireWeaponAction(FOverlappedEnemy EnemyCharacter)
+{
+	UHealthComponent* EnemyHealthComponent = EnemyCharacter.OverlappedEnemyCharacter->GetHealthComponent();
+
+	if (!EnemyHealthComponent->GetIsDead())
+	{
+		if (!EnemyHealthComponent->GetIsDead())
+		{
+			FVector Direction = EnemyCharacter.OverlappedEnemyCharacter->GetActorLocation() - this->
+				GetActorLocation();
+			Direction.Normalize();
+			float distance = SphereComponent->GetScaledSphereRadius();
+			Direction *= distance;
+			EnemyCharacter.OverlappedEnemyCharacter->SetActorLocation(
+				EnemyCharacter.OverlappedEnemyCharacter->GetActorLocation() + Direction);
+
+			AController* ownerController = nullptr;
+			if (AVampireCharacter* character = Cast<AVampireCharacter>(GetOwner()))
+			{
+				ownerController = character->GetController();
+			}
+
+			EnemyHealthComponent->TakeDamage(EnemyCharacter.OverlappedEnemyCharacter, Damage, nullptr,
+											 ownerController, this);
+		}
 	}
 }

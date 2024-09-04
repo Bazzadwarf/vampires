@@ -8,6 +8,16 @@
 #include "vampires/EnemyCharacter.h"
 #include "GarlicWeapon.generated.h"
 
+USTRUCT()
+struct FOverlappedEnemy
+{
+	GENERATED_BODY()
+	
+	AEnemyCharacter* OverlappedEnemyCharacter;
+
+	FTimerHandle OverlappedTimerHandle;
+}; 
+
 /**
  * 
  */
@@ -18,7 +28,7 @@ class VAMPIRES_API AGarlicWeapon : public AWeapon
 
 	USphereComponent* SphereComponent;
 
-	TArray<AEnemyCharacter*> OverlappedEnemies;
+	TArray<FOverlappedEnemy> OverlappedEnemies;
 
 public:
 	AGarlicWeapon();
@@ -28,6 +38,9 @@ protected:
 
 public:
 	virtual void FireWeaponAction_Implementation() override;
+
+	UFUNCTION()
+	void GarlicFireWeaponAction(FOverlappedEnemy EnemyCharacter);
 
 protected:
 	UFUNCTION()
