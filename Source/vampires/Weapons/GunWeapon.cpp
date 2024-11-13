@@ -53,18 +53,18 @@ void AGunWeapon::FireWeaponAction_Implementation()
 		
 		AProjectile* projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileTemplate, GetOwner()->GetTransform(),
 																	  actorSpawnParameters);
-		projectile->TargetDirection = UKismetMathLibrary::GetDirectionUnitVector(actorLocation, TopLeft);
+		projectile->SetTargetDirection(UKismetMathLibrary::GetDirectionUnitVector(actorLocation, TopLeft));
 
 		projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileTemplate, GetOwner()->GetTransform(),
 														 actorSpawnParameters);
-		projectile->TargetDirection = UKismetMathLibrary::GetDirectionUnitVector(actorLocation, TopRight);
+		projectile->SetTargetDirection(UKismetMathLibrary::GetDirectionUnitVector(actorLocation, TopRight));
 
 		projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileTemplate, GetOwner()->GetTransform(),
 														 actorSpawnParameters);
-		projectile->TargetDirection = UKismetMathLibrary::GetDirectionUnitVector(actorLocation, BottomLeft);
+		projectile->SetTargetDirection(UKismetMathLibrary::GetDirectionUnitVector(actorLocation, BottomLeft));
 
 		projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileTemplate, GetOwner()->GetTransform(),
 														 actorSpawnParameters);
-		projectile->TargetDirection = UKismetMathLibrary::GetDirectionUnitVector(actorLocation, BottomRight);
+		projectile->SetTargetDirection(UKismetMathLibrary::GetDirectionUnitVector(actorLocation, BottomRight));
 	}
 }

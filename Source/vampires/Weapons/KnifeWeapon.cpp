@@ -32,6 +32,6 @@ void AKnifeWeapon::FireWeaponAction_Implementation()
 
 		FVector direction = FVector(playerCharacter->PreviousMovementDirection, 0.0);
 		direction.Normalize();
-		projectile->TargetDirection = direction;
+		projectile->SetTargetDirection(direction);
 	}
 }

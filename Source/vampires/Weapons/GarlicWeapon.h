@@ -12,11 +12,11 @@ USTRUCT()
 struct FOverlappedEnemy
 {
 	GENERATED_BODY()
-	
+
 	AEnemyCharacter* OverlappedEnemyCharacter;
 
 	FTimerHandle OverlappedTimerHandle;
-}; 
+};
 
 /**
  * 

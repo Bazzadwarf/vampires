@@ -3,9 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/SphereComponent.h"
 #include "GameFramework/Actor.h"
 #include "Projectile.generated.h"
+
+class UProjectileMovementComponent;
+class USphereComponent;
 
 UCLASS()
 class VAMPIRES_API AProjectile : public AActor
@@ -16,10 +18,13 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	USphereComponent* SphereComponent = nullptr;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UProjectileMovementComponent* ProjectileMovement = nullptr;
+	
 	FVector TargetDirection = FVector::ZeroVector;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float ProjectileSpeed = 1.0f;
+	float ProjectileSpeed = 500.0f;
 	
 public:	
 	// Sets default values for this actor's properties
@@ -30,6 +35,6 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+
+	void SetTargetDirection(FVector direction);
 };

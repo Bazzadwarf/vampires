@@ -34,6 +34,6 @@ void AFireWandWeapon::FireWeaponAction_Implementation()
 		direction.Z = 0.0;
 		direction.Normalize();
 
-		projectile->TargetDirection = direction;
+		projectile->SetTargetDirection(direction);
 	}
 }

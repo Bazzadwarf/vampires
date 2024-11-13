@@ -3,17 +3,20 @@
 
 #include "Projectile.h"
 
+#include "Components/SphereComponent.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 #include "Weapons/ProjectileWeapon.h"
 
 // Sets default values
 AProjectile::AProjectile()
-{
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
-	SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere Component"));
+{	SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere Component"));
 	SetRootComponent(SphereComponent);
 	SphereComponent->SetSphereRadius(50.0f);
+
+	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement"));
+	ProjectileMovement->ProjectileGravityScale = 0.0f;
+	ProjectileMovement->Friction = 0.0f;;
+	ProjectileMovement->bIsSliding = true;
 }
 
 // Called when the game starts or when spawned
@@ -22,12 +25,14 @@ void AProjectile::BeginPlay()
 	Super::BeginPlay();
 	AProjectileWeapon* OwnerWeapon = Cast<AProjectileWeapon>(GetOwner()); 
 	SphereComponent->OnComponentBeginOverlap.AddDynamic(OwnerWeapon, &AProjectileWeapon::OnProjectileBeginOverlap);
+
+	ProjectileMovement->InitialSpeed = ProjectileSpeed;
+	ProjectileMovement->MaxSpeed = ProjectileSpeed;
 }
 
-// Called every frame
-void AProjectile::Tick(float DeltaTime)
+void AProjectile::SetTargetDirection(FVector direction)
 {
-	Super::Tick(DeltaTime);
-	SetActorLocation(GetActorLocation() + (TargetDirection * ProjectileSpeed));
+	TargetDirection = direction;
+	ProjectileMovement->SetVelocityInLocalSpace(TargetDirection * ProjectileSpeed);
 }
 

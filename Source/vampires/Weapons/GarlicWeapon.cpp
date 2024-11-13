@@ -80,7 +80,7 @@ void AGarlicWeapon::GarlicFireWeaponAction(FOverlappedEnemy EnemyCharacter)
 			}
 
 			EnemyHealthComponent->TakeDamage(EnemyCharacter.OverlappedEnemyCharacter, Damage, nullptr,
-											 ownerController, this);
+			                                 ownerController, this);
 		}
 	}
 }

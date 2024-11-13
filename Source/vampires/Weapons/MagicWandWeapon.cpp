@@ -37,7 +37,7 @@ void AMagicWandWeapon::FireWeaponAction_Implementation()
 				GetActorLocation(), nearestActor->GetActorLocation());
 			direction.Z = 0.0;
 			direction.Normalize();
-			projectile->TargetDirection = direction;
+			projectile->SetTargetDirection(direction);
 		}
 	}
 }
