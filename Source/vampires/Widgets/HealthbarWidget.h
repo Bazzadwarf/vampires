@@ -4,10 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Components/ProgressBar.h"
-#include "vampires/VampireCharacter.h"
 #include "HealthbarWidget.generated.h"
 
+class UProgressBar;
 /**
  * 
  */

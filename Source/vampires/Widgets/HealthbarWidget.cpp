@@ -5,6 +5,8 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "vampires/PlayerCharacter.h"
+#include "Components/ProgressBar.h"
+#include "vampires/VampireCharacter.h"
 
 void UHealthbarWidget::NativeConstruct()
 {

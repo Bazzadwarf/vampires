@@ -4,10 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Components/ProgressBar.h"
-#include "Components/TextBlock.h"
 #include "HUDWidget.generated.h"
 
+class UTextBlock;
+class UProgressBar;
 /**
  * 
  */
