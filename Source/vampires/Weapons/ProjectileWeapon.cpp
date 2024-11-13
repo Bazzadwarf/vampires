@@ -7,6 +7,8 @@
 #include "vampires/EnemyCharacter.h"
 #include "vampires/PlayerCharacter.h"
 #include "vampires/VampirePlayerController.h"
+#include "../Weapon.h"
+#include "Components/BoxComponent.h"
 
 AProjectileWeapon::AProjectileWeapon()
 {
@@ -43,7 +45,8 @@ void AProjectileWeapon::BeginPlay()
 }
 
 void AProjectileWeapon::OnWeaponBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-                                             UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                                             UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+                                             const FHitResult& SweepResult)
 {
 	if (AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(OtherActor))
 	{
@@ -52,7 +55,7 @@ void AProjectileWeapon::OnWeaponBeginOverlap(UPrimitiveComponent* OverlappedComp
 }
 
 void AProjectileWeapon::OnWeaponEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+                                           UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	if (AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(OtherActor))
 	{
@@ -61,7 +64,8 @@ void AProjectileWeapon::OnWeaponEndOverlap(UPrimitiveComponent* OverlappedComp, 
 }
 
 void AProjectileWeapon::OnProjectileBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                                                 UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+                                                 const FHitResult& SweepResult)
 {
 	if (AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(OtherActor))
 	{

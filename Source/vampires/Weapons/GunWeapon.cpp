@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "vampires/PlayerCharacter.h"
+#include "vampires/Projectile.h"
 #include "vampires/VampirePlayerController.h"
 
 AGunWeapon::AGunWeapon()

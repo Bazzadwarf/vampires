@@ -4,6 +4,7 @@
 #include "FireWandWeapon.h"
 
 #include "Kismet/KismetMathLibrary.h"
+#include "vampires/Projectile.h"
 
 AFireWandWeapon::AFireWandWeapon()
 {

@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "../Weapon.h"
-#include "Components/BoxComponent.h"
-#include "vampires/EnemyCharacter.h"
-#include "vampires/Pickup.h"
 #include "PentagramWeapon.generated.h"
 
+class APickup;
+class AEnemyCharacter;
+class UBoxComponent;
 /**
  * 
  */

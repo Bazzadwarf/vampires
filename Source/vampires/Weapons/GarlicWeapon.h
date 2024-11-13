@@ -4,9 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "../Weapon.h"
-#include "Components/SphereComponent.h"
-#include "vampires/EnemyCharacter.h"
 #include "GarlicWeapon.generated.h"
+
+class USphereComponent;
+class AEnemyCharacter;
 
 USTRUCT()
 struct FOverlappedEnemy

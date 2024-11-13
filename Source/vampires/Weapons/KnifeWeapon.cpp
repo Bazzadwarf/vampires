@@ -5,6 +5,7 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "vampires/PlayerCharacter.h"
+#include "vampires/Projectile.h"
 
 AKnifeWeapon::AKnifeWeapon()
 {

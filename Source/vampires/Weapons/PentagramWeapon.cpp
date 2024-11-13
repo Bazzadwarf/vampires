@@ -6,6 +6,9 @@
 #include "Kismet/GameplayStatics.h"
 #include "vampires/VampirePlayerController.h"
 #include "../PlayerCharacter.h"
+#include "Components/BoxComponent.h"
+#include "vampires/EnemyCharacter.h"
+#include "vampires/Pickup.h"
 
 APentagramWeapon::APentagramWeapon()
 {

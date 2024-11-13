@@ -3,10 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "../Weapon.h"
-#include "Components/BoxComponent.h"
-#include "vampires/Projectile.h"
+#include "vampires/Weapon.h"
 #include "ProjectileWeapon.generated.h"
+
+class AProjectile;
+class UBoxComponent;
 
 /**
  * 

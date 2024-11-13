@@ -2,6 +2,8 @@
 
 
 #include "LightningRingWeapon.h"
+#include "Components/SphereComponent.h"
+#include "vampires/EnemyCharacter.h"
 
 ALightningRingWeapon::ALightningRingWeapon()
 {

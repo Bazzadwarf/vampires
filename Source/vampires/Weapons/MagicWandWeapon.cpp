@@ -5,6 +5,7 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "vampires/Projectile.h"
 
 AMagicWandWeapon::AMagicWandWeapon()
 {

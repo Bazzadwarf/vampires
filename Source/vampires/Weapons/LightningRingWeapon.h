@@ -4,10 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "../Weapon.h"
-#include "Components/SphereComponent.h"
-#include "vampires/EnemyCharacter.h"
 #include "LightningRingWeapon.generated.h"
 
+class AEnemyCharacter;
+class USphereComponent;
 /**
  * 
  */
