@@ -4,8 +4,9 @@
 #include "Pickup.h"
 
 #include "PlayerCharacter.h"
+#include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "Kismet/KismetMathLibrary.h"
+#include "PaperSpriteComponent.h"
 
 // Sets default values
 APickup::APickup()
@@ -19,7 +20,7 @@ APickup::APickup()
 	SphereComponent->SetSphereRadius(25.0f);
 
 	SpriteComponent = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("Sprite Component"));
-	SpriteComponent->SetRelativeRotation(FRotator(0.0f, 90.0f,-90.0f));
+	SpriteComponent->SetRelativeRotation(FRotator(0.0f, 90.0f, -90.0f));
 	SpriteComponent->SetRelativeScale3D(FVector(.5f, .5f, .5f));
 	SpriteComponent->SetupAttachment(RootComponent);
 }
@@ -53,7 +54,7 @@ void APickup::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* O
                              const FHitResult& SweepResult)
 {
 	if (APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor))
-	{		
+	{
 		// TODO: Add extra functionality
 		if (PickupSoundBase)
 		{

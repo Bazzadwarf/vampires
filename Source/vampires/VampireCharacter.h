@@ -4,9 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "HealthComponent.h"
-#include "PaperFlipbookComponent.h"
 #include "VampireCharacter.generated.h"
+
+class UHealthComponent;
+class UPaperFlipbookComponent;
 
 UCLASS()
 class VAMPIRES_API AVampireCharacter : public ACharacter

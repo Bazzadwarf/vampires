@@ -3,13 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "EnemyCharacter.h"
-#include "ObjectPoolManager.h"
-#include "PlayerCharacter.h"
-#include "VampirePlayerController.h"
 #include "GameFramework/GameMode.h"
 #include "VampireGameMode.generated.h"
 
+class AObjectPoolManager;
+class AVampirePlayerController;
+class APlayerCharacter;
+class AEnemyCharacter;
 /**
  * 
  */

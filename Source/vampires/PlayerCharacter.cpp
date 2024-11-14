@@ -6,7 +6,13 @@
 #include "VampirePlayerController.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "EXPComponent.h"
+#include "GoldComponent.h"
 #include "InputMappingContext.h"
+#include "WeaponInventoryComponent.h"
+#include "Camera/CameraComponent.h"
+#include "Components/WidgetComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -39,9 +45,9 @@ APlayerCharacter::APlayerCharacter()
 	// Create HealthBar Widget Component
 	HealthBarWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("Healthbar"));
 	HealthBarWidgetComponent->SetupAttachment(RootComponent);
-	HealthBarWidgetComponent->SetRelativeLocation(FVector(0,0,90));
+	HealthBarWidgetComponent->SetRelativeLocation(FVector(0, 0, 90));
 	HealthBarWidgetComponent->SetTwoSided(true);
-	HealthBarWidgetComponent->SetBackgroundColor(FLinearColor(1,1,1,0));
+	HealthBarWidgetComponent->SetBackgroundColor(FLinearColor(1, 1, 1, 0));
 }
 
 void APlayerCharacter::BeginPlay()

@@ -3,10 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Weapon.h"
 #include "Components/ActorComponent.h"
 #include "WeaponInventoryComponent.generated.h"
 
+
+class AWeapon;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class VAMPIRES_API UWeaponInventoryComponent : public UActorComponent

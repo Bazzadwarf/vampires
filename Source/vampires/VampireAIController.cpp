@@ -3,6 +3,11 @@
 
 #include "VampireAIController.h"
 
+#include "EnemyCharacter.h"
+#include "HealthComponent.h"
+#include "VampireCharacter.h"
+#include "BehaviorTree/BehaviorTree.h"
+#include "BehaviorTree/BehaviorTreeComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Navigation/CrowdFollowingComponent.h"

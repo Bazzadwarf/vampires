@@ -3,6 +3,10 @@
 
 #include "EnemyCharacter.h"
 
+#include "EXPPickup.h"
+#include "HealthComponent.h"
+#include "ObjectPoolComponent.h"
+#include "ObjectPoolManager.h"
 #include "VampireGameMode.h"
 #include "Kismet/GameplayStatics.h"
 

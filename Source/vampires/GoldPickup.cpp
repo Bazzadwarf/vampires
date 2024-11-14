@@ -3,6 +3,7 @@
 
 #include "GoldPickup.h"
 
+#include "GoldComponent.h"
 #include "PlayerCharacter.h"
 
 class APlayerCharacter;

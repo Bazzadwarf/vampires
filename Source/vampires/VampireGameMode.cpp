@@ -3,6 +3,10 @@
 
 #include "VampireGameMode.h"
 
+#include "EnemyCharacter.h"
+#include "ObjectPoolManager.h"
+#include "PlayerCharacter.h"
+#include "VampirePlayerController.h"
 #include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
 

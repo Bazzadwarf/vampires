@@ -3,6 +3,7 @@
 
 #include "EXPPickup.h"
 
+#include "EXPComponent.h"
 #include "PlayerCharacter.h"
 
 void AEXPPickup::BeginPlay()

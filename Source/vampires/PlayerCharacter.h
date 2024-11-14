@@ -3,16 +3,16 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "EXPComponent.h"
-#include "GoldComponent.h"
 #include "VampireCharacter.h"
-#include "WeaponInventoryComponent.h"
-#include "Camera/CameraComponent.h"
-#include "GameFramework/SpringArmComponent.h"
-#include "Blueprint/UserWidget.h"
-#include "Components/WidgetComponent.h"
 #include "PlayerCharacter.generated.h"
 
+struct FInputActionInstance;
+class UWidgetComponent;
+class UWeaponInventoryComponent;
+class UGoldComponent;
+class UEXPComponent;
+class UCameraComponent;
+class USpringArmComponent;
 class UInputMappingContext;
 class UInputAction;
 

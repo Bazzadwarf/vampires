@@ -3,12 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "EXPPickup.h"
-#include "ObjectPoolComponent.h"
 #include "VampireCharacter.h"
-#include "BehaviorTree/BehaviorTree.h"
 #include "EnemyCharacter.generated.h"
 
+class UObjectPoolComponent;
+class UBehaviorTree;
+class AEXPPickup;
 /**
  * 
  */

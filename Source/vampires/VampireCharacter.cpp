@@ -3,6 +3,9 @@
 
 #include "VampireCharacter.h"
 
+#include "HealthComponent.h"
+#include "PaperFlipbookComponent.h"
+
 // Sets default values
 AVampireCharacter::AVampireCharacter()
 {

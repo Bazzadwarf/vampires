@@ -3,10 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/SphereComponent.h"
 #include "GameFramework/Actor.h"
-#include "PaperSpriteComponent.h"
 #include "Pickup.generated.h"
+
+class USphereComponent;
+class UPaperSpriteComponent;
 
 UCLASS()
 class VAMPIRES_API APickup : public AActor
