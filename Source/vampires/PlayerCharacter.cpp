@@ -48,6 +48,7 @@ APlayerCharacter::APlayerCharacter()
 	HealthBarWidgetComponent->SetRelativeLocation(FVector(0, 0, 90));
 	HealthBarWidgetComponent->SetTwoSided(true);
 	HealthBarWidgetComponent->SetBackgroundColor(FLinearColor(1, 1, 1, 0));
+	HealthBarWidgetComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void APlayerCharacter::BeginPlay()

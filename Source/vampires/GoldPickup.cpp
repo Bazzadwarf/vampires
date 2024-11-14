@@ -18,12 +18,12 @@ void AGoldPickup::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 }
 
-void AGoldPickup::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+void AGoldPickup::OnInnerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor))
 	{
 		PlayerCharacter->GetGoldComponent()->IncrementGold(Gold);
-		Super::OnBeginOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
+		Super::OnInnerBeginOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
 	}
 }

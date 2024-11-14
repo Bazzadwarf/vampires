@@ -3,9 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/TimelineComponent.h"
 #include "GameFramework/Actor.h"
 #include "Pickup.generated.h"
 
+class UTimelineComponent;
 class USphereComponent;
 class UPaperSpriteComponent;
 
@@ -23,13 +25,28 @@ public:
 	double PickupMovementSpeed = 1000;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	USphereComponent* SphereComponent = nullptr;
+	USphereComponent* InnerSphereComponent = nullptr;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	USphereComponent* OuterSphereComponent = nullptr;
 		
 	UPROPERTY(EditAnywhere)
 	UPaperSpriteComponent* SpriteComponent = nullptr;
 
 	UPROPERTY(EditDefaultsOnly)
 	USoundBase* PickupSoundBase = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Timeline")
+	TObjectPtr<UTimelineComponent> TimelineComponent;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Timeline")
+	UCurveFloat* CurveFloat;
+
+private:
+	FOnTimelineFloat onTimelineCallback;
+	FOnTimelineEventStatic onTimelineFinishedCallback;
+
+	FVector PickupLocation;
 	
 public:	
 	// Sets default values for this actor's properties
@@ -39,11 +56,22 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:
-	virtual void Tick(float DeltaSeconds) override;
-
 	UFUNCTION()
-	virtual void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	virtual void OnInnerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	                            UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
 	                            const FHitResult& SweepResult);
+	
+	UFUNCTION()
+	virtual void OnOuterBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	                            UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+	                            const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void TimelineCallback(float val);
+
+	UFUNCTION()
+	void TimelineFinishedCallback();
+
+	UFUNCTION(BlueprintCallable)
+	void PlayTimeLine();
 };
