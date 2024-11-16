@@ -23,7 +23,7 @@ void AWeapon::BeginPlay()
 
 	if (expcomponent)
 	{
-		expcomponent->OnEXPLevelUp.BindUObject(this, &AWeapon::UpgradeWeapon);
+		expcomponent->OnEXPLevelUp.AddUniqueDynamic(this, &AWeapon::UpgradeWeapon);
 	}
 }
 
