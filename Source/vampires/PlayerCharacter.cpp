@@ -54,16 +54,6 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	if (PlayerHUD)
-	{
-		currentPlayerHUD = UUserWidget::CreateWidgetInstance(*GetWorld(), PlayerHUD, FName("Player HUD"));
-
-		if (currentPlayerHUD)
-		{
-			currentPlayerHUD->AddToViewport();
-		}
-	}
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

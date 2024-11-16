@@ -48,16 +48,11 @@ public:
 
 	FVector2D PreviousMovementDirection = FVector2d(1.0f, 0.0f);
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	TSubclassOf<UUserWidget> PlayerHUD = nullptr;
-
 	UPROPERTY(EditAnywhere)
 	UWidgetComponent* HealthBarWidgetComponent;
 
 private:
 	FTimerHandle GarlicTimerHandle;
-
-	UUserWidget* currentPlayerHUD = nullptr;
 
 public:
 	APlayerCharacter();

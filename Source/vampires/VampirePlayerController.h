@@ -6,12 +6,25 @@
 #include "GameFramework/PlayerController.h"
 #include "VampirePlayerController.generated.h"
 
+class UHUDWidget;
 /**
  * 
  */
-UCLASS()
+UCLASS(Abstract)
 class VAMPIRES_API AVampirePlayerController : public APlayerController
 {
 	GENERATED_BODY()
+
+public:
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<UHUDWidget> PlayerHUD = nullptr;
+
+private:
+
+	TObjectPtr<UHUDWidget> currentPlayerHUD = nullptr;
+
+protected:
+	virtual void OnPossess(APawn* aPawn) override;
+
 };
