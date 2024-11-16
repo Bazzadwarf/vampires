@@ -106,4 +106,6 @@ void UHealthComponent::BeginPlay()
 	Super::BeginPlay();
 
 	ResetHealth();
+
+	GetOwner()->OnTakeAnyDamage.AddUniqueDynamic(this, &UHealthComponent::TakeDamage);
 }
