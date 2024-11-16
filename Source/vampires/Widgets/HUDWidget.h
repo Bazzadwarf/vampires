@@ -15,7 +15,7 @@ UCLASS()
 class VAMPIRES_API UHUDWidget : public UUserWidget
 {
 	GENERATED_BODY()
-
+	
 public:
 	
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
@@ -26,5 +26,16 @@ public:
 		
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	UTextBlock* TimerBLock;
+
+	void Init();
+	
+	UFUNCTION()
+	void UpdateEXPBar(float currentLevelPercent);
+
+	UFUNCTION()
+	void UpdateLevelBlock();
+
+	UFUNCTION()
+	void UpdateTimerBlock();
 	
 };

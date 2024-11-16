@@ -27,4 +27,6 @@ private:
 protected:
 	virtual void OnPossess(APawn* aPawn) override;
 
+	UFUNCTION()
+	void UpdatePlayerEXPHUD(int exp, float currentLevelPercent);
 };
