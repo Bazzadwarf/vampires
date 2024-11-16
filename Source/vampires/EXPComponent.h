@@ -6,8 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "EXPComponent.generated.h"
 
-DECLARE_DELEGATE_OneParam(FOnEXPGainedDelegate, int)
-DECLARE_DELEGATE_OneParam(FOnEXPLevelUpDelegate, int)
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnEXPGainedDelegate, int, exp, float, currentLevelPercent);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEXPLevelUpDelegate, int, level);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class VAMPIRES_API UEXPComponent : public UActorComponent
@@ -15,7 +15,10 @@ class VAMPIRES_API UEXPComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
+	
+	UPROPERTY(BlueprintAssignable, Category="EXP")
 	FOnEXPGainedDelegate OnEXPGained;
+	UPROPERTY(BlueprintAssignable, Category="EXP")
 	FOnEXPLevelUpDelegate OnEXPLevelUp;
 
 protected:

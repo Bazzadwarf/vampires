@@ -19,13 +19,13 @@ void UEXPComponent::IncrementEXP(int value)
 	int oldLevel = CurrentLevel;
 	
 	CurrentEXP += value;
-	OnEXPGained.ExecuteIfBound(value);
+	OnEXPGained.Broadcast(CurrentEXP, GetCurrentLevelPercent());
 
 	CurrentLevel = FMath::Floor(CurrentEXP / 100.0f);
 	
 	if (CurrentLevel != oldLevel)
 	{
-		OnEXPLevelUp.ExecuteIfBound(CurrentLevel);
+		OnEXPLevelUp.Broadcast(CurrentLevel);
 	}
 }
 
@@ -36,13 +36,13 @@ void UEXPComponent::SetCurrentEXP(int value)
 	
 	// TODO: I should be updating the level here
 	CurrentEXP = value;
-	OnEXPGained.ExecuteIfBound(value);
+	OnEXPGained.Broadcast(CurrentEXP, GetCurrentLevelPercent());
 
 	CurrentLevel = FMath::Floor(CurrentEXP / 100.0f);
 	
 	if (CurrentLevel != oldLevel)
 	{
-		OnEXPLevelUp.ExecuteIfBound(CurrentLevel);
+		OnEXPLevelUp.Broadcast(CurrentLevel);
 	}
 }
 
@@ -60,8 +60,8 @@ void UEXPComponent::Reset()
 {
 	CurrentEXP = 0;
 	CurrentLevel = 0;
-	OnEXPGained.ExecuteIfBound(CurrentEXP);
-	OnEXPLevelUp.ExecuteIfBound(CurrentLevel);
+	OnEXPGained.Broadcast(CurrentEXP, GetCurrentLevelPercent());
+	OnEXPLevelUp.Broadcast(CurrentLevel);
 }
 
 float UEXPComponent::GetCurrentLevelPercent()
