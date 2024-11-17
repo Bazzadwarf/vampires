@@ -42,6 +42,13 @@ void AVampirePlayerController::OnPossess(APawn* aPawn)
 	}
 }
 
+void AVampirePlayerController::OnUnPossess()
+{
+	Super::OnUnPossess();
+
+	GetWorld()->GetTimerManager().ClearTimer(pawnLifeTimeHandle);
+}
+
 void AVampirePlayerController::UpdatePlayerEXPHUD(int exp, float currentLevelPercent)
 {
 	if (currentPlayerHUD)
