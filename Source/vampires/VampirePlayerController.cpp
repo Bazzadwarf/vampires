@@ -32,6 +32,8 @@ void AVampirePlayerController::OnPossess(APawn* aPawn)
 			gamemode->OnEnemyDeathCountIncrementDelegate.AddDynamic(this, &AVampirePlayerController::UpdateKillCountHUD);
 			UpdateKillCountHUD(gamemode->GetEnemyDeathCount());
 		}
+
+		GetWorld()->GetTimerManager().SetTimer(pawnLifeTimeHandle, this, &AVampirePlayerController::UpdateTimerHUD, 1.0f, true,0.f);
 		
 		if (currentPlayerHUD)
 		{
@@ -53,6 +55,14 @@ void AVampirePlayerController::UpdatePlayerLevelHUD(int level)
 	if (currentPlayerHUD)
 	{
 		currentPlayerHUD->UpdateLevelBlock(level);
+	}
+}
+
+void AVampirePlayerController::UpdateTimerHUD()
+{
+	if (currentPlayerHUD)
+	{
+		currentPlayerHUD->UpdateTimerBlock(GetPawn());
 	}
 }
 

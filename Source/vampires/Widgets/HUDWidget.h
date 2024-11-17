@@ -39,7 +39,7 @@ public:
 	void UpdateLevelBlock(int level);
 
 	UFUNCTION()
-	void UpdateTimerBlock();
+	void UpdateTimerBlock(APawn* pawn);
 
 	UFUNCTION()
 	void UpdateKillBlock(int killCount);

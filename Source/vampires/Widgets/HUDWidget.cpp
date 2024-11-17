@@ -19,8 +19,23 @@ void UHUDWidget::UpdateLevelBlock(int level)
 	LevelBlock->SetText(FText::FromString("LV" + FString::FromInt(level)));
 }
 
-void UHUDWidget::UpdateTimerBlock()
+void UHUDWidget::UpdateTimerBlock(APawn* pawn)
 {
+	int timeSinceCreation = FMath::FloorToInt(pawn->GetGameTimeSinceCreation());
+
+	FString mins = FString::FromInt(timeSinceCreation / 60);
+	if (timeSinceCreation / 60 < 10)
+	{
+		mins = "0" + mins;	
+	}
+	
+	FString secs = FString::FromInt(timeSinceCreation % 60);
+	if (timeSinceCreation % 60 < 10)
+	{
+		secs = "0" + secs;
+	}
+
+	TimerBLock->SetText(FText::FromString(mins + ":" + secs));
 }
 
 void UHUDWidget::UpdateKillBlock(int killCount)

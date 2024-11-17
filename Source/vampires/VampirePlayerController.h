@@ -24,6 +24,8 @@ private:
 
 	TObjectPtr<UHUDWidget> currentPlayerHUD = nullptr;
 
+	FTimerHandle pawnLifeTimeHandle;
+
 protected:
 	virtual void OnPossess(APawn* aPawn) override;
 
@@ -32,6 +34,9 @@ protected:
 
 	UFUNCTION()
 	void UpdatePlayerLevelHUD(int level);
+
+	UFUNCTION()
+	void UpdateTimerHUD();
 
 	UFUNCTION()
 	void UpdateKillCountHUD(int killCount);
