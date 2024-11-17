@@ -27,8 +27,8 @@ struct FDamageInfo
 	AActor* DamageCauser;
 };
 
-DECLARE_DELEGATE_OneParam(FOnDamageDelegate, FDamageInfo)
-DECLARE_DELEGATE_OneParam(FOnDeathDelegate, FDamageInfo)
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDamageDelegate, FDamageInfo, damageInfo);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeathDelegate, FDamageInfo, damageInfo);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class VAMPIRES_API UHealthComponent : public UActorComponent

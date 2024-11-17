@@ -26,6 +26,9 @@ public:
 		
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	UTextBlock* TimerBLock;
+		
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UTextBlock* KillBLock;
 
 	void Init();
 	
@@ -33,9 +36,12 @@ public:
 	void UpdateEXPBar(float currentLevelPercent);
 
 	UFUNCTION()
-	void UpdateLevelBlock();
+	void UpdateLevelBlock(int level);
 
 	UFUNCTION()
 	void UpdateTimerBlock();
+
+	UFUNCTION()
+	void UpdateKillBlock(int killCount);
 	
 };

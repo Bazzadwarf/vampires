@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "vampires/HealthComponent.h"
 #include "HealthbarWidget.generated.h"
 
 class UProgressBar;
@@ -23,5 +24,5 @@ public:
 	
 private:
 	UFUNCTION()
-	void UpdateHealthBar();
+	void UpdateHealthBar(FDamageInfo damageInfo);
 };

@@ -4,6 +4,7 @@
 #include "VampireGameMode.h"
 
 #include "EnemyCharacter.h"
+#include "HealthComponent.h"
 #include "ObjectPoolManager.h"
 #include "PlayerCharacter.h"
 #include "VampirePlayerController.h"
@@ -23,6 +24,13 @@ void AVampireGameMode::BeginPlay()
 int AVampireGameMode::GetEnemyDeathCount()
 {
 	return EnemyDeathCount;
+}
+
+void AVampireGameMode::HandleOnEnemyDeath(FDamageInfo damageInfo)
+{
+	IncrementEnemyDeathCount();
+	EnemyObjectPoolManager->ReturnObject(damageInfo.DamagedActor);
+	OnEnemyDeathCountIncrementDelegate.Broadcast(EnemyDeathCount);
 }
 
 void AVampireGameMode::SpawnEnemy()
@@ -78,7 +86,17 @@ void AVampireGameMode::SpawnEnemy()
 		Direction.Normalize();
 		Direction *= CapsuleRadius;
 		Actor->SetActorLocation(SpawnLocation + Direction);
-		Actor->SpawnDefaultController();
+
+		if (!Actor->Controller)
+		{
+			Actor->SpawnDefaultController();
+		}
+		
+		if (!Actor->GetHealthComponent()->OnDeath.IsAlreadyBound(this, &AVampireGameMode::HandleOnEnemyDeath))
+		{
+			Actor->GetHealthComponent()->OnDeath.AddDynamic(this, &AVampireGameMode::HandleOnEnemyDeath);
+		}
+		
 	}
 }
 

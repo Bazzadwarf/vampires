@@ -29,4 +29,10 @@ protected:
 
 	UFUNCTION()
 	void UpdatePlayerEXPHUD(int exp, float currentLevelPercent);
+
+	UFUNCTION()
+	void UpdatePlayerLevelHUD(int level);
+
+	UFUNCTION()
+	void UpdateKillCountHUD(int killCount);
 };

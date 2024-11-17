@@ -18,8 +18,8 @@ AEnemyCharacter::AEnemyCharacter(const FObjectInitializer& ObjectInitializer)
 void AEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	GetHealthComponent()->OnDamaged.BindUFunction(this, "OnDamaged");
-	GetHealthComponent()->OnDeath.BindUFunction(this, "OnDeath");
+	GetHealthComponent()->OnDamaged.AddDynamic(this, &AEnemyCharacter::OnDamaged);
+	GetHealthComponent()->OnDeath.AddDynamic(this, &AEnemyCharacter::OnDeath);
 
 	ObjectPoolComponent->OnRetrieve.BindUFunction(this, "ResetHealth");
 }
@@ -34,11 +34,11 @@ UBehaviorTree* AEnemyCharacter::GetBehaviorTree()
 	return BehaviorTree;
 }
 
-void AEnemyCharacter::OnDamaged()
+void AEnemyCharacter::OnDamaged(FDamageInfo damageInfo)
 {
 }
 
-void AEnemyCharacter::OnDeath()
+void AEnemyCharacter::OnDeath(FDamageInfo damageInfo)
 {
 	FActorSpawnParameters actorSpawnParameters;
 	actorSpawnParameters.Owner = this;
@@ -47,10 +47,6 @@ void AEnemyCharacter::OnDeath()
 
 	GetWorld()->SpawnActor<AEXPPickup>(EXPPickupTemplate, GetActorLocation(), FRotator::ZeroRotator,
 	                                   actorSpawnParameters);
-
-	AVampireGameMode* gamemode = Cast<AVampireGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-	gamemode->IncrementEnemyDeathCount();
-	gamemode->GetEnemyObjectPoolManager()->ReturnObject(this);
 }
 
 void AEnemyCharacter::ResetHealth()

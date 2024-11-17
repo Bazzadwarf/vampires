@@ -51,8 +51,8 @@ void AVampireAIController::OnPossess(APawn* InPawn)
 	EnemyCharacter = Cast<AEnemyCharacter>(InPawn);
 	check(EnemyCharacter);
 	EnemyCharacter->bUseControllerRotationYaw = false;
-	EnemyCharacter->GetHealthComponent()->OnDamaged.BindUFunction(this, "OnDamaged");
-	EnemyCharacter->GetHealthComponent()->OnDeath.BindUFunction(this, "OnDeath");
+	EnemyCharacter->GetHealthComponent()->OnDamaged.AddDynamic(this, &AVampireAIController::OnDamaged);
+	EnemyCharacter->GetHealthComponent()->OnDeath.AddDynamic(this, &AVampireAIController::OnDeath);
 
 	if (UBehaviorTree* bt = EnemyCharacter->GetBehaviorTree())
 	{
@@ -73,7 +73,7 @@ void AVampireAIController::OnDamaged(FDamageInfo info)
 void AVampireAIController::OnDeath(FDamageInfo info)
 {
 	// TODO: Do stuff here
-	EnemyCharacter->OnDeath();
+	EnemyCharacter->OnDeath(info);
 	/*EnemyCharacter->DetachFromControllerPendingDestroy();
 	EnemyCharacter->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	EnemyCharacter->GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Ignore);

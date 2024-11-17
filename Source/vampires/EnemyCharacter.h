@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "HealthComponent.h"
 #include "VampireCharacter.h"
 #include "EnemyCharacter.generated.h"
 
@@ -39,10 +40,10 @@ public:
 	UBehaviorTree* GetBehaviorTree();
 
 	UFUNCTION()
-	virtual void OnDamaged();
+	virtual void OnDamaged(FDamageInfo damageInfo);
 
 	UFUNCTION()
-	virtual void OnDeath();
+	virtual void OnDeath(FDamageInfo damageInfo);
 
 private:
 	UFUNCTION()

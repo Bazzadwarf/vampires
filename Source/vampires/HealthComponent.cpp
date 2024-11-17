@@ -23,12 +23,12 @@ void UHealthComponent::TakeDamage(AActor* damagedActor, float damage, const UDam
 
 	CurrentHealth -= damage;
 
-	OnDamaged.ExecuteIfBound({damagedActor, damage, damageType, instigatedBy, damageCauser});
+	OnDamaged.Broadcast({damagedActor, damage, damageType, instigatedBy, damageCauser});
 
 	if (CurrentHealth <= 0.0f)
 	{
 		IsDead = true;
-		OnDeath.ExecuteIfBound({damagedActor, damage, damageType, instigatedBy, damageCauser});
+		OnDeath.Broadcast({damagedActor, damage, damageType, instigatedBy, damageCauser});
 	}
 }
 
