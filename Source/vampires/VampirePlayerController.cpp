@@ -4,7 +4,6 @@
 #include "VampirePlayerController.h"
 
 #include "EXPComponent.h"
-#include "HealthComponent.h"
 #include "VampireGameMode.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
@@ -25,9 +24,8 @@ void AVampirePlayerController::OnPossess(APawn* aPawn)
 			UpdatePlayerEXPHUD(expComponent->GetCurrentEXP(), expComponent->GetCurrentLevelPercent());
 			UpdatePlayerLevelHUD(expComponent->GetCurrentLevel());
 		}
-		
-		AVampireGameMode* gamemode = Cast<AVampireGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-		if (gamemode)
+
+		if (AVampireGameMode* gamemode = Cast<AVampireGameMode>(UGameplayStatics::GetGameMode(GetWorld())))
 		{
 			gamemode->OnEnemyDeathCountIncrementDelegate.AddDynamic(this, &AVampirePlayerController::UpdateKillCountHUD);
 			UpdateKillCountHUD(gamemode->GetEnemyDeathCount());
