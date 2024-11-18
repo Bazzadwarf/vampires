@@ -2,9 +2,7 @@
 
 
 #include "EXPPickup.h"
-
 #include "EXPComponent.h"
-#include "PlayerCharacter.h"
 
 void AEXPPickup::BeginPlay()
 {
@@ -17,11 +15,12 @@ void AEXPPickup::Tick(float DeltaSeconds)
 }
 
 void AEXPPickup::OnInnerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                                     UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+                                     const FHitResult& SweepResult)
 {
-	if (APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor))
+	if (UEXPComponent* expComponent = OtherActor->GetComponentByClass<UEXPComponent>())
 	{
-		PlayerCharacter->GetEXPComponent()->IncrementEXP(EXP);
+		expComponent->IncrementEXP(EXP);
 		Super::OnInnerBeginOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
 	}
 }

@@ -4,7 +4,6 @@
 #include "HealthbarWidget.h"
 
 #include "Kismet/GameplayStatics.h"
-#include "vampires/PlayerCharacter.h"
 #include "Components/ProgressBar.h"
 #include "vampires/HealthComponent.h"
 #include "vampires/VampireCharacter.h"
@@ -12,15 +11,25 @@
 void UHealthbarWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-	APlayerCharacter* player = Cast<APlayerCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-	UHealthComponent* healthComponent = player->GetHealthComponent();
-	healthComponent->OnDamaged.AddDynamic(this, &UHealthbarWidget::UpdateHealthBar);
-	UpdateHealthBar({});
+
+	if (ACharacter* character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
+	{
+		if (UHealthComponent* healthComponent = character->FindComponentByClass<UHealthComponent>())
+		{
+			healthComponent->OnDamaged.AddDynamic(this, &UHealthbarWidget::UpdateHealthBar);
+			UpdateHealthBar({});
+		}
+	}
 }
 
 void UHealthbarWidget::UpdateHealthBar(FDamageInfo damageInfo)
 {
-	APlayerCharacter* player = Cast<APlayerCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-	float percent = player->GetHealthComponent()->GetCurrentHealth() / player->GetHealthComponent()->GetMaxHealth();
-	HealthBar->SetPercent(percent);
+	if (ACharacter* character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
+	{
+		if (UHealthComponent* healthComponent = character->FindComponentByClass<UHealthComponent>())
+		{
+			float percent = healthComponent->GetCurrentHealth() / healthComponent->GetMaxHealth();
+			HealthBar->SetPercent(percent);
+		}
+	}
 }

@@ -4,7 +4,6 @@
 #include "GoldPickup.h"
 
 #include "GoldComponent.h"
-#include "PlayerCharacter.h"
 
 class APlayerCharacter;
 
@@ -19,11 +18,12 @@ void AGoldPickup::Tick(float DeltaSeconds)
 }
 
 void AGoldPickup::OnInnerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                                      UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+                                      const FHitResult& SweepResult)
 {
-	if (APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor))
+	if (UGoldComponent* goldComponent = OtherActor->GetComponentByClass<UGoldComponent>())
 	{
-		PlayerCharacter->GetGoldComponent()->IncrementGold(Gold);
+		goldComponent->IncrementGold(Gold);
 		Super::OnInnerBeginOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
 	}
 }
