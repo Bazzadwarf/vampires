@@ -62,26 +62,3 @@ void AProjectileWeapon::OnWeaponEndOverlap(UPrimitiveComponent* OverlappedComp, 
 		OverlappedEnemies.Remove(Enemy);
 	}
 }
-
-void AProjectileWeapon::OnProjectileBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-                                                 UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
-                                                 const FHitResult& SweepResult)
-{
-	if (AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(OtherActor))
-	{
-		UHealthComponent* EnemyHealthComponent = Enemy->GetHealthComponent();
-
-		if (!EnemyHealthComponent->GetIsDead())
-		{
-			AController* ownerController = nullptr;
-			if (AVampireCharacter* character = Cast<AVampireCharacter>(GetOwner()))
-			{
-				ownerController = character->GetController();
-			}
-
-			EnemyHealthComponent->TakeDamage(Enemy, Damage, nullptr, ownerController, this);
-
-			OverlappedComponent->GetAttachmentRootActor()->Destroy();
-		}
-	}
-}
