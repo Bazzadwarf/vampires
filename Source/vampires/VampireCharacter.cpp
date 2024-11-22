@@ -5,6 +5,7 @@
 
 #include "HealthComponent.h"
 #include "PaperFlipbookComponent.h"
+#include "WeaponInventoryComponent.h"
 
 // Sets default values
 AVampireCharacter::AVampireCharacter()
@@ -19,6 +20,9 @@ AVampireCharacter::AVampireCharacter()
 	PaperFlipbookComponent->SetRelativeRotation(FRotator(0.0f, 90.0f,-90.0f));
 	PaperFlipbookComponent->SetRelativeScale3D(FVector(0.2f, 0.2f, 0.2f));
 	PaperFlipbookComponent->SetupAttachment(RootComponent);
+
+	//Create Weapon Inventory Component
+	WeaponInventoryComponent = CreateDefaultSubobject<UWeaponInventoryComponent>(TEXT("Weapon Inventory Component"));
 }
 
 // Called when the game starts or when spawned

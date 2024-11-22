@@ -39,9 +39,6 @@ APlayerCharacter::APlayerCharacter()
 	// Create Gold Component
 	GoldComponent = CreateDefaultSubobject<UGoldComponent>(TEXT("Gold Component"));
 
-	//Create Weapon Inventory Component
-	WeaponInventoryComponent = CreateDefaultSubobject<UWeaponInventoryComponent>(TEXT("Weapon Inventory Component"));
-
 	// Create HealthBar Widget Component
 	HealthBarWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("Healthbar"));
 	HealthBarWidgetComponent->SetupAttachment(RootComponent);

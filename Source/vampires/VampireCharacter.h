@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "VampireCharacter.generated.h"
 
+class UWeaponInventoryComponent;
 class UInputAction;
 class UHealthComponent;
 class UPaperFlipbookComponent;
@@ -26,6 +27,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UInputMappingContext> InputMappingContext;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UWeaponInventoryComponent* WeaponInventoryComponent;
 
 public:
 	// Sets default values for this character's properties

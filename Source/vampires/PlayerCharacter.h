@@ -37,9 +37,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UGoldComponent* GoldComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UWeaponInventoryComponent* WeaponInventoryComponent;
-
 	FVector2D PreviousMovementDirection = FVector2d(1.0f, 0.0f);
 
 	UPROPERTY(EditAnywhere)
