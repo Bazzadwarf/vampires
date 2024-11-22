@@ -56,31 +56,6 @@ void APlayerCharacter::BeginPlay()
 	Super::BeginPlay();
 }
 
-void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-	if (AVampirePlayerController* TankPlayerController = Cast<AVampirePlayerController>(GetController()))
-	{
-		if (UEnhancedInputLocalPlayerSubsystem* InputSystem = ULocalPlayer::GetSubsystem<
-			UEnhancedInputLocalPlayerSubsystem>(TankPlayerController->GetLocalPlayer()))
-		{
-			if (!InputMappingContext.IsNull())
-			{
-				InputSystem->AddMappingContext(InputMappingContext.LoadSynchronous(), 0);
-			}
-		}
-	}
-
-	if (UEnhancedInputComponent* Input = Cast<UEnhancedInputComponent>(PlayerInputComponent))
-	{
-		if (MovementAction)
-		{
-			Input->BindAction(MovementAction, ETriggerEvent::Triggered, this, &APlayerCharacter::MovementCallback);
-		}
-	}
-}
-
 UEXPComponent* APlayerCharacter::GetEXPComponent()
 {
 	return EXPComponent;
@@ -89,15 +64,4 @@ UEXPComponent* APlayerCharacter::GetEXPComponent()
 UGoldComponent* APlayerCharacter::GetGoldComponent()
 {
 	return GoldComponent;
-}
-
-void APlayerCharacter::MovementCallback(const FInputActionInstance& Instance)
-{
-	PreviousMovementDirection = Instance.GetValue().Get<FVector2D>();
-
-	if (PreviousMovementDirection.Size() != 0.0f)
-	{
-		AddMovementInput({0.0f, 1.0f, 0.0f}, PreviousMovementDirection.Y);
-		AddMovementInput({1.0f, 0.0f, 0.0f}, PreviousMovementDirection.X);
-	}
 }

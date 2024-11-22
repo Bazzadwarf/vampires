@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "VampirePlayerController.generated.h"
 
+class UInputAction;
 class UHUDWidget;
 /**
  * 
@@ -20,6 +21,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<UHUDWidget> PlayerHUD = nullptr;
 
+	// Inputs	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UInputAction* MovementAction;
+
+
 private:
 
 	TObjectPtr<UHUDWidget> currentPlayerHUD = nullptr;
@@ -30,6 +36,11 @@ protected:
 	virtual void OnPossess(APawn* aPawn) override;
 
 	virtual void OnUnPossess() override;
+
+	virtual void SetupInputComponent() override;
+
+	UFUNCTION()
+	void Move(const FInputActionValue& MovementInput);
 
 	UFUNCTION()
 	void UpdatePlayerEXPHUD(int exp, float currentLevelPercent);

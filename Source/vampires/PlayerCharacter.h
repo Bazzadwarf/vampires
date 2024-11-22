@@ -31,12 +31,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UCameraComponent* CameraComponent = nullptr;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	TSoftObjectPtr<UInputMappingContext> InputMappingContext;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	UInputAction* MovementAction;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UEXPComponent* EXPComponent;
 
@@ -51,23 +45,14 @@ public:
 	UPROPERTY(EditAnywhere)
 	UWidgetComponent* HealthBarWidgetComponent;
 
-private:
-	FTimerHandle GarlicTimerHandle;
-
-public:
 	APlayerCharacter();
 
 protected:
 	virtual void BeginPlay() override;
 
 public:
-	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
 	UEXPComponent* GetEXPComponent();
 
 	UGoldComponent* GetGoldComponent();
-
-private:
-	UFUNCTION()
-	void MovementCallback(const FInputActionInstance& Instance);
 };

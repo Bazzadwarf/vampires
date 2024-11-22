@@ -35,11 +35,18 @@ void AVampireCharacter::Tick(float DeltaTime)
 
 }
 
-// Called to bind functionality to input
-void AVampireCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void AVampireCharacter::Input_Move_Implementation(FVector2D value)
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	if (value.Size() != 0.0f)
+	{
+		AddMovementInput({0.0f, 1.0f, 0.0f}, value.Y);
+		AddMovementInput({1.0f, 0.0f, 0.0f}, value.X);
+	}
+}
 
+UInputMappingContext* AVampireCharacter::Input_GetInputMappingContext_Implementation()
+{
+	return InputMappingContext;
 }
 
 UHealthComponent* AVampireCharacter::GetHealthComponent()

@@ -3,14 +3,16 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Inputable.h"
 #include "GameFramework/Character.h"
 #include "VampireCharacter.generated.h"
 
+class UInputAction;
 class UHealthComponent;
 class UPaperFlipbookComponent;
 
-UCLASS()
-class VAMPIRES_API AVampireCharacter : public ACharacter
+UCLASS(Abstract)
+class VAMPIRES_API AVampireCharacter : public ACharacter, public IInputable
 {
 	GENERATED_BODY()
 
@@ -21,6 +23,9 @@ public:
 protected:
 	UPROPERTY()
 	UHealthComponent* HealthComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UInputMappingContext> InputMappingContext;
 
 public:
 	// Sets default values for this character's properties
@@ -34,8 +39,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void Input_Move_Implementation(FVector2D value) override;
+
+	virtual UInputMappingContext* Input_GetInputMappingContext_Implementation() override;
 
 	UHealthComponent* GetHealthComponent();
 };
