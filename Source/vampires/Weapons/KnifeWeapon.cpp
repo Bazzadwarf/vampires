@@ -20,19 +20,21 @@ void AKnifeWeapon::FireWeaponAction_Implementation()
 {
 	Super::FireWeaponAction_Implementation();
 
-	APlayerCharacter* playerCharacter = Cast<APlayerCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-	if (IsValid(ProjectileTemplate) && playerCharacter)
+	if (UKismetSystemLibrary::DoesImplementInterface(GetOwner(), UInputable::StaticClass()))
 	{
-		FActorSpawnParameters actorSpawnParameters;
-		actorSpawnParameters.Owner = this;
-		actorSpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-		actorSpawnParameters.TransformScaleMethod = ESpawnActorScaleMethod::MultiplyWithRoot;
+		if (IsValid(ProjectileTemplate))
+		{
+			FActorSpawnParameters actorSpawnParameters;
+			actorSpawnParameters.Owner = this;
+			actorSpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+			actorSpawnParameters.TransformScaleMethod = ESpawnActorScaleMethod::MultiplyWithRoot;
 
-		AProjectile* projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileTemplate, GetOwner()->GetTransform(),
-		                                                              actorSpawnParameters);
+			AProjectile* projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileTemplate, GetOwner()->GetTransform(),
+			                                                              actorSpawnParameters);
 
-		FVector direction = FVector(playerCharacter->PreviousMovementDirection, 0.0);
-		direction.Normalize();
-		projectile->SetTargetDirection(direction);
-	}
+			FVector direction = FVector(IInputable::Execute_Input_GetPreviousMovementDirection(GetOwner()), 0.0);
+			direction.Normalize();
+			projectile->SetTargetDirection(direction);
+		}
+	}	
 }

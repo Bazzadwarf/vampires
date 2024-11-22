@@ -41,6 +41,8 @@ void AVampireCharacter::Tick(float DeltaTime)
 
 void AVampireCharacter::Input_Move_Implementation(FVector2D value)
 {
+	PreviousMovementDirection = value;
+	
 	if (value.Size() != 0.0f)
 	{
 		AddMovementInput({0.0f, 1.0f, 0.0f}, value.Y);
@@ -51,6 +53,11 @@ void AVampireCharacter::Input_Move_Implementation(FVector2D value)
 UInputMappingContext* AVampireCharacter::Input_GetInputMappingContext_Implementation()
 {
 	return InputMappingContext;
+}
+
+FVector2D AVampireCharacter::Input_GetPreviousMovementDirection_Implementation()
+{
+	return PreviousMovementDirection;
 }
 
 UHealthComponent* AVampireCharacter::GetHealthComponent()

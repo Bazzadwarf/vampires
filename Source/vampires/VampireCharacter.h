@@ -21,13 +21,15 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UPaperFlipbookComponent* PaperFlipbookComponent;
 
+	FVector2D PreviousMovementDirection = FVector2d(1.0f, 0.0f);
+
 protected:
 	UPROPERTY()
 	UHealthComponent* HealthComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UInputMappingContext> InputMappingContext;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UWeaponInventoryComponent* WeaponInventoryComponent;
 
@@ -46,6 +48,8 @@ public:
 	virtual void Input_Move_Implementation(FVector2D value) override;
 
 	virtual UInputMappingContext* Input_GetInputMappingContext_Implementation() override;
+
+	virtual FVector2D Input_GetPreviousMovementDirection_Implementation() override;
 
 	UHealthComponent* GetHealthComponent();
 };

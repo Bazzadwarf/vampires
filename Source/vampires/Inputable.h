@@ -27,4 +27,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	UInputMappingContext* Input_GetInputMappingContext();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	FVector2D Input_GetPreviousMovementDirection();
 };
