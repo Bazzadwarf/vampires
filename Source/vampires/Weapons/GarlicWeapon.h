@@ -27,6 +27,7 @@ class VAMPIRES_API AGarlicWeapon : public AWeapon
 {
 	GENERATED_BODY()
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	USphereComponent* SphereComponent;
 
 	TArray<FOverlappedEnemy> OverlappedEnemies;
