@@ -78,6 +78,14 @@ void APickup::OnOuterBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 	{
 		PickupLocation = GetActorLocation();
 		PlayTimeLine();
+
+		double dist = FVector::Distance(GetActorLocation(), PlayerCharacter->GetActorLocation());
+
+		if (dist < OuterSphereComponent->GetScaledSphereRadius())
+		{
+			double ratio = FMath::Abs((dist / OuterSphereComponent->GetScaledSphereRadius()) - 1.0f);
+			TimelineComponent->SetNewTime(ratio);
+		}
 	}
 }
 
