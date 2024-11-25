@@ -36,11 +36,9 @@ void AVampireAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (AVampireCharacter* Player = Cast<AVampireCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)))
+	if (PlayerCharacter)
 	{
-		Blackboard->SetValueAsObject("Player", Player);
-		auto location = Player->GetActorLocation();
-		Blackboard->SetValueAsVector("PlayerLocation", location);
+		Blackboard->SetValueAsVector("PlayerLocation", PlayerCharacter->GetActorLocation());
 	}
 }
 
@@ -54,11 +52,18 @@ void AVampireAIController::OnPossess(APawn* InPawn)
 	EnemyCharacter->GetHealthComponent()->OnDamaged.AddDynamic(this, &AVampireAIController::OnDamaged);
 	EnemyCharacter->GetHealthComponent()->OnDeath.AddDynamic(this, &AVampireAIController::OnDeath);
 
+	PlayerCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+
 	if (UBehaviorTree* bt = EnemyCharacter->GetBehaviorTree())
 	{
 		Blackboard->InitializeBlackboard(*bt->BlackboardAsset);
 		BehaviorTree->StartTree(*bt);
 		Blackboard->SetValueAsObject("SelfActor", EnemyCharacter);
+
+		if (PlayerCharacter)
+		{
+			Blackboard->SetValueAsObject("Player", PlayerCharacter);
+		}
 	}
 }
 

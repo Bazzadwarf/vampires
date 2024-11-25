@@ -22,7 +22,7 @@ class VAMPIRES_API AVampireAIController : public AAIController
 
 	UBehaviorTreeComponent* BehaviorTree;
 
-	APlayerCharacter* PlayerCharacter;
+	ACharacter* PlayerCharacter;
 
 	AEnemyCharacter* EnemyCharacter;
 
