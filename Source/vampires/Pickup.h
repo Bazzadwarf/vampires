@@ -7,6 +7,7 @@
 #include "GameFramework/Actor.h"
 #include "Pickup.generated.h"
 
+class UPickupDataAsset;
 class UTimelineComponent;
 class USphereComponent;
 class UPaperSpriteComponent;
@@ -17,19 +18,21 @@ class VAMPIRES_API APickup : public AActor
 	GENERATED_BODY()
 
 public:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TObjectPtr<UPickupDataAsset> PickupDataAsset;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	double PickupMovementRange = 500;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	double PickupMovementSpeed = 1000;
-	
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	USphereComponent* InnerSphereComponent = nullptr;
-	
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	USphereComponent* OuterSphereComponent = nullptr;
-		
+
 	UPROPERTY(EditAnywhere)
 	UPaperSpriteComponent* SpriteComponent = nullptr;
 
@@ -47,8 +50,8 @@ private:
 	FOnTimelineEventStatic onTimelineFinishedCallback;
 
 	FVector PickupLocation;
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	APickup();
 
@@ -58,13 +61,13 @@ protected:
 
 	UFUNCTION()
 	virtual void OnInnerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	                            UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
-	                            const FHitResult& SweepResult);
-	
+	                                 UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+	                                 const FHitResult& SweepResult);
+
 	UFUNCTION()
 	virtual void OnOuterBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	                            UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
-	                            const FHitResult& SweepResult);
+	                                 UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+	                                 const FHitResult& SweepResult);
 
 	UFUNCTION()
 	void TimelineCallback(float val);

@@ -4,8 +4,13 @@
 #include "Projectile.h"
 
 #include "EnemyCharacter.h"
+#include "ObjectPoolManager.h"
+#include "ProjectileDataAsset.h"
 #include "Components/SphereComponent.h"
+#include "GameFramework/GameModeBase.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "Interfaces/Pools.h"
+#include "Kismet/GameplayStatics.h"
 #include "Weapons/ProjectileWeapon.h"
 
 // Sets default values
@@ -19,22 +24,55 @@ AProjectile::AProjectile()
 	ProjectileMovement->ProjectileGravityScale = 0.0f;
 	ProjectileMovement->Friction = 0.0f;
 	ProjectileMovement->bIsSliding = true;
+	ProjectileMovement->InitialSpeed = 0;
+	ProjectileMovement->MaxSpeed = 0;
+
+	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh Component"));
+	StaticMeshComponent->AttachToComponent(SphereComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	StaticMeshComponent->SetEnableGravity(false);
+	StaticMeshComponent->SetGenerateOverlapEvents(false);
+	StaticMeshComponent->SetCollisionProfileName(TEXT("NoCollision"));
 }
 
 // Called when the game starts or when spawned
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	SphereComponent->OnComponentBeginOverlap.AddDynamic(this, &AProjectile::OnProjectileBeginOverlap);
+}
+
+void AProjectile::SetActorHiddenInGame(bool bNewHidden)
+{
+	Super::SetActorHiddenInGame(bNewHidden);
+
+	if (bNewHidden)
+	{
+		ResetData_Implementation();
+	}
+}
+
+void AProjectile::SetTargetDirection_Implementation(FVector direction)
+{
+	SetActorLocation(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetCharacter()->GetActorLocation());
+	SetActorRotation(FRotator(0, 0, 0));
+	TargetDirection = direction;
+	ProjectileMovement->SetVelocityInLocalSpace(TargetDirection * ProjectileSpeed);
+}
+
+void AProjectile::LoadDataFromDataAsset_Implementation(UProjectileDataAsset* projectileDataAsset)
+{
+	ProjectileSpeed = projectileDataAsset->ProjectileSpeed;
+	StaticMeshComponent->SetStaticMesh(projectileDataAsset->StaticMesh);
+	ProjectileSpeed = projectileDataAsset->ProjectileSpeed;
 	ProjectileMovement->InitialSpeed = ProjectileSpeed;
 	ProjectileMovement->MaxSpeed = ProjectileSpeed;
 }
 
-void AProjectile::SetTargetDirection(FVector direction)
+void AProjectile::ResetData_Implementation()
 {
-	TargetDirection = direction;
-	ProjectileMovement->SetVelocityInLocalSpace(TargetDirection * ProjectileSpeed);
+	ProjectileSpeed = NULL;
+	StaticMeshComponent->SetStaticMesh(nullptr);
 }
 
 void AProjectile::OnProjectileBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -52,11 +90,19 @@ void AProjectile::OnProjectileBeginOverlap(UPrimitiveComponent* OverlappedCompon
 			{
 				ownerController = character->GetController();
 			}
-			
+
 			AProjectileWeapon* ownerWeapon = Cast<AProjectileWeapon>(GetOwner());
 			EnemyHealthComponent->TakeDamage(Enemy, ownerWeapon->Damage, nullptr, ownerController, this);
 
-			OverlappedComponent->GetAttachmentRootActor()->Destroy();
+			AGameModeBase* gamemode = UGameplayStatics::GetGameMode(GetWorld());
+
+			if (UKismetSystemLibrary::DoesImplementInterface(gamemode, UPools::StaticClass()))
+			{
+				if (AObjectPoolManager* objectPoolManager = IPools::Execute_GetProjectileObjectPoolManager(gamemode))
+				{
+					objectPoolManager->ReturnObject(this);
+				}
+			}
 		}
 	}
 }

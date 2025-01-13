@@ -7,6 +7,7 @@
 #include "HealthComponent.h"
 #include "ObjectPoolManager.h"
 #include "PlayerCharacter.h"
+#include "Projectile.h"
 #include "VampirePlayerController.h"
 #include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -77,7 +78,7 @@ void AVampireGameMode::SpawnEnemy()
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-	if (AActor* object = GetEnemyObjectPoolManager()->GetObject())
+	if (AActor* object = GetEnemyObjectPoolManager_Implementation()->GetObject())
 	{
 		AEnemyCharacter* Actor = Cast<AEnemyCharacter>(object);
 		Actor->SetActorTransform(Transform);
@@ -91,16 +92,15 @@ void AVampireGameMode::SpawnEnemy()
 		{
 			Actor->SpawnDefaultController();
 		}
-		
+
 		if (!Actor->GetHealthComponent()->OnDeath.IsAlreadyBound(this, &AVampireGameMode::HandleOnEnemyDeath))
 		{
 			Actor->GetHealthComponent()->OnDeath.AddDynamic(this, &AVampireGameMode::HandleOnEnemyDeath);
 		}
-		
 	}
 }
 
-AObjectPoolManager* AVampireGameMode::GetEnemyObjectPoolManager()
+AObjectPoolManager* AVampireGameMode::GetEnemyObjectPoolManager_Implementation()
 {
 	if (EnemyObjectPoolManager == nullptr)
 	{
@@ -110,6 +110,18 @@ AObjectPoolManager* AVampireGameMode::GetEnemyObjectPoolManager()
 	}
 
 	return EnemyObjectPoolManager;
+}
+
+AObjectPoolManager* AVampireGameMode::GetProjectileObjectPoolManager_Implementation()
+{
+	if (ProjectileObjectPoolManager == nullptr)
+	{
+		ProjectileObjectPoolManager = GetWorld()->SpawnActor<AObjectPoolManager>();
+		TSubclassOf<AActor> projectileTemplate = ProjectileTemplate;
+		ProjectileObjectPoolManager->InitializeObjectPool(projectileTemplate);
+	}
+
+	return ProjectileObjectPoolManager;
 }
 
 void AVampireGameMode::IncrementEnemyDeathCount()

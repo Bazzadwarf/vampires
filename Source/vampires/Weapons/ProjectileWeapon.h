@@ -6,6 +6,7 @@
 #include "vampires/Weapon.h"
 #include "ProjectileWeapon.generated.h"
 
+class UProjectileDataAsset;
 class AProjectile;
 class UBoxComponent;
 
@@ -22,7 +23,7 @@ public:
 	UBoxComponent* BoxComponent = nullptr;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
-	TSubclassOf<AProjectile> ProjectileTemplate = nullptr;
+	TObjectPtr<UProjectileDataAsset> ProjectileTemplate = nullptr;
 
 protected:
 	TArray<AActor*> OverlappedEnemies = TArray<AActor*>();

@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "Weapon.generated.h"
 
+class UWeaponDataAsset;
+
 UCLASS()
 class VAMPIRES_API AWeapon : public AActor
 {
@@ -17,6 +19,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Properties")
 	float Damage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Properties")
+	TObjectPtr<UWeaponDataAsset> WeaponDataAsset;
 
 private:
 	FTimerHandle WeaponTimerHandle;
@@ -30,7 +35,6 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-	
 	UFUNCTION(BlueprintNativeEvent)
 	void FireWeaponAction();
 	virtual void FireWeaponAction_Implementation();

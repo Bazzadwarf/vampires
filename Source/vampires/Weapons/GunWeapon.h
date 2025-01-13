@@ -22,4 +22,7 @@ protected:
 
 public:
 	virtual void FireWeaponAction_Implementation() override;
+
+private:
+	void SpawnProjectile(AActor* projectile, FVector direction);
 };
