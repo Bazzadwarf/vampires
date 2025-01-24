@@ -75,9 +75,6 @@ void AVampireGameMode::SpawnEnemy()
 	FTransform Transform;
 	Transform.SetLocation(SpawnLocation);
 
-	FActorSpawnParameters SpawnParameters;
-	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
 	if (AActor* enemy = GetEnemyObjectPoolManager_Implementation()->GetObject())
 	{
 		if (UKismetSystemLibrary::DoesImplementInterface(enemy, UEnemyable::StaticClass()) && EnemyDataAssets.Num() > 0)
