@@ -65,6 +65,7 @@ void AVampirePlayerController::SetupInputComponent()
 	if (UEnhancedInputComponent* EIP = CastChecked<UEnhancedInputComponent>(InputComponent))
 	{
 		EIP->BindAction(MovementAction, ETriggerEvent::Triggered, this, &AVampirePlayerController::Move);
+		EIP->BindAction(PauseAction, ETriggerEvent::Triggered, this, &AVampirePlayerController::OnPause);
 	}
 }
 
@@ -78,6 +79,22 @@ void AVampirePlayerController::Move(const FInputActionValue& MovementInput)
 		{
 			IInputable::Execute_Input_Move(pawn, movement);
 		}
+	}
+}
+
+void AVampirePlayerController::OnPause(const FInputActionValue& PauseInput)
+{
+	if (APawn* pawn = GetPawn())
+	{
+		if (UKismetSystemLibrary::DoesImplementInterface(pawn, UInputable::StaticClass()))
+		{
+			IInputable::Execute_Input_Pause(pawn);
+		}
+	}
+	
+	if (SetPause(true))
+	{
+		//TODO: Add pause screen
 	}
 }
 

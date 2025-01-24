@@ -26,6 +26,9 @@ public:
 	void Input_Move(FVector2D value);
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void Input_Pause();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	UInputMappingContext* Input_GetInputMappingContext();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)

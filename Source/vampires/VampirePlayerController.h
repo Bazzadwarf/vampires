@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "VampirePlayerController.generated.h"
 
+struct FInputActionValue;
 class UInputAction;
 class UHUDWidget;
 /**
@@ -25,6 +26,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	UInputAction* MovementAction;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UInputAction* PauseAction;
 
 private:
 
@@ -41,6 +44,9 @@ protected:
 
 	UFUNCTION()
 	void Move(const FInputActionValue& MovementInput);
+
+	UFUNCTION()
+	void OnPause(const FInputActionValue& PauseInput);
 
 	UFUNCTION()
 	void UpdatePlayerEXPHUD(int exp, float currentLevelPercent);
