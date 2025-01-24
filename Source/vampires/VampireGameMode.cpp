@@ -78,24 +78,26 @@ void AVampireGameMode::SpawnEnemy()
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-	if (AActor* object = GetEnemyObjectPoolManager_Implementation()->GetObject())
+	if (AActor* enemy = GetEnemyObjectPoolManager_Implementation()->GetObject())
 	{
-		AEnemyCharacter* Actor = Cast<AEnemyCharacter>(object);
-		Actor->SetActorTransform(Transform);
-		float CapsuleRadius = Actor->GetCapsuleComponent()->GetScaledCapsuleRadius();
-		FVector Direction = SpawnLocation - PlayerCharacter->GetActorLocation();
-		Direction.Normalize();
-		Direction *= CapsuleRadius;
-		Actor->SetActorLocation(SpawnLocation + Direction);
-
-		if (!Actor->Controller)
+		if (UKismetSystemLibrary::DoesImplementInterface(enemy, UEnemyable::StaticClass()) && EnemyDataAssets.Num() > 0)
 		{
-			Actor->SpawnDefaultController();
-		}
+			IEnemyable::Execute_LoadDataFromDataAsset(enemy, EnemyDataAssets[FMath::RandRange(0, EnemyDataAssets.Num() - 1)]);
+			
+			enemy->SetActorTransform(Transform);
+			float CapsuleRadius = IEnemyable::Execute_GetCapsuleRadius(enemy);
+			FVector Direction = SpawnLocation - PlayerCharacter->GetActorLocation();
+			Direction.Normalize();
+			Direction *= CapsuleRadius;
+			enemy->SetActorLocation(SpawnLocation + Direction);
 
-		if (!Actor->GetHealthComponent()->OnDeath.IsAlreadyBound(this, &AVampireGameMode::HandleOnEnemyDeath))
-		{
-			Actor->GetHealthComponent()->OnDeath.AddDynamic(this, &AVampireGameMode::HandleOnEnemyDeath);
+			IEnemyable::Execute_SpawnController(enemy);
+
+			UHealthComponent* healthComponent = IEnemyable::Execute_GetEnemyHealthComponent(enemy);
+			if (!healthComponent->OnDeath.IsAlreadyBound(this, &AVampireGameMode::HandleOnEnemyDeath))
+			{
+				healthComponent->OnDeath.AddDynamic(this, &AVampireGameMode::HandleOnEnemyDeath);
+			}
 		}
 	}
 }

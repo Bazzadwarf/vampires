@@ -3,11 +3,15 @@
 
 #include "EnemyCharacter.h"
 
+#include "EnemyDataAsset.h"
 #include "EXPPickup.h"
 #include "HealthComponent.h"
 #include "ObjectPoolComponent.h"
 #include "ObjectPoolManager.h"
+#include "PaperFlipbookComponent.h"
+#include "VampireAIController.h"
 #include "VampireGameMode.h"
+#include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 AEnemyCharacter::AEnemyCharacter(const FObjectInitializer& ObjectInitializer)
@@ -47,6 +51,49 @@ void AEnemyCharacter::OnDeath(FDamageInfo damageInfo)
 
 	GetWorld()->SpawnActor<AEXPPickup>(EXPPickupTemplate, GetActorLocation(), FRotator::ZeroRotator,
 	                                   actorSpawnParameters);
+}
+
+void AEnemyCharacter::LoadDataFromDataAsset_Implementation(UEnemyDataAsset* enemyDataAsset)
+{
+	if (enemyDataAsset != nullptr)
+	{
+		// TODO: Load more data
+		PaperFlipbookComponent->SetFlipbook(enemyDataAsset->PaperFlipbook);
+
+		BehaviorTree = enemyDataAsset->BehaviorTree;
+	}
+}
+
+void AEnemyCharacter::ResetData_Implementation()
+{
+	// TODO: Reset more data
+	PaperFlipbookComponent->SetFlipbook(nullptr);
+
+	BehaviorTree = nullptr;
+}
+
+float AEnemyCharacter::GetCapsuleRadius_Implementation()
+{
+	return GetCapsuleComponent() ? GetCapsuleComponent()->GetScaledCapsuleRadius() : -1.0f;
+}
+
+void AEnemyCharacter::SpawnController_Implementation()
+{
+	if (!Controller)
+	{
+		SpawnDefaultController();
+	}
+
+	if (BehaviorTree != nullptr)
+	{
+		AVampireAIController* controller = Cast<AVampireAIController>(Controller);
+		controller->RunBehaviorTree(BehaviorTree);
+	}
+}
+
+UHealthComponent* AEnemyCharacter::GetEnemyHealthComponent_Implementation()
+{
+	return GetHealthComponent();
 }
 
 void AEnemyCharacter::ResetHealth()

@@ -4,6 +4,7 @@
 #include "Projectile.h"
 
 #include "EnemyCharacter.h"
+#include "HealthComponent.h"
 #include "ObjectPoolManager.h"
 #include "ProjectileDataAsset.h"
 #include "Components/SphereComponent.h"

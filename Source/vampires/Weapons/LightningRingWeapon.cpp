@@ -4,6 +4,7 @@
 #include "LightningRingWeapon.h"
 #include "Components/SphereComponent.h"
 #include "vampires/EnemyCharacter.h"
+#include "vampires/HealthComponent.h"
 
 ALightningRingWeapon::ALightningRingWeapon()
 {

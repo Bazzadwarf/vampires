@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "HealthComponent.h"
 #include "VampireCharacter.h"
+#include "Interfaces/Enemyable.h"
 #include "EnemyCharacter.generated.h"
 
 class UObjectPoolComponent;
@@ -14,7 +14,7 @@ class AEXPPickup;
  * 
  */
 UCLASS()
-class VAMPIRES_API AEnemyCharacter : public AVampireCharacter
+class VAMPIRES_API AEnemyCharacter : public AVampireCharacter, public IEnemyable
 {
 	GENERATED_BODY()
 
@@ -44,6 +44,21 @@ public:
 
 	UFUNCTION()
 	virtual void OnDeath(FDamageInfo damageInfo);
+	
+	UFUNCTION()
+	virtual void LoadDataFromDataAsset_Implementation(UEnemyDataAsset* enemyDataAsset) override;
+
+	UFUNCTION()
+	virtual void ResetData_Implementation() override;
+
+	UFUNCTION()
+	virtual float GetCapsuleRadius_Implementation() override;
+
+	UFUNCTION()
+	virtual void SpawnController_Implementation() override;
+
+	UFUNCTION()
+	virtual UHealthComponent* GetEnemyHealthComponent_Implementation() override;
 
 private:
 	UFUNCTION()

@@ -8,6 +8,7 @@
 #include "Interfaces/Pools.h"
 #include "VampireGameMode.generated.h"
 
+class UEnemyDataAsset;
 class AProjectile;
 class AObjectPoolManager;
 class AVampirePlayerController;
@@ -29,6 +30,9 @@ public:
 	TSubclassOf<AProjectile> ProjectileTemplate;
 
 	FOnEnemyDeathCountIncrementDelegate OnEnemyDeathCountIncrementDelegate;
+
+	UPROPERTY(EditDefaultsOnly)
+	TArray<TObjectPtr<UEnemyDataAsset>> EnemyDataAssets;
 
 private:
 	TObjectPtr<APlayerCharacter> PlayerCharacter;
