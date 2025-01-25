@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "VampirePlayerController.generated.h"
 
+class UPauseWidget;
 struct FInputActionValue;
 class UInputAction;
 class UHUDWidget;
@@ -18,9 +19,12 @@ class VAMPIRES_API AVampirePlayerController : public APlayerController
 	GENERATED_BODY()
 
 public:
-	
+	// UI
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<UHUDWidget> PlayerHUD = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<UPauseWidget> PauseUI = nullptr;
 
 	// Inputs	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
@@ -32,6 +36,8 @@ public:
 private:
 
 	TObjectPtr<UHUDWidget> currentPlayerHUD = nullptr;
+
+	TObjectPtr<UPauseWidget> currentPauseUI = nullptr;
 
 	FTimerHandle pawnLifeTimeHandle;
 

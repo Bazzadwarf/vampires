@@ -9,8 +9,10 @@
 #include "Inputable.h"
 #include "VampireGameMode.h"
 #include "Blueprint/UserWidget.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "Widgets/HUDWidget.h"
+#include "Widgets/PauseWidget.h"
 
 void AVampirePlayerController::OnPossess(APawn* aPawn)
 {
@@ -94,7 +96,16 @@ void AVampirePlayerController::OnPause(const FInputActionValue& PauseInput)
 	
 	if (SetPause(true))
 	{
-		//TODO: Add pause screen
+		if (PauseUI)
+		{
+			currentPauseUI = CreateWidget<UPauseWidget, AVampirePlayerController*>(this, PauseUI.Get());
+			if (currentPauseUI)
+			{
+				currentPauseUI->AddToViewport();
+				UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(this, currentPauseUI, EMouseLockMode::LockInFullscreen);
+				bShowMouseCursor = true;
+			}
+		}		
 	}
 }
 
