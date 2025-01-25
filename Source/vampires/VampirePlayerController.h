@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "VampirePlayerController.generated.h"
 
+class ULevelUpWidget;
 class UPauseWidget;
 struct FInputActionValue;
 class UInputAction;
@@ -26,6 +27,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<UPauseWidget> PauseUI = nullptr;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<ULevelUpWidget> LevelUpUI = nullptr;
+
 	// Inputs	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	UInputAction* MovementAction;
@@ -38,6 +42,8 @@ private:
 	TObjectPtr<UHUDWidget> currentPlayerHUD = nullptr;
 
 	TObjectPtr<UPauseWidget> currentPauseUI = nullptr;
+	
+	TObjectPtr<ULevelUpWidget> currentLevelUpUI = nullptr;
 
 	FTimerHandle pawnLifeTimeHandle;
 
@@ -56,6 +62,9 @@ protected:
 
 	UFUNCTION()
 	void UpdatePlayerEXPHUD(int exp, float currentLevelPercent);
+
+	UFUNCTION()
+	void ShowLevelUpScreen(int level);
 
 	UFUNCTION()
 	void UpdatePlayerLevelHUD(int level);

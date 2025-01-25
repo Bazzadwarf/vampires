@@ -1,29 +1,25 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "PauseWidget.h"
+#include "LevelUpWidget.h"
 
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
 
-void UPauseWidget::Init()
-{
-}
-
-void UPauseWidget::NativeConstruct()
+void ULevelUpWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
 	if (ResumeButton)
 	{
-		ResumeButton->OnClicked.AddUniqueDynamic(this, &UPauseWidget::ResumeButtonClicked);
+		ResumeButton->OnClicked.AddUniqueDynamic(this, &ULevelUpWidget::ResumeButtonClicked);
 	}
 
 	SetIsFocusable(true);
 }
 
-void UPauseWidget::ResumeButtonClicked()
+void ULevelUpWidget::ResumeButtonClicked()
 {
 	RemoveFromParent();
 

@@ -12,6 +12,7 @@
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "Widgets/HUDWidget.h"
+#include "Widgets/LevelUpWidget.h"
 #include "Widgets/PauseWidget.h"
 
 void AVampirePlayerController::OnPossess(APawn* aPawn)
@@ -34,6 +35,7 @@ void AVampirePlayerController::OnPossess(APawn* aPawn)
 		{
 			expComponent->OnEXPGained.AddUniqueDynamic(this, &AVampirePlayerController::UpdatePlayerEXPHUD);
 			expComponent->OnEXPLevelUp.AddUniqueDynamic(this, &AVampirePlayerController::UpdatePlayerLevelHUD);
+			expComponent->OnEXPLevelUp.AddUniqueDynamic(this, &AVampirePlayerController::ShowLevelUpScreen);
 			UpdatePlayerEXPHUD(expComponent->GetCurrentEXP(), expComponent->GetCurrentLevelPercent());
 			UpdatePlayerLevelHUD(expComponent->GetCurrentLevel());
 		}
@@ -94,9 +96,9 @@ void AVampirePlayerController::OnPause(const FInputActionValue& PauseInput)
 		}
 	}
 	
-	if (SetPause(true))
+	if (PauseUI)
 	{
-		if (PauseUI)
+		if (SetPause(true))
 		{
 			currentPauseUI = CreateWidget<UPauseWidget, AVampirePlayerController*>(this, PauseUI.Get());
 			if (currentPauseUI)
@@ -114,6 +116,35 @@ void AVampirePlayerController::UpdatePlayerEXPHUD(int exp, float currentLevelPer
 	if (currentPlayerHUD)
 	{
 		currentPlayerHUD->UpdateEXPBar(currentLevelPercent);
+	}
+}
+
+void AVampirePlayerController::ShowLevelUpScreen(int level)
+{
+	APawn* pawn = GetPawn();
+	if (!pawn)
+	{
+		return;
+	}
+	
+	UEXPComponent* expComponent = pawn->GetComponentByClass<UEXPComponent>();
+	if (!expComponent || expComponent->GetCurrentLevel() == 0)
+	{
+		return;
+	}
+	
+	if (LevelUpUI)
+	{
+		if (SetPause(true))
+		{
+			currentLevelUpUI = CreateWidget<ULevelUpWidget, AVampirePlayerController*>(this, LevelUpUI.Get());
+			if (currentLevelUpUI)
+			{
+				currentLevelUpUI->AddToViewport();
+				UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(this, currentLevelUpUI, EMouseLockMode::LockInFullscreen);
+				bShowMouseCursor = true;
+			}
+		}		
 	}
 }
 
