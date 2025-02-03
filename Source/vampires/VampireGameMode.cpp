@@ -95,6 +95,7 @@ void AVampireGameMode::SpawnEnemy()
 			{
 				healthComponent->OnDeath.AddDynamic(this, &AVampireGameMode::HandleOnEnemyDeath);
 			}
+			healthComponent->ResetHealth();
 		}
 	}
 }
