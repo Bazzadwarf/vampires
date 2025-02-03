@@ -32,6 +32,22 @@ void AWeapon::FireWeaponAction_Implementation()
 	// Do stuff
 }
 
-void AWeapon::UpgradeWeapon(int newLevel)
+bool AWeapon::UpgradeWeapon()
 {
+	return UpgradeWeapon(CurrentLevel + 1);
+}
+
+bool AWeapon::UpgradeWeapon(int newLevel)
+{
+	if (newLevel < Upgrades.Num())
+	{
+		WeaponCooldown *= Upgrades[newLevel].WeaponCooldownMultiplier;
+		Damage *= Upgrades[newLevel].WeaponDamageMultiplier;
+		
+		GetWorldTimerManager().ClearTimer(WeaponTimerHandle);
+		GetWorldTimerManager().SetTimer(WeaponTimerHandle, this, &AWeapon::FireWeaponAction, WeaponCooldown, true);
+		return true;
+	}
+	
+	return false;
 }
