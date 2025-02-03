@@ -17,19 +17,12 @@ void AWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 
-	TArray<AWeapon*> example;
 	GetWorldTimerManager().SetTimer(WeaponTimerHandle, this, &AWeapon::FireWeaponAction, WeaponCooldown, true);
-	UEXPComponent* expcomponent = GetOwner()->GetComponentByClass<UEXPComponent>();
-
-	if (expcomponent)
-	{
-		//expcomponent->OnEXPLevelUp.AddUniqueDynamic(this, &AWeapon::UpgradeWeapon);
-	}
 }
 
 void AWeapon::FireWeaponAction_Implementation()
 {
-	// Do stuff
+	// This should be overridden in child weapon classes 
 }
 
 bool AWeapon::UpgradeWeapon()
