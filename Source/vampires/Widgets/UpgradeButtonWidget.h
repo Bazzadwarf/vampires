@@ -7,6 +7,8 @@
 #include "Blueprint/UserWidget.h"
 #include "UpgradeButtonWidget.generated.h"
 
+class AWeapon;
+
 UENUM(BlueprintType)
 enum EUpgradeType
 {
@@ -47,6 +49,14 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	TEnumAsByte<EUpgradeType> UpgradeType;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<AWeapon> WeaponTemplate;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<AWeapon> WeaponInstance;
+
+	TObjectPtr<UUserWidget> Parent;
 
 private:
 	UPROPERTY(meta=(BindWidget))

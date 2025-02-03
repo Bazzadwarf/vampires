@@ -12,6 +12,7 @@ AGarlicWeapon::AGarlicWeapon()
 	SphereComponent->SetupAttachment(RootComponent);
 	SphereComponent->SetSphereRadius(150.0f);
 	Damage = 51.0f;
+	Range = SphereComponent->GetScaledSphereRadius();
 }
 
 void AGarlicWeapon::BeginPlay()
@@ -86,4 +87,15 @@ void AGarlicWeapon::GarlicFireWeaponAction(FOverlappedEnemy EnemyCharacter)
 			                                 ownerController, this);
 		}
 	}
+}
+
+bool AGarlicWeapon::UpgradeWeapon()
+{
+	if (Super::UpgradeWeapon())
+	{
+		Range *= Upgrades[CurrentLevel - 1].WeaponRangeMultiplier;
+		SphereComponent->SetSphereRadius(Range);
+		return true;
+	}
+	return false;
 }

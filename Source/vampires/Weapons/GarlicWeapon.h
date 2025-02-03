@@ -26,12 +26,14 @@ UCLASS()
 class VAMPIRES_API AGarlicWeapon : public AWeapon
 {
 	GENERATED_BODY()
-
+public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	USphereComponent* SphereComponent;
 
 	TArray<FOverlappedEnemy> OverlappedEnemies;
 
+private:
+	float Range;
 public:
 	AGarlicWeapon();
 
@@ -43,7 +45,9 @@ public:
 
 	UFUNCTION()
 	void GarlicFireWeaponAction(FOverlappedEnemy EnemyCharacter);
-
+	
+	virtual bool UpgradeWeapon() override;
+	
 protected:
 	UFUNCTION()
 	void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,

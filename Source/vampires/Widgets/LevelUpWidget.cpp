@@ -38,17 +38,15 @@ void ULevelUpWidget::NativeConstruct()
 
 		for (AWeapon* weapon : Inventory)
 		{
-			UUpgradeButtonDataObject* Temp = NewObject<UUpgradeButtonDataObject>(this);
-			Temp->SetData(weapon);
-			upgradeItems.Add(Temp);
+			if (weapon->CurrentLevel < weapon->Upgrades.Num())
+			{
+				UUpgradeButtonDataObject* Temp = NewObject<UUpgradeButtonDataObject>(this);
+				Temp->SetData(weapon, this);
+				upgradeItems.Add(Temp);
+			}
 		}
 
 		UpgradesListView->SetListItems(upgradeItems);
-
-		// for (TSubclassOf<UUpgradeButtonDataObject> item : UpgradeItems)
-		// {
-		// 	upgradeItems.Add(NewObject<UUpgradeButtonDataObject>(this, item));
-		// }
 	}
 	SetIsFocusable(true);
 }

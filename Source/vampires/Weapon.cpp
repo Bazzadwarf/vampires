@@ -23,7 +23,7 @@ void AWeapon::BeginPlay()
 
 	if (expcomponent)
 	{
-		expcomponent->OnEXPLevelUp.AddUniqueDynamic(this, &AWeapon::UpgradeWeapon);
+		//expcomponent->OnEXPLevelUp.AddUniqueDynamic(this, &AWeapon::UpgradeWeapon);
 	}
 }
 
@@ -34,15 +34,11 @@ void AWeapon::FireWeaponAction_Implementation()
 
 bool AWeapon::UpgradeWeapon()
 {
-	return UpgradeWeapon(CurrentLevel + 1);
-}
-
-bool AWeapon::UpgradeWeapon(int newLevel)
-{
-	if (newLevel < Upgrades.Num())
+	if (CurrentLevel + 1 <= Upgrades.Num())
 	{
-		WeaponCooldown *= Upgrades[newLevel].WeaponCooldownMultiplier;
-		Damage *= Upgrades[newLevel].WeaponDamageMultiplier;
+		CurrentLevel++;
+		WeaponCooldown *= Upgrades[CurrentLevel - 1].WeaponCooldownMultiplier;
+		Damage *= Upgrades[CurrentLevel - 1].WeaponDamageMultiplier;
 		
 		GetWorldTimerManager().ClearTimer(WeaponTimerHandle);
 		GetWorldTimerManager().SetTimer(WeaponTimerHandle, this, &AWeapon::FireWeaponAction, WeaponCooldown, true);

@@ -31,6 +31,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<AWeapon> WeaponInstance;
 
-	void SetData(AWeapon* Weapon);
-	void SetData(TSubclassOf<AWeapon> Weapon);
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UUserWidget> Parent;
+
+	void SetData(AWeapon* Weapon, UUserWidget* parent);
+	void SetData(TSubclassOf<AWeapon> Weapon, UUserWidget* parent);
 };

@@ -56,11 +56,12 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Properties")
 	TArray<FWeaponLevelUpgrades> Upgrades = TArray<FWeaponLevelUpgrades>();
+	
+	int CurrentLevel = 0;
 
 private:
 	FTimerHandle WeaponTimerHandle;
 
-	int CurrentLevel = 0;
 
 public:
 	// Sets default values for this actor's properties
@@ -77,5 +78,4 @@ public:
 
 	UFUNCTION()
 	virtual bool UpgradeWeapon();
-	virtual bool UpgradeWeapon(int newLevel);
 };
