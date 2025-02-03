@@ -44,12 +44,15 @@ void AEnemyCharacter::OnDamaged(FDamageInfo damageInfo)
 
 void AEnemyCharacter::OnDeath(FDamageInfo damageInfo)
 {
+	// TODO: Replace pickup spawning with pooling
 	FActorSpawnParameters actorSpawnParameters;
 	actorSpawnParameters.Owner = this;
 	actorSpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	actorSpawnParameters.TransformScaleMethod = ESpawnActorScaleMethod::MultiplyWithRoot;
 
-	GetWorld()->SpawnActor<AEXPPickup>(EXPPickupTemplate, GetActorLocation(), FRotator::ZeroRotator,
+	auto spawnLocation = GetActorLocation();
+	spawnLocation.Z = 75.0f;
+
+	GetWorld()->SpawnActor<AEXPPickup>(EXPPickupTemplate, spawnLocation, FRotator::ZeroRotator,
 	                                   actorSpawnParameters);
 }
 
