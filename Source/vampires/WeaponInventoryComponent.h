@@ -36,4 +36,7 @@ public:
 
 	UFUNCTION()
 	void AddWeaponToInventory(TSubclassOf<AWeapon> Weapon);
+
+	UFUNCTION()
+	TArray<AWeapon*> GetInventory();
 };

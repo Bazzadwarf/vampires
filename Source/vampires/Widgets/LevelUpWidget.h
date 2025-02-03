@@ -6,11 +6,13 @@
 #include "Blueprint/UserWidget.h"
 #include "LevelUpWidget.generated.h"
 
+class UUpgradeButtonDataObject;
+class UListView;
 class UButton;
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable)
 class VAMPIRES_API ULevelUpWidget : public UUserWidget
 {
 	GENERATED_BODY()
@@ -20,8 +22,14 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	UButton* ResumeButton;
 
-	virtual void NativeConstruct() override;
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	UListView* UpgradesListView;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<TSubclassOf<UUpgradeButtonDataObject>> UpgradeItems;
+	
+	virtual void NativeConstruct() override;
+	
 private:
 
 	

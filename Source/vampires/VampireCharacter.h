@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "VampireCharacter.generated.h"
 
+class AWeapon;
 class UWeaponInventoryComponent;
 class UInputAction;
 class UHealthComponent;
@@ -22,7 +23,6 @@ public:
 	UPaperFlipbookComponent* PaperFlipbookComponent;
 
 	FVector2D PreviousMovementDirection = FVector2d(1.0f, 0.0f);
-
 protected:
 	UPROPERTY()
 	UHealthComponent* HealthComponent;

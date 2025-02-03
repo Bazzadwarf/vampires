@@ -42,3 +42,8 @@ void UWeaponInventoryComponent::AddWeaponToInventory(TSubclassOf<AWeapon> Weapon
 	weapon->AttachToActor(GetOwner(), FAttachmentTransformRules::KeepRelativeTransform);
 	inventory.Add(weapon);
 }
+
+TArray<AWeapon*> UWeaponInventoryComponent::GetInventory()
+{
+	return inventory;
+}
