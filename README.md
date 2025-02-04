@@ -1,6 +1,6 @@
-# Vampires
+# Geometry Survivors (vampires)
 
-*This game has never been done before.*
+A Vampire Survivors clone with a Geometry Wars aesthetic made using Unreal Engine 5.
 
 ## Required Software
 
