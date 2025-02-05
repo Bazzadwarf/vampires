@@ -28,6 +28,7 @@ struct FDamageInfo
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDamageDelegate, FDamageInfo, damageInfo);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeathDelegate, FDamageInfo, damageInfo);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
@@ -58,9 +59,6 @@ public:
 	virtual void TakeDamage(AActor* damagedActor, float damage, const UDamageType* damageType,
 	                        AController* instigatedBy,
 	                        AActor* damageCauser);
-
-	UFUNCTION()
-	void IncrementHealth(float value);
 
 	UFUNCTION()
 	float GetMaxHealth();
@@ -95,4 +93,7 @@ public:
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
+
+	UFUNCTION()
+	void IncrementHealth(float value);
 };
