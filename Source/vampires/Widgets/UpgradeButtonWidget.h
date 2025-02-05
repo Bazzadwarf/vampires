@@ -13,7 +13,9 @@ UENUM(BlueprintType)
 enum EUpgradeType
 {
 	Upgrade,
-	NewWeapon
+	NewWeapon,
+	Health,
+	Gold
 };
 
 class UTextBlock;
@@ -34,7 +36,7 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, meta=(BindWidget))
 	TObjectPtr<UImage> WeaponIcon;
-	
+
 	UPROPERTY(EditDefaultsOnly, meta=(BindWidget))
 	TObjectPtr<UTextBlock> WeaponNameTextBlock;
 
@@ -46,6 +48,12 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UTexture2D> NewWeaponIcon;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UTexture2D> HealthIcon;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UTexture2D> GoldIcon;
 
 	UPROPERTY(EditDefaultsOnly)
 	TEnumAsByte<EUpgradeType> UpgradeType;
@@ -61,12 +69,12 @@ public:
 private:
 	UPROPERTY(meta=(BindWidget))
 	UImage* UpgradeTypeIcon;
-	
+
 protected:
 	virtual void NativeConstruct() override;
 
 	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
-	
+
 private:
 	UFUNCTION()
 	virtual void OnClicked();

@@ -26,3 +26,12 @@ void UUpgradeButtonDataObject::SetData(TSubclassOf<AWeapon> Weapon, UUserWidget*
 		Parent = parent;
 	}
 }
+
+void UUpgradeButtonDataObject::SetData(FText weaponName, FText description, TObjectPtr<UTexture2D> weaponIcon,
+                                       UUserWidget* parent)
+{
+	WeaponName = weaponName;
+	Description = description;
+	WeaponIcon = weaponIcon;
+	Parent = parent;
+}

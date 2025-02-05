@@ -8,7 +8,6 @@
 #include "Components/ListView.h"
 #include "Kismet/GameplayStatics.h"
 #include "UpgradeButtonDataObject.h"
-#include "EntitySystem/MovieSceneEntitySystemRunner.h"
 #include "GameFramework/Character.h"
 #include "vampires/VampireCharacter.h"
 #include "vampires/Weapon.h"
@@ -25,11 +24,17 @@ void ULevelUpWidget::NativeConstruct()
 
 	if (UpgradesListView)
 	{
-		ACharacter* Player = Cast<AVampireCharacter>( UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-		if (!Player) return;
+		ACharacter* Player = Cast<AVampireCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+		if (!Player)
+		{
+			return;
+		}
 
 		UWeaponInventoryComponent* InventoryComponent = Player->GetComponentByClass<UWeaponInventoryComponent>();
-		if (!InventoryComponent) return;
+		if (!InventoryComponent)
+		{
+			return;
+		}
 
 		TArray<AWeapon*> Inventory = InventoryComponent->GetInventory();
 		TArray<UUpgradeButtonDataObject*> upgradeItems;
@@ -44,6 +49,23 @@ void ULevelUpWidget::NativeConstruct()
 				Temp->SetData(weapon, this);
 				upgradeItems.Add(Temp);
 			}
+		}
+
+		if (upgradeItems.Num() == 0)
+		{
+			UUpgradeButtonDataObject* tempHealth = NewObject<UUpgradeButtonDataObject>(this);
+			tempHealth->SetData(FText::FromString("Health"),
+					  FText::FromString("Recover 10% of your health"),
+					  nullptr,
+					     this);
+			upgradeItems.Add(tempHealth);
+
+			UUpgradeButtonDataObject* tempGold = NewObject<UUpgradeButtonDataObject>(this);
+			tempGold->SetData(FText::FromString("Gold"),
+					FText::FromString("Gain 10 gold"),
+					nullptr,
+					   this);
+			upgradeItems.Add(tempGold);
 		}
 
 		UpgradesListView->SetListItems(upgradeItems);
