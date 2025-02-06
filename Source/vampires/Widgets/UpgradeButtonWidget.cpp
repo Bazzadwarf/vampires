@@ -13,6 +13,7 @@
 #include "UObject/UObjectBase.h"
 #include "vampires/GoldComponent.h"
 #include "vampires/HealthComponent.h"
+#include "vampires/WeaponInventoryComponent.h"
 
 void UUpgradeButtonWidget::NativeConstruct()
 {
@@ -49,7 +50,6 @@ void UUpgradeButtonWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 			UpgradeType = Gold;
 		}
 
-
 		if (Body)
 		{
 			Body->OnClicked.AddUniqueDynamic(this, &UUpgradeButtonWidget::OnClicked);
@@ -84,28 +84,39 @@ void UUpgradeButtonWidget::OnClicked()
 	case Upgrade:
 		WeaponInstance->UpgradeWeapon();
 		break;
+
 	case NewWeapon:
-		// TODO: Spawn weapon
+		if (UWeaponInventoryComponent* Inventory = playerController->GetPawn()->GetComponentByClass<
+			UWeaponInventoryComponent>())
+		{
+			Inventory->AddWeaponToInventory(WeaponTemplate);
+			Inventory->obtainableWeapons.Remove(WeaponTemplate);
+		}
 		break;
+
 	case Health:
 		if (playerController)
 		{
-			if (UHealthComponent* healthComponent = playerController->GetComponentByClass<UHealthComponent>())
+			if (UHealthComponent* healthComponent = playerController->GetPawn()->GetComponentByClass<
+				UHealthComponent>())
 			{
 				healthComponent->RecoverHealth(healthComponent->GetMaxHealth() / 10.0f);
 			}
 		}
 		break;
+
 	case Gold:
 		if (playerController)
 		{
-			if (UGoldComponent* goldComponent = playerController->GetComponentByClass<UGoldComponent>())
+			if (UGoldComponent* goldComponent = playerController->GetPawn()->GetComponentByClass<UGoldComponent>())
 			{
 				goldComponent->IncrementGold(10);
 			}
 		}
 		break;
-	default: ;
+
+	default:
+		break;
 	}
 
 	if (Parent)

@@ -51,6 +51,15 @@ void ULevelUpWidget::NativeConstruct()
 			}
 		}
 
+		TArray<TSubclassOf<AWeapon>> ObtainableWeapons = InventoryComponent->obtainableWeapons;
+
+		for (TSubclassOf<AWeapon> weapon : ObtainableWeapons)
+		{
+			UUpgradeButtonDataObject* Temp = NewObject<UUpgradeButtonDataObject>(this);
+			Temp->SetData(weapon, this);
+			upgradeItems.Add(Temp);
+		}
+		
 		if (upgradeItems.Num() == 0)
 		{
 			UUpgradeButtonDataObject* tempHealth = NewObject<UUpgradeButtonDataObject>(this);

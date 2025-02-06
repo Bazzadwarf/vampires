@@ -15,6 +15,10 @@ class VAMPIRES_API UWeaponInventoryComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<TSubclassOf<AWeapon>> obtainableWeapons;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<TSubclassOf<AWeapon>> initialInventory;
 
