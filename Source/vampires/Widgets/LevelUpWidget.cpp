@@ -36,11 +36,11 @@ void ULevelUpWidget::NativeConstruct()
 			return;
 		}
 
-		TArray<AWeapon*> Inventory = InventoryComponent->GetInventory();
-		TArray<UUpgradeButtonDataObject*> upgradeItems;
-
 		UpgradesListView->ClearListItems();
+		TArray<AWeapon*> Inventory = InventoryComponent->GetInventory();
 
+		// Get list of weapons that the player owns that can be upgraded
+		TArray<UUpgradeButtonDataObject*> upgradeItems;
 		for (AWeapon* weapon : Inventory)
 		{
 			if (weapon->CurrentLevel < weapon->Upgrades.Num())
@@ -51,15 +51,16 @@ void ULevelUpWidget::NativeConstruct()
 			}
 		}
 
+		// Get list of weapons that the player can still obtain 
 		TArray<TSubclassOf<AWeapon>> ObtainableWeapons = InventoryComponent->obtainableWeapons;
-
 		for (TSubclassOf<AWeapon> weapon : ObtainableWeapons)
 		{
 			UUpgradeButtonDataObject* Temp = NewObject<UUpgradeButtonDataObject>(this);
 			Temp->SetData(weapon, this);
 			upgradeItems.Add(Temp);
 		}
-		
+
+		// If no valid options exist, populate list with default options
 		if (upgradeItems.Num() == 0)
 		{
 			UUpgradeButtonDataObject* tempHealth = NewObject<UUpgradeButtonDataObject>(this);
@@ -77,7 +78,13 @@ void ULevelUpWidget::NativeConstruct()
 			upgradeItems.Add(tempGold);
 		}
 
-		UpgradesListView->SetListItems(upgradeItems);
+		// Select up to three random options from the list of options
+		for (int i = 0; i < 3 && upgradeItems.Num() > 0; i++)
+		{
+			int rand = FMath::RandRange(0, upgradeItems.Num() - 1);
+			UpgradesListView->AddItem(upgradeItems[rand]);
+			upgradeItems.RemoveAt(rand);
+		}
 	}
 	SetIsFocusable(true);
 }
