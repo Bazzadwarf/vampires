@@ -74,4 +74,7 @@ protected:
 
 	UFUNCTION()
 	void UpdateKillCountHUD(int killCount);
+
+	UFUNCTION()
+	void UpdateGoldCountHUD(int goldCount);
 };

@@ -30,6 +30,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	UTextBlock* KillBLock;
 
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UTextBlock* GoldBLock;
+
 	void Init();
 	
 	UFUNCTION()
@@ -43,5 +46,8 @@ public:
 
 	UFUNCTION()
 	void UpdateKillBlock(int killCount);
+
+	UFUNCTION()
+	void UpdateGoldBlock(int goldCount);
 	
 };

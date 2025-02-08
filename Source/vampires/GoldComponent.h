@@ -6,7 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "GoldComponent.generated.h"
 
-DECLARE_DELEGATE(FOnGoldGainedDelegate)
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGoldGainedDelegate, int, gold);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class VAMPIRES_API UGoldComponent : public UActorComponent

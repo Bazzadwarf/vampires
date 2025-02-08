@@ -16,13 +16,13 @@ UGoldComponent::UGoldComponent()
 void UGoldComponent::IncrementGold(int value)
 {
 	CurrentGold += value;
-	OnGoldGained.ExecuteIfBound();
+	OnGoldGained.Broadcast(CurrentGold);
 }
 
 void UGoldComponent::SetCurrentGold(int value)
 {
 	CurrentGold = value;
-	OnGoldGained.ExecuteIfBound();
+	OnGoldGained.Broadcast(CurrentGold);
 }
 
 int UGoldComponent::GetCurrentGold()

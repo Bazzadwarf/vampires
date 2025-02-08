@@ -6,6 +6,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "EXPComponent.h"
+#include "GoldComponent.h"
 #include "Inputable.h"
 #include "VampireGameMode.h"
 #include "Blueprint/UserWidget.h"
@@ -38,6 +39,12 @@ void AVampirePlayerController::OnPossess(APawn* aPawn)
 			expComponent->OnEXPLevelUp.AddUniqueDynamic(this, &AVampirePlayerController::ShowLevelUpScreen);
 			UpdatePlayerEXPHUD(expComponent->GetCurrentEXP(), expComponent->GetCurrentLevelPercent());
 			UpdatePlayerLevelHUD(expComponent->GetCurrentLevel());
+		}
+
+		if (UGoldComponent* goldComponent = aPawn->GetComponentByClass<UGoldComponent>())
+		{
+			goldComponent->OnGoldGained.AddUniqueDynamic(this, &AVampirePlayerController::UpdateGoldCountHUD);
+			UpdateGoldCountHUD(goldComponent->GetCurrentGold());
 		}
 
 		if (AVampireGameMode* gamemode = Cast<AVampireGameMode>(UGameplayStatics::GetGameMode(GetWorld())))
@@ -169,5 +176,13 @@ void AVampirePlayerController::UpdateKillCountHUD(int killCount)
 	if (currentPlayerHUD)
 	{
 		currentPlayerHUD->UpdateKillBlock(killCount);
+	}
+}
+
+void AVampirePlayerController::UpdateGoldCountHUD(int goldCount)
+{
+	if (currentPlayerHUD)
+	{
+		currentPlayerHUD->UpdateGoldBlock(goldCount);
 	}
 }

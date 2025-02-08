@@ -42,3 +42,8 @@ void UHUDWidget::UpdateKillBlock(int killCount)
 {
 	KillBLock->SetText(FText::FromString("Kills: " + FString::FromInt(killCount)));
 }
+
+void UHUDWidget::UpdateGoldBlock(int goldCount)
+{
+	GoldBLock->SetText(FText::FromString("Gold: " + FString::FromInt(goldCount)));
+}
