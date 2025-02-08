@@ -65,27 +65,28 @@ void AGarlicWeapon::GarlicFireWeaponAction(FOverlappedEnemy EnemyCharacter)
 {
 	UHealthComponent* EnemyHealthComponent = EnemyCharacter.OverlappedEnemyCharacter->GetHealthComponent();
 
+	if (EnemyHealthComponent == nullptr)
+	{
+		return;
+	}
+
+	AController* ownerController = nullptr;
+	if (AVampireCharacter* character = Cast<AVampireCharacter>(GetOwner()))
+	{
+		ownerController = character->GetController();
+	}
+
+	EnemyHealthComponent->TakeDamage(EnemyCharacter.OverlappedEnemyCharacter, Damage, nullptr,
+	                                 ownerController, this);
+	
 	if (!EnemyHealthComponent->GetIsDead())
 	{
-		if (!EnemyHealthComponent->GetIsDead())
-		{
-			FVector Direction = EnemyCharacter.OverlappedEnemyCharacter->GetActorLocation() - this->
-				GetActorLocation();
-			Direction.Normalize();
-			float distance = SphereComponent->GetScaledSphereRadius();
-			Direction *= distance;
-			EnemyCharacter.OverlappedEnemyCharacter->SetActorLocation(
-				EnemyCharacter.OverlappedEnemyCharacter->GetActorLocation() + Direction);
-
-			AController* ownerController = nullptr;
-			if (AVampireCharacter* character = Cast<AVampireCharacter>(GetOwner()))
-			{
-				ownerController = character->GetController();
-			}
-
-			EnemyHealthComponent->TakeDamage(EnemyCharacter.OverlappedEnemyCharacter, Damage, nullptr,
-			                                 ownerController, this);
-		}
+		FVector Direction = EnemyCharacter.OverlappedEnemyCharacter->GetActorLocation() - this->GetActorLocation();
+		Direction.Normalize();
+		float distance = SphereComponent->GetScaledSphereRadius();
+		Direction *= distance;
+		EnemyCharacter.OverlappedEnemyCharacter->SetActorLocation(
+			EnemyCharacter.OverlappedEnemyCharacter->GetActorLocation() + Direction);
 	}
 }
 
