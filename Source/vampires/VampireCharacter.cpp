@@ -16,10 +16,8 @@ AVampireCharacter::AVampireCharacter()
 	// Create Health Component
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health Component"));
 
-	PaperFlipbookComponent = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("Paper Flipbook Component"));
-	PaperFlipbookComponent->SetRelativeRotation(FRotator(0.0f, 90.0f,-90.0f));
-	PaperFlipbookComponent->SetRelativeScale3D(FVector(0.2f, 0.2f, 0.2f));
-	PaperFlipbookComponent->SetupAttachment(RootComponent);
+	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh Component"));
+	StaticMeshComponent->SetupAttachment(RootComponent);
 
 	//Create Weapon Inventory Component
 	WeaponInventoryComponent = CreateDefaultSubobject<UWeaponInventoryComponent>(TEXT("Weapon Inventory Component"));
@@ -29,6 +27,7 @@ AVampireCharacter::AVampireCharacter()
 void AVampireCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
 	
 }
 
@@ -37,6 +36,11 @@ void AVampireCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	float newYaw = FMath::Atan2(PreviousMovementDirection.Y, PreviousMovementDirection.X) * 180.0f / PI;
+	FQuat newRotation = FQuat::Slerp(StaticMeshComponent->GetComponentRotation().Quaternion(),
+	                                 FRotator(0.0f, newYaw, 0.0f).Quaternion(),
+	                                 DeltaTime * SlerpSpeed);
+	StaticMeshComponent->SetRelativeRotation(newRotation);
 }
 
 void AVampireCharacter::Input_Move_Implementation(FVector2D value)

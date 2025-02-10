@@ -61,7 +61,7 @@ void AEnemyCharacter::LoadDataFromDataAsset_Implementation(UEnemyDataAsset* enem
 	if (enemyDataAsset != nullptr)
 	{
 		// TODO: Load more data
-		PaperFlipbookComponent->SetFlipbook(enemyDataAsset->PaperFlipbook);
+		StaticMeshComponent->SetStaticMesh(enemyDataAsset->StaticMesh);
 
 		BehaviorTree = enemyDataAsset->BehaviorTree;
 	}
@@ -70,7 +70,7 @@ void AEnemyCharacter::LoadDataFromDataAsset_Implementation(UEnemyDataAsset* enem
 void AEnemyCharacter::ResetData_Implementation()
 {
 	// TODO: Reset more data
-	PaperFlipbookComponent->SetFlipbook(nullptr);
+	StaticMeshComponent->SetStaticMesh(nullptr);
 
 	BehaviorTree = nullptr;
 }

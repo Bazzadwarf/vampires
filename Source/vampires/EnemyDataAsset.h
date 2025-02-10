@@ -19,7 +19,7 @@ class VAMPIRES_API UEnemyDataAsset : public UDataAsset
 
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	UPaperFlipbook* PaperFlipbook;
+	UStaticMesh* StaticMesh;
 
 	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true"))
 	UBehaviorTree* BehaviorTree = nullptr;

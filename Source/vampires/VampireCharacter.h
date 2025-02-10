@@ -20,9 +20,12 @@ class VAMPIRES_API AVampireCharacter : public ACharacter, public IInputable
 
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	UPaperFlipbookComponent* PaperFlipbookComponent;
+	UStaticMeshComponent* StaticMeshComponent;
 
 	FVector2D PreviousMovementDirection = FVector2d(1.0f, 0.0f);
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	float SlerpSpeed = 10.0f;
 protected:
 	UPROPERTY()
 	UHealthComponent* HealthComponent;
