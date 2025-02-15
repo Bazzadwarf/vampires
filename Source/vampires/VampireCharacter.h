@@ -27,7 +27,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float SlerpSpeed = 10.0f;
 protected:
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	UHealthComponent* HealthComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
