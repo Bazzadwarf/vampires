@@ -83,6 +83,7 @@ void AGarlicWeapon::GarlicFireWeaponAction(FOverlappedEnemy EnemyCharacter)
 	{
 		FVector Direction = EnemyCharacter.OverlappedEnemyCharacter->GetActorLocation() - this->GetActorLocation();
 		Direction.Normalize();
+		Direction.Z = 0.0f;
 		float distance = SphereComponent->GetScaledSphereRadius();
 		Direction *= distance;
 		EnemyCharacter.OverlappedEnemyCharacter->SetActorLocation(
