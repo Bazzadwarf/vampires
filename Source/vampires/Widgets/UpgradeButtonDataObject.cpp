@@ -8,7 +8,7 @@
 void UUpgradeButtonDataObject::SetData(AWeapon* Weapon, UUserWidget* parent)
 {
 	WeaponName = Weapon->Name;
-	Description = Weapon->Description;
+	Description = Weapon->UpgradeDescriptions[Weapon->CurrentLevel];
 	WeaponIcon = Weapon->Icon;
 	WeaponInstance = Weapon;
 	Parent = parent;

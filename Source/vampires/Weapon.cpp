@@ -20,21 +20,22 @@ void AWeapon::BeginPlay()
 	GetWorldTimerManager().SetTimer(WeaponTimerHandle, this, &AWeapon::FireWeaponAction, WeaponCooldown, true);
 }
 
+void AWeapon::ResetWeaponTimer()
+{
+	GetWorldTimerManager().ClearTimer(WeaponTimerHandle);
+	GetWorldTimerManager().SetTimer(WeaponTimerHandle, this, &AWeapon::FireWeaponAction, WeaponCooldown, true);
+}
+
 void AWeapon::FireWeaponAction_Implementation()
 {
 	// This should be overridden in child weapon classes 
 }
 
-bool AWeapon::UpgradeWeapon()
+bool AWeapon::UpgradeWeapon_Implementation()
 {
-	if (CurrentLevel + 1 <= Upgrades.Num())
+	if (CurrentLevel < MaxLevel)
 	{
 		CurrentLevel++;
-		WeaponCooldown *= Upgrades[CurrentLevel - 1].WeaponCooldownMultiplier;
-		Damage *= Upgrades[CurrentLevel - 1].WeaponDamageMultiplier;
-		
-		GetWorldTimerManager().ClearTimer(WeaponTimerHandle);
-		GetWorldTimerManager().SetTimer(WeaponTimerHandle, this, &AWeapon::FireWeaponAction, WeaponCooldown, true);
 		return true;
 	}
 	

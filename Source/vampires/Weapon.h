@@ -9,24 +9,6 @@
 class UPaperSprite;
 class UWeaponDataAsset;
 
-USTRUCT(BlueprintType)
-struct FWeaponLevelUpgrades
-{
-	GENERATED_BODY()
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = 0.01f, ClampMax = 1.0f))
-	float WeaponCooldownMultiplier = 1.0f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = 0.01f))
-	float WeaponDamageMultiplier = 1.0f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = 0.01f))
-	float WeaponRangeMultiplier = 1.0f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FText WeaponUpgradeText;
-};
-
 UCLASS()
 class VAMPIRES_API AWeapon : public AActor
 {
@@ -55,9 +37,12 @@ public:
 	float Damage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Properties")
-	TArray<FWeaponLevelUpgrades> Upgrades = TArray<FWeaponLevelUpgrades>();
+	TArray<FText> UpgradeDescriptions;
 	
 	int CurrentLevel = 0;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	int MaxLevel = 0;
 
 private:
 	FTimerHandle WeaponTimerHandle;
@@ -71,11 +56,14 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	void ResetWeaponTimer();
+	
 public:
 	UFUNCTION(BlueprintNativeEvent)
 	void FireWeaponAction();
 	virtual void FireWeaponAction_Implementation();
 
-	UFUNCTION()
-	virtual bool UpgradeWeapon();
+	UFUNCTION(BlueprintNativeEvent)
+	bool UpgradeWeapon();
+	virtual bool UpgradeWeapon_Implementation();
 };
