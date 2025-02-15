@@ -71,9 +71,6 @@ void AVampireGameMode::SpawnEnemy()
 		break;
 	}
 
-	SpawnLocation.Z = PlayerCharacter->GetActorLocation().Z;
-	FTransform Transform;
-	Transform.SetLocation(SpawnLocation);
 
 	if (AActor* enemy = GetEnemyObjectPoolManager_Implementation()->GetObject())
 	{
@@ -81,7 +78,11 @@ void AVampireGameMode::SpawnEnemy()
 		{
 			IEnemyable::Execute_LoadDataFromDataAsset(enemy, EnemyDataAssets[FMath::RandRange(0, EnemyDataAssets.Num() - 1)]);
 			
+			SpawnLocation.Z = PlayerCharacter->GetActorLocation().Z;
+			FTransform Transform;
+			Transform.SetLocation(SpawnLocation);
 			enemy->SetActorTransform(Transform);
+			
 			float CapsuleRadius = IEnemyable::Execute_GetCapsuleRadius(enemy);
 			FVector Direction = SpawnLocation - PlayerCharacter->GetActorLocation();
 			Direction.Normalize();
