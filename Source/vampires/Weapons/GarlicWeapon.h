@@ -46,7 +46,7 @@ public:
 	UFUNCTION()
 	void GarlicFireWeaponAction(FOverlappedEnemy EnemyCharacter);
 	
-	virtual bool UpgradeWeapon() override;
+	virtual bool UpgradeWeapon_Implementation() override;
 	
 protected:
 	UFUNCTION()

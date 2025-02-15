@@ -91,13 +91,48 @@ void AGarlicWeapon::GarlicFireWeaponAction(FOverlappedEnemy EnemyCharacter)
 	}
 }
 
-bool AGarlicWeapon::UpgradeWeapon()
+bool AGarlicWeapon::UpgradeWeapon_Implementation()
 {
-	if (Super::UpgradeWeapon())
+	if (!Super::UpgradeWeapon_Implementation()) return false;
+
+	switch (CurrentLevel)
 	{
-		Range *= Upgrades[CurrentLevel - 1].WeaponRangeMultiplier;
-		SphereComponent->SetSphereRadius(Range);
-		return true;
+		case 1:
+			Range *= 1.4f;
+			SphereComponent->SetSphereRadius(Range);
+			Damage += 2.0f;
+			break;
+		case 2:
+			WeaponCooldown -= 0.1f;
+			Damage += 1;
+			break;
+		case 3:
+			Range *= 1.2f;
+			SphereComponent->SetSphereRadius(Range);
+			Damage += 1.0f;
+			break;
+		case 4:
+			WeaponCooldown -= 0.1f;
+			Damage += 2;
+			break;
+		case 5:
+			Range *= 1.2f;
+			SphereComponent->SetSphereRadius(Range);
+			Damage += 1.0f;
+			break;
+		case 6:
+			WeaponCooldown -= 0.1f;
+			Damage += 1;
+			break;
+		case 7:
+			Range *= 1.2f;
+			SphereComponent->SetSphereRadius(Range);
+			Damage += 1.0f;
+			break;
+		default:
+			return false;
 	}
-	return false;
+
+	ResetWeaponTimer();
+	return true;
 }
