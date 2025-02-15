@@ -4,8 +4,8 @@
 #include "VampireCharacter.h"
 
 #include "HealthComponent.h"
-#include "PaperFlipbookComponent.h"
 #include "WeaponInventoryComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 AVampireCharacter::AVampireCharacter()
@@ -21,6 +21,8 @@ AVampireCharacter::AVampireCharacter()
 
 	//Create Weapon Inventory Component
 	WeaponInventoryComponent = CreateDefaultSubobject<UWeaponInventoryComponent>(TEXT("Weapon Inventory Component"));
+
+	GetCharacterMovement()->SetPlaneConstraintNormal({0.0f, 0.0f, 1.0f}); 
 }
 
 // Called when the game starts or when spawned
