@@ -44,12 +44,9 @@ void AEnemyCharacter::OnDamaged(FDamageInfo damageInfo)
 
 void AEnemyCharacter::OnDeath(FDamageInfo damageInfo)
 {
-	// TODO: Replace pickup spawning with pooling
-
 	if (PickupTemplate)
 	{
 		AGameModeBase* gamemode = UGameplayStatics::GetGameMode(GetWorld());
-
 		if (UKismetSystemLibrary::DoesImplementInterface(gamemode, UPools::StaticClass()))
 		{
 			if (AObjectPoolManager* objectPoolManager = IPools::Execute_GetPickupObjectPoolManager(gamemode))
@@ -64,17 +61,6 @@ void AEnemyCharacter::OnDeath(FDamageInfo damageInfo)
 			}
 		}
 	}
-	
-	
-	// FActorSpawnParameters actorSpawnParameters;
-	// actorSpawnParameters.Owner = this;
-	// actorSpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	//
-	// auto spawnLocation = GetActorLocation();
-	// spawnLocation.Z = 75.0f;
-	//
-	// GetWorld()->SpawnActor<AEXPPickup>(EXPPickupTemplate, spawnLocation, FRotator::ZeroRotator,
-	//                                    actorSpawnParameters);
 }
 
 void AEnemyCharacter::LoadDataFromDataAsset_Implementation(UEnemyDataAsset* enemyDataAsset)
