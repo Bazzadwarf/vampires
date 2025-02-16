@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PickupDataAsset.h"
 #include "Engine/DataAsset.h"
 #include "EnemyDataAsset.generated.h"
 
@@ -23,4 +24,7 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true"))
 	UBehaviorTree* BehaviorTree = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true"))
+	UPickupDataAsset* PickupDataAsset = nullptr;
 };

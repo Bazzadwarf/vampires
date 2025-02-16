@@ -4,12 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "Pools.generated.h"
+#include "Pickupable.generated.h"
 
-class AObjectPoolManager;
+class UPickupDataAsset;
 // This class does not need to be modified.
 UINTERFACE()
-class UPools : public UInterface
+class UPickupable : public UInterface
 {
 	GENERATED_BODY()
 };
@@ -17,18 +17,15 @@ class UPools : public UInterface
 /**
  * 
  */
-class VAMPIRES_API IPools
+class VAMPIRES_API IPickupable
 {
 	GENERATED_BODY()
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	UFUNCTION(BlueprintNativeEvent)
-	AObjectPoolManager* GetEnemyObjectPoolManager();
+	void LoadDataFromDataAsset(UPickupDataAsset* PickupDataAsset);
 
 	UFUNCTION(BlueprintNativeEvent)
-	AObjectPoolManager* GetProjectileObjectPoolManager();
-
-	UFUNCTION(BlueprintNativeEvent)
-	AObjectPoolManager* GetPickupObjectPoolManager();
+	void ResetData();
 };

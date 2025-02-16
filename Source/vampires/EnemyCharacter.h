@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PickupDataAsset.h"
 #include "VampireCharacter.h"
 #include "Interfaces/Enemyable.h"
 #include "EnemyCharacter.generated.h"
@@ -27,6 +28,8 @@ private:
 	UBehaviorTree* BehaviorTree = nullptr;
 
 	UObjectPoolComponent* ObjectPoolComponent = nullptr;
+
+	UPickupDataAsset* PickupTemplate = nullptr;
 
 public:
 	AEnemyCharacter(const FObjectInitializer& ObjectInitializer);

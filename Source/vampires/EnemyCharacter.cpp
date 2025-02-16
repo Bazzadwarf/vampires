@@ -45,34 +45,53 @@ void AEnemyCharacter::OnDamaged(FDamageInfo damageInfo)
 void AEnemyCharacter::OnDeath(FDamageInfo damageInfo)
 {
 	// TODO: Replace pickup spawning with pooling
-	FActorSpawnParameters actorSpawnParameters;
-	actorSpawnParameters.Owner = this;
-	actorSpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-	auto spawnLocation = GetActorLocation();
-	spawnLocation.Z = 75.0f;
+	if (PickupTemplate)
+	{
+		AGameModeBase* gamemode = UGameplayStatics::GetGameMode(GetWorld());
 
-	GetWorld()->SpawnActor<AEXPPickup>(EXPPickupTemplate, spawnLocation, FRotator::ZeroRotator,
-	                                   actorSpawnParameters);
+		if (UKismetSystemLibrary::DoesImplementInterface(gamemode, UPools::StaticClass()))
+		{
+			if (AObjectPoolManager* objectPoolManager = IPools::Execute_GetPickupObjectPoolManager(gamemode))
+			{
+				AActor* pickup = objectPoolManager->GetObject();
+
+				if (UKismetSystemLibrary::DoesImplementInterface(pickup, UPickupable::StaticClass()))
+				{
+					IPickupable::Execute_LoadDataFromDataAsset(pickup, PickupTemplate);
+					pickup->SetActorLocation(GetActorLocation());
+				}
+			}
+		}
+	}
+	
+	
+	// FActorSpawnParameters actorSpawnParameters;
+	// actorSpawnParameters.Owner = this;
+	// actorSpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	//
+	// auto spawnLocation = GetActorLocation();
+	// spawnLocation.Z = 75.0f;
+	//
+	// GetWorld()->SpawnActor<AEXPPickup>(EXPPickupTemplate, spawnLocation, FRotator::ZeroRotator,
+	//                                    actorSpawnParameters);
 }
 
 void AEnemyCharacter::LoadDataFromDataAsset_Implementation(UEnemyDataAsset* enemyDataAsset)
 {
 	if (enemyDataAsset != nullptr)
 	{
-		// TODO: Load more data
 		StaticMeshComponent->SetStaticMesh(enemyDataAsset->StaticMesh);
-
 		BehaviorTree = enemyDataAsset->BehaviorTree;
+		PickupTemplate = enemyDataAsset->PickupDataAsset;
 	}
 }
 
 void AEnemyCharacter::ResetData_Implementation()
 {
-	// TODO: Reset more data
 	StaticMeshComponent->SetStaticMesh(nullptr);
-
 	BehaviorTree = nullptr;
+	PickupTemplate = nullptr;
 }
 
 float AEnemyCharacter::GetCapsuleRadius_Implementation()

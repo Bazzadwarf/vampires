@@ -8,6 +8,7 @@
 #include "Interfaces/Pools.h"
 #include "VampireGameMode.generated.h"
 
+class AEXPPickup;
 class UEnemyDataAsset;
 class AProjectile;
 class AObjectPoolManager;
@@ -29,6 +30,9 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AProjectile> ProjectileTemplate;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AEXPPickup> PickupTemplate;
+
 	FOnEnemyDeathCountIncrementDelegate OnEnemyDeathCountIncrementDelegate;
 
 	UPROPERTY(EditDefaultsOnly)
@@ -47,6 +51,8 @@ private:
 
 	TObjectPtr<AObjectPoolManager> ProjectileObjectPoolManager = nullptr;
 
+	TObjectPtr<AObjectPoolManager> PickupObjectPoolManager = nullptr;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -63,6 +69,8 @@ public:
 	virtual AObjectPoolManager* GetEnemyObjectPoolManager_Implementation() override;
 
 	virtual AObjectPoolManager* GetProjectileObjectPoolManager_Implementation() override;
+
+	virtual AObjectPoolManager* GetPickupObjectPoolManager_Implementation() override;
 
 protected:
 	UFUNCTION()

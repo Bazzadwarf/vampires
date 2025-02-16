@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/TimelineComponent.h"
 #include "GameFramework/Actor.h"
+#include "Interfaces/Pickupable.h"
 #include "Pickup.generated.h"
 
 class UPickupDataAsset;
@@ -13,26 +14,21 @@ class USphereComponent;
 class UPaperSpriteComponent;
 
 UCLASS()
-class VAMPIRES_API APickup : public AActor
+class VAMPIRES_API APickup : public AActor, public IPickupable
 {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TObjectPtr<UPickupDataAsset> PickupDataAsset;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	double PickupMovementRange = 500;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	double PickupMovementSpeed = 1000;
-
+	int PickupValue = 1;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	USphereComponent* InnerSphereComponent = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	USphereComponent* OuterSphereComponent = nullptr;
 
+	// TODO: Replace with static mesh
 	UPROPERTY(EditAnywhere)
 	UPaperSpriteComponent* SpriteComponent = nullptr;
 
@@ -40,7 +36,7 @@ public:
 	USoundBase* PickupSoundBase = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Timeline")
-	TObjectPtr<UTimelineComponent> TimelineComponent;
+	TObjectPtr<UTimelineComponent> TimelineComponent = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Timeline")
 	UCurveFloat* CurveFloat;
@@ -58,7 +54,11 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	
+	virtual void LoadDataFromDataAsset_Implementation(UPickupDataAsset* PickupDataAsset) override;
 
+	virtual void ResetData_Implementation() override;
+	
 	UFUNCTION()
 	virtual void OnInnerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	                                 UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,

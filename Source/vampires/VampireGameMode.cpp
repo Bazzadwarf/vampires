@@ -4,8 +4,10 @@
 #include "VampireGameMode.h"
 
 #include "EnemyCharacter.h"
+#include "EXPPickup.h"
 #include "HealthComponent.h"
 #include "ObjectPoolManager.h"
+#include "Pickup.h"
 #include "PlayerCharacter.h"
 #include "Projectile.h"
 #include "VampirePlayerController.h"
@@ -123,6 +125,18 @@ AObjectPoolManager* AVampireGameMode::GetProjectileObjectPoolManager_Implementat
 	}
 
 	return ProjectileObjectPoolManager;
+}
+
+AObjectPoolManager* AVampireGameMode::GetPickupObjectPoolManager_Implementation()
+{
+	if (PickupObjectPoolManager == nullptr)
+	{
+		PickupObjectPoolManager = GetWorld()->SpawnActor<AObjectPoolManager>();
+		TSubclassOf<AActor> pickupTemplate = PickupTemplate;
+		PickupObjectPoolManager->InitializeObjectPool(pickupTemplate);
+	}
+
+	return PickupObjectPoolManager;
 }
 
 void AVampireGameMode::IncrementEnemyDeathCount()

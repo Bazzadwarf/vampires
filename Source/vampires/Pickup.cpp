@@ -2,10 +2,15 @@
 
 
 #include "Pickup.h"
+
+#include "ObjectPoolManager.h"
 #include "PlayerCharacter.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "PaperSpriteComponent.h"
+#include "PickupDataAsset.h"
+#include "GameFramework/GameModeBase.h"
+#include "Interfaces/Pools.h"
 
 // Sets default values
 APickup::APickup()
@@ -54,6 +59,38 @@ void APickup::BeginPlay()
 	}
 }
 
+void APickup::LoadDataFromDataAsset_Implementation(UPickupDataAsset* PickupDataAsset)
+{
+	if (PickupDataAsset != nullptr)
+	{
+		PickupValue = PickupDataAsset->PickupValue;
+		SpriteComponent->SetSprite(PickupDataAsset->PickupSprite);
+		PickupSoundBase = PickupDataAsset->PickupSoundBase;
+		CurveFloat = PickupDataAsset->CurveFloat;
+
+		if (CurveFloat != nullptr)
+		{
+			TimelineComponent->AddInterpFloat(CurveFloat, onTimelineCallback);
+			TimelineComponent->SetTimelineFinishedFunc(onTimelineFinishedCallback);
+		}
+	}
+}
+
+void APickup::ResetData_Implementation()
+{
+	PickupValue = 0;
+	SpriteComponent->SetSprite(nullptr);
+	PickupSoundBase = nullptr;
+	CurveFloat = nullptr;
+
+	TSet<UCurveBase*> AllCurves;
+	TimelineComponent->GetAllCurves(AllCurves);
+	if (AllCurves.Num() > 0)
+	{
+		AllCurves.Reset();
+	}
+}
+
 void APickup::OnInnerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                   UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
                                   const FHitResult& SweepResult)
@@ -66,7 +103,19 @@ void APickup::OnInnerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 			UGameplayStatics::PlaySound2D(GetWorld(), PickupSoundBase);
 		}
 
-		Destroy();
+		AGameModeBase* gamemode = UGameplayStatics::GetGameMode(GetWorld());
+		if (UKismetSystemLibrary::DoesImplementInterface(gamemode, UPools::StaticClass()))
+		{
+			if (AObjectPoolManager* objectPoolManager = IPools::Execute_GetProjectileObjectPoolManager(gamemode))
+			{
+				ResetData_Implementation();
+				objectPoolManager->ReturnObject(this);
+			}
+		}
+		else
+		{
+			Destroy();
+		}
 	}
 }
 

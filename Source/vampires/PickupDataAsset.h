@@ -20,14 +20,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Pickup Properties")
 	int PickupValue = 1;
 
+	// TODO: Replace with static mesh
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Pickup Properties")
-	double PickupMovementRange = 500;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Pickup Properties")
-	double PickupMovementSpeed = 1000;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Pickup Properties")
-	TObjectPtr<UPaperSprite> WeaponSprite = nullptr;
+	TObjectPtr<UPaperSprite> PickupSprite = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Pickup Properties")
 	TObjectPtr<USoundBase> PickupSoundBase = nullptr;
