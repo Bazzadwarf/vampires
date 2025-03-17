@@ -10,29 +10,10 @@
 #include "GoldComponent.h"
 #include "InputMappingContext.h"
 #include "WeaponInventoryComponent.h"
-#include "Camera/CameraComponent.h"
 #include "Components/WidgetComponent.h"
-#include "GameFramework/SpringArmComponent.h"
 
 APlayerCharacter::APlayerCharacter()
 {
-	// Create Camera Boom
-	CameraSpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraSpringArmComponent"));
-	CameraSpringArmComponent->SetupAttachment(RootComponent);
-	CameraSpringArmComponent->bDoCollisionTest = true;
-	CameraSpringArmComponent->bUsePawnControlRotation = false;
-	CameraSpringArmComponent->TargetArmLength = 1000;
-	CameraSpringArmComponent->bEnableCameraLag = false;
-	CameraSpringArmComponent->SocketOffset = {0.0f, 0.0f, 0.0f};
-	CameraSpringArmComponent->SetRelativeRotation({-90.0, 0.0f, 0.0f});
-
-	// Create Camera
-	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera Component"));
-	CameraComponent->SetupAttachment(CameraSpringArmComponent, USpringArmComponent::SocketName);
-	CameraComponent->bUsePawnControlRotation = false;
-	CameraComponent->SetProjectionMode(ECameraProjectionMode::Type::Orthographic);
-	CameraComponent->SetOrthoWidth(4000.0f);
-
 	// Create EXP Component
 	EXPComponent = CreateDefaultSubobject<UEXPComponent>(TEXT("EXP Component"));
 
