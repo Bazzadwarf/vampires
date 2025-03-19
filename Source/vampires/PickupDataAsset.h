@@ -7,7 +7,6 @@
 #include "PickupDataAsset.generated.h"
 
 class UTimelineComponent;
-class UPaperSprite;
 /**
  * 
  */
@@ -20,9 +19,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Pickup Properties")
 	int PickupValue = 1;
 
-	// TODO: Replace with static mesh
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Pickup Properties")
-	TObjectPtr<UPaperSprite> PickupSprite = nullptr;
+	TObjectPtr<UStaticMesh> PickupStaticMesh = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Pickup Properties")
 	TObjectPtr<USoundBase> PickupSoundBase = nullptr;

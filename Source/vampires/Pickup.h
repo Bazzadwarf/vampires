@@ -11,7 +11,6 @@
 class UPickupDataAsset;
 class UTimelineComponent;
 class USphereComponent;
-class UPaperSpriteComponent;
 
 UCLASS()
 class VAMPIRES_API APickup : public AActor, public IPickupable
@@ -28,9 +27,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	USphereComponent* OuterSphereComponent = nullptr;
 
-	// TODO: Replace with static mesh
 	UPROPERTY(EditAnywhere)
-	UPaperSpriteComponent* SpriteComponent = nullptr;
+	UStaticMeshComponent* StaticMeshComponent = nullptr;
 
 	UPROPERTY(EditDefaultsOnly)
 	USoundBase* PickupSoundBase = nullptr;

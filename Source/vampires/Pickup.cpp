@@ -7,7 +7,6 @@
 #include "PlayerCharacter.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "PaperSpriteComponent.h"
 #include "PickupDataAsset.h"
 #include "GameFramework/GameModeBase.h"
 #include "Interfaces/Pools.h"
@@ -27,11 +26,11 @@ APickup::APickup()
 	OuterSphereComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	OuterSphereComponent->SetSphereRadius(250.0f);
 
-	SpriteComponent = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("Sprite Component"));
-	SpriteComponent->SetRelativeRotation(FRotator(0.0f, 90.0f, -90.0f));
-	SpriteComponent->SetRelativeScale3D(FVector(.5f, .5f, .5f));
-	SpriteComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	SpriteComponent->SetupAttachment(RootComponent);
+	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh Component"));
+	StaticMeshComponent->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
+	StaticMeshComponent->SetRelativeScale3D(FVector(.5f, .5f, .5f));
+	StaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	StaticMeshComponent->SetupAttachment(RootComponent);
 
 	TimelineComponent = CreateDefaultSubobject<UTimelineComponent>(TEXT("Timeline Component"));
 	TimelineComponent->SetDirectionPropertyName(FName("TimelineDirection"));
@@ -64,7 +63,7 @@ void APickup::LoadDataFromDataAsset_Implementation(UPickupDataAsset* PickupDataA
 	if (PickupDataAsset != nullptr)
 	{
 		PickupValue = PickupDataAsset->PickupValue;
-		SpriteComponent->SetSprite(PickupDataAsset->PickupSprite);
+		StaticMeshComponent->SetStaticMesh(PickupDataAsset->PickupStaticMesh);
 		PickupSoundBase = PickupDataAsset->PickupSoundBase;
 		CurveFloat = PickupDataAsset->CurveFloat;
 
@@ -79,7 +78,7 @@ void APickup::LoadDataFromDataAsset_Implementation(UPickupDataAsset* PickupDataA
 void APickup::ResetData_Implementation()
 {
 	PickupValue = 0;
-	SpriteComponent->SetSprite(nullptr);
+	StaticMeshComponent->SetStaticMesh(nullptr);
 	PickupSoundBase = nullptr;
 	CurveFloat = nullptr;
 
@@ -123,19 +122,7 @@ void APickup::OnOuterBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAct
                                   UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
                                   const FHitResult& SweepResult)
 {
-	if (APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor))
-	{
-		PickupLocation = GetActorLocation();
-		PlayTimeLine();
-
-		double dist = FVector::Distance(GetActorLocation(), PlayerCharacter->GetActorLocation());
-
-		if (dist < OuterSphereComponent->GetScaledSphereRadius())
-		{
-			double ratio = FMath::Abs((dist / OuterSphereComponent->GetScaledSphereRadius()) - 1.0f);
-			TimelineComponent->SetNewTime(ratio);
-		}
-	}
+	PlayTimeLine();
 }
 
 void APickup::TimelineCallback(float val)
@@ -152,5 +139,5 @@ void APickup::TimelineFinishedCallback()
 
 void APickup::PlayTimeLine()
 {
-	TimelineComponent->Play();
+	TimelineComponent->PlayFromStart();
 }
