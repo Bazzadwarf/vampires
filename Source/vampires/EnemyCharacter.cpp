@@ -55,8 +55,8 @@ void AEnemyCharacter::OnDeath(FDamageInfo damageInfo)
 
 				if (UKismetSystemLibrary::DoesImplementInterface(pickup, UPickupable::StaticClass()))
 				{
-					IPickupable::Execute_LoadDataFromDataAsset(pickup, PickupTemplate);
 					pickup->SetActorLocation(GetActorLocation());
+					IPickupable::Execute_LoadDataFromDataAsset(pickup, PickupTemplate);
 				}
 			}
 		}

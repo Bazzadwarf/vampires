@@ -66,7 +66,8 @@ void APickup::LoadDataFromDataAsset_Implementation(UPickupDataAsset* PickupDataA
 		StaticMeshComponent->SetStaticMesh(PickupDataAsset->PickupStaticMesh);
 		PickupSoundBase = PickupDataAsset->PickupSoundBase;
 		CurveFloat = PickupDataAsset->CurveFloat;
-
+		PickupLocation = GetActorLocation();
+		
 		if (CurveFloat != nullptr)
 		{
 			TimelineComponent->AddInterpFloat(CurveFloat, onTimelineCallback);
@@ -107,6 +108,7 @@ void APickup::OnInnerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 		{
 			if (AObjectPoolManager* objectPoolManager = IPools::Execute_GetProjectileObjectPoolManager(gamemode))
 			{
+				TimelineComponent->Stop();
 				ResetData_Implementation();
 				objectPoolManager->ReturnObject(this);
 			}
@@ -122,7 +124,10 @@ void APickup::OnOuterBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAct
                                   UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
                                   const FHitResult& SweepResult)
 {
-	PlayTimeLine();
+	if (!TimelineComponent->IsPlaying() && UGameplayStatics::GetPlayerCharacter(GetWorld(), 0) == Cast<ACharacter>(OtherActor))
+	{
+		PlayTimeLine();
+	}	
 }
 
 void APickup::TimelineCallback(float val)
