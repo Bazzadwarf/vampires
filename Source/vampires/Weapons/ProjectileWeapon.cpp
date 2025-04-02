@@ -14,6 +14,7 @@ AProjectileWeapon::AProjectileWeapon()
 {
 	BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Component"));
 	BoxComponent->SetupAttachment(RootComponent);
+	BoxComponent->SetCollisionProfileName(TEXT("Weapon"));
 }
 
 void AProjectileWeapon::BeginPlay()

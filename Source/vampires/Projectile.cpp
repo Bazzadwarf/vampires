@@ -20,6 +20,7 @@ AProjectile::AProjectile()
 	SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere Component"));
 	SetRootComponent(SphereComponent);
 	SphereComponent->SetSphereRadius(50.0f);
+	SphereComponent->SetCollisionProfileName(TEXT("Weapon"));
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement"));
 	ProjectileMovement->ProjectileGravityScale = 0.0f;

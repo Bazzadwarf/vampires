@@ -11,6 +11,8 @@ ALightningRingWeapon::ALightningRingWeapon()
 	SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere Component"));
 	SphereComponent->SetupAttachment(RootComponent);
 	SphereComponent->SetSphereRadius(1000.0f);
+	SphereComponent->SetCollisionProfileName(TEXT("Weapon"));
+	
 	Damage = 51.0f;
 }
 

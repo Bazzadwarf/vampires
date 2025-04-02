@@ -11,6 +11,8 @@ AGarlicWeapon::AGarlicWeapon()
 	SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere Component"));
 	SphereComponent->SetupAttachment(RootComponent);
 	SphereComponent->SetSphereRadius(150.0f);
+	SphereComponent->SetCollisionProfileName(TEXT("Weapon"));
+	
 	Damage = 51.0f;
 	Range = SphereComponent->GetScaledSphereRadius();
 }

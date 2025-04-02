@@ -21,10 +21,12 @@ APickup::APickup()
 	InnerSphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Inner Sphere Component"));
 	SetRootComponent(InnerSphereComponent);
 	InnerSphereComponent->SetSphereRadius(25.0f);
+	InnerSphereComponent->SetCollisionProfileName(TEXT("Pickup"));
 
 	OuterSphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Outer Sphere Component"));
 	OuterSphereComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	OuterSphereComponent->SetSphereRadius(250.0f);
+	OuterSphereComponent->SetCollisionProfileName(TEXT("Pickup"));
 
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh Component"));
 	StaticMeshComponent->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));

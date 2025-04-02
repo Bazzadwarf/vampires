@@ -8,6 +8,7 @@
 #include "Interfaces/Enemyable.h"
 #include "EnemyCharacter.generated.h"
 
+class USphereComponent;
 class UObjectPoolComponent;
 class UBehaviorTree;
 class AEXPPickup;
@@ -23,6 +24,15 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AEXPPickup> EXPPickupTemplate = nullptr;
 
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<USphereComponent> DamageSphere = nullptr;
+
+	UPROPERTY(EditDefaultsOnly)
+	float Damage = 5.0f;;
+
+	UPROPERTY(EditDefaultsOnly)
+	float AttackCooldown = 1.0f;
+
 private:
 	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true"))
 	UBehaviorTree* BehaviorTree = nullptr;
@@ -30,6 +40,10 @@ private:
 	UObjectPoolComponent* ObjectPoolComponent = nullptr;
 
 	UPickupDataAsset* PickupTemplate = nullptr;
+
+	TArray<AActor*> Player;
+
+	FTimerHandle DamageTimerHandle;
 
 public:
 	AEnemyCharacter(const FObjectInitializer& ObjectInitializer);
@@ -63,7 +77,18 @@ public:
 	UFUNCTION()
 	virtual UHealthComponent* GetEnemyHealthComponent_Implementation() override;
 
+	UFUNCTION()
+	void OnDamageBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+						UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+						const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void OnDamageEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+					  int32 OtherBodyIndex);
+
 private:
 	UFUNCTION()
 	void ResetHealth();
+
+	void DamagePlayer();
 };

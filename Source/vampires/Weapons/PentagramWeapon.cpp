@@ -14,6 +14,8 @@ APentagramWeapon::APentagramWeapon()
 {
 	BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("Sphere Component"));
 	BoxComponent->SetupAttachment(RootComponent);
+	BoxComponent->SetCollisionProfileName(TEXT("Weapon"));
+	
 	WeaponCooldown = 90.0f;
 }
 

@@ -6,17 +6,23 @@
 #include "EnemyDataAsset.h"
 #include "EXPPickup.h"
 #include "HealthComponent.h"
+#include "MovieSceneTracksComponentTypes.h"
 #include "ObjectPoolComponent.h"
 #include "ObjectPoolManager.h"
 #include "PaperFlipbookComponent.h"
 #include "VampireAIController.h"
 #include "VampireGameMode.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 AEnemyCharacter::AEnemyCharacter(const FObjectInitializer& ObjectInitializer)
 {
 	ObjectPoolComponent = CreateDefaultSubobject<UObjectPoolComponent>(TEXT("Object Pool Component"));
+
+	DamageSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Damage Sphere"));
+	DamageSphere->SetupAttachment(RootComponent);
+	DamageSphere->SetSphereRadius(50.0f);
 }
 
 void AEnemyCharacter::BeginPlay()
@@ -26,6 +32,10 @@ void AEnemyCharacter::BeginPlay()
 	GetHealthComponent()->OnDeath.AddDynamic(this, &AEnemyCharacter::OnDeath);
 
 	ObjectPoolComponent->OnRetrieve.BindUFunction(this, "ResetHealth");
+
+	DamageSphere->OnComponentBeginOverlap.AddDynamic(this, &AEnemyCharacter::OnDamageBeginOverlap);
+	DamageSphere->OnComponentEndOverlap.AddDynamic(this, &AEnemyCharacter::OnDamageEndOverlap);
+	DamageSphere->MoveIgnoreActors.Add(this);
 }
 
 void AEnemyCharacter::Tick(float DeltaTime)
@@ -104,7 +114,37 @@ UHealthComponent* AEnemyCharacter::GetEnemyHealthComponent_Implementation()
 	return GetHealthComponent();
 }
 
+void AEnemyCharacter::OnDamageBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (Cast<ACharacter>(OtherActor) == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0) && !Player.Contains(OtherActor))
+	{
+		Player.Add(OtherActor);
+		
+		GetWorldTimerManager().SetTimer(DamageTimerHandle, this, &AEnemyCharacter::DamagePlayer, AttackCooldown, true);
+	}
+}
+
+void AEnemyCharacter::OnDamageEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if (Cast<ACharacter>(OtherActor) == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0) && Player.Contains(OtherActor))
+	{
+		Player.Remove(OtherActor);
+
+		GetWorldTimerManager().ClearTimer(DamageTimerHandle);
+	}
+}
+
 void AEnemyCharacter::ResetHealth()
 {
 	GetHealthComponent()->ResetHealth();
+}
+
+void AEnemyCharacter::DamagePlayer()
+{
+	for (auto player : Player)
+	{
+		UGameplayStatics::ApplyDamage(player, Damage, GetController(), this, nullptr);
+	}
 }
