@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "Interfaces/Playerable.h"
 #include "VampirePlayerController.generated.h"
 
 class ULevelUpWidget;
@@ -15,7 +16,7 @@ class UHUDWidget;
  * 
  */
 UCLASS(Abstract)
-class VAMPIRES_API AVampirePlayerController : public APlayerController
+class VAMPIRES_API AVampirePlayerController : public APlayerController, public IPlayerable
 {
 	GENERATED_BODY()
 
@@ -69,12 +70,14 @@ protected:
 	UFUNCTION()
 	void UpdatePlayerLevelHUD(int level);
 
-	UFUNCTION()
-	void UpdateTimerHUD();
+	UFUNCTION(BlueprintCallable)
+	void UpdateTimerHUD(float deltaTime);
 
 	UFUNCTION()
 	void UpdateKillCountHUD(int killCount);
 
 	UFUNCTION()
 	void UpdateGoldCountHUD(int goldCount);
+
+	virtual void UpdateTimerHUDElement_Implementation(float deltaTime) override;
 };

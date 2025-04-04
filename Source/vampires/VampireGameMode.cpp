@@ -76,9 +76,9 @@ void AVampireGameMode::SpawnEnemy()
 
 	if (AActor* enemy = GetEnemyObjectPoolManager_Implementation()->GetObject())
 	{
-		if (UKismetSystemLibrary::DoesImplementInterface(enemy, UEnemyable::StaticClass()) && EnemyDataAssets.Num() > 0)
+		if (UKismetSystemLibrary::DoesImplementInterface(enemy, UEnemyable::StaticClass()) && SpawnableEnemyDataAssets.Num() > 0)
 		{
-			IEnemyable::Execute_LoadDataFromDataAsset(enemy, EnemyDataAssets[FMath::RandRange(0, EnemyDataAssets.Num() - 1)]);
+			IEnemyable::Execute_LoadDataFromDataAsset(enemy, SpawnableEnemyDataAssets[FMath::RandRange(0, SpawnableEnemyDataAssets.Num() - 1)]);
 			
 			SpawnLocation.Z = PlayerCharacter->GetActorLocation().Z;
 			FTransform Transform;
@@ -137,6 +137,21 @@ AObjectPoolManager* AVampireGameMode::GetPickupObjectPoolManager_Implementation(
 	}
 
 	return PickupObjectPoolManager;
+}
+
+void AVampireGameMode::AddRandomEnemyTypeToPool()
+{
+	if (EnemyDataAssets.Num() > 0)
+	{
+		int32 rand = FMath::RandRange(0, EnemyDataAssets.Num() - 1);
+		SpawnableEnemyDataAssets.Add(EnemyDataAssets[rand]);
+		EnemyDataAssets.RemoveAt(rand);
+	}
+}
+
+void AVampireGameMode::EndGame()
+{
+	UKismetSystemLibrary::QuitGame(GetWorld(), UGameplayStatics::GetPlayerController(GetWorld(), 0), EQuitPreference::Quit, true);
 }
 
 void AVampireGameMode::IncrementEnemyDeathCount()

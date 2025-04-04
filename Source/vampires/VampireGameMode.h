@@ -52,6 +52,8 @@ private:
 	TObjectPtr<AObjectPoolManager> ProjectileObjectPoolManager = nullptr;
 
 	TObjectPtr<AObjectPoolManager> PickupObjectPoolManager = nullptr;
+	
+	TArray<TObjectPtr<UEnemyDataAsset>> SpawnableEnemyDataAssets;
 
 protected:
 	virtual void BeginPlay() override;
@@ -71,6 +73,12 @@ public:
 	virtual AObjectPoolManager* GetProjectileObjectPoolManager_Implementation() override;
 
 	virtual AObjectPoolManager* GetPickupObjectPoolManager_Implementation() override;
+
+	UFUNCTION(BlueprintCallable)
+	void AddRandomEnemyTypeToPool();
+
+	UFUNCTION(BlueprintCallable)
+	void EndGame();
 
 protected:
 	UFUNCTION()

@@ -19,18 +19,18 @@ void UHUDWidget::UpdateLevelBlock(int level)
 	LevelBlock->SetText(FText::FromString("LV" + FString::FromInt(level)));
 }
 
-void UHUDWidget::UpdateTimerBlock(APawn* pawn)
+void UHUDWidget::UpdateTimerBlock(float deltaTime)
 {
-	int timeSinceCreation = FMath::FloorToInt(pawn->GetGameTimeSinceCreation());
+	int timeSinceStart = FMath::FloorToInt(deltaTime);
 
-	FString mins = FString::FromInt(timeSinceCreation / 60);
-	if (timeSinceCreation / 60 < 10)
+	FString mins = FString::FromInt(timeSinceStart / 60);
+	if (timeSinceStart / 60 < 10)
 	{
 		mins = "0" + mins;	
 	}
 	
-	FString secs = FString::FromInt(timeSinceCreation % 60);
-	if (timeSinceCreation % 60 < 10)
+	FString secs = FString::FromInt(timeSinceStart % 60);
+	if (timeSinceStart % 60 < 10)
 	{
 		secs = "0" + secs;
 	}
