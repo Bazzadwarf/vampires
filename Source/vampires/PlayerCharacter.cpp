@@ -11,6 +11,7 @@
 #include "InputMappingContext.h"
 #include "WeaponInventoryComponent.h"
 #include "Components/WidgetComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -32,6 +33,28 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+void APlayerCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	auto PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	
+	FVector TopLeft, TopLeftDir;
+	FVector BottomRight, BottomRightDir;
+
+	FVector2d ViewportSize;
+	GEngine->GameViewport->GetViewportSize(ViewportSize);
+
+	PlayerController->DeprojectScreenPositionToWorld(0, 0, TopLeft, TopLeftDir);
+	PlayerController->DeprojectScreenPositionToWorld(ViewportSize.X, ViewportSize.Y, BottomRight, BottomRightDir);
+
+	auto location = GetActorLocation();
+	location.X = FMath::Clamp(location.X, BottomRight.X, TopLeft.X);
+	location.Y = FMath::Clamp(location.Y, TopLeft.Y, BottomRight.Y);
+
+	SetActorLocation(location);
 }
 
 UEXPComponent* APlayerCharacter::GetEXPComponent()
