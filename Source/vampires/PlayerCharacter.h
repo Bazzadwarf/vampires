@@ -43,4 +43,11 @@ public:
 	UEXPComponent* GetEXPComponent();
 
 	UGoldComponent* GetGoldComponent();
+
+private:
+	UFUNCTION()
+	virtual void OnDamaged(FDamageInfo damageInfo);
+
+	UFUNCTION()
+	virtual void OnDeath(FDamageInfo damageInfo);
 };

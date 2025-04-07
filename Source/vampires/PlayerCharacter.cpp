@@ -8,6 +8,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "EXPComponent.h"
 #include "GoldComponent.h"
+#include "HealthComponent.h"
 #include "InputMappingContext.h"
 #include "WeaponInventoryComponent.h"
 #include "Components/WidgetComponent.h"
@@ -33,6 +34,9 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	GetHealthComponent()->OnDamaged.AddDynamic(this, &APlayerCharacter::OnDamaged);
+	GetHealthComponent()->OnDeath.AddDynamic(this, &APlayerCharacter::OnDeath);
 }
 
 void APlayerCharacter::Tick(float DeltaTime)
@@ -65,4 +69,22 @@ UEXPComponent* APlayerCharacter::GetEXPComponent()
 UGoldComponent* APlayerCharacter::GetGoldComponent()
 {
 	return GoldComponent;
+}
+
+void APlayerCharacter::OnDamaged(FDamageInfo damageInfo)
+{
+	if (OnDamagedSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), OnDamagedSound, GetActorLocation());
+	}
+}
+
+void APlayerCharacter::OnDeath(FDamageInfo damageInfo)
+{
+	if (OnDeathSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), OnDeathSound, GetActorLocation());
+	}
+
+	// TODO: End the game
 }
