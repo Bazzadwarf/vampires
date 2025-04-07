@@ -27,4 +27,10 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true"))
 	UPickupDataAsset* PickupDataAsset = nullptr;
+	
+	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USoundBase> OnDamagedSoundBase = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USoundBase> OnDeathSoundBase = nullptr;
 };

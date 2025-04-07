@@ -36,6 +36,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UWeaponInventoryComponent* WeaponInventoryComponent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USoundBase* OnDamagedSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USoundBase* OnDeathSound;
+
 public:
 	// Sets default values for this character's properties
 	AVampireCharacter();

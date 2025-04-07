@@ -50,6 +50,10 @@ UBehaviorTree* AEnemyCharacter::GetBehaviorTree()
 
 void AEnemyCharacter::OnDamaged(FDamageInfo damageInfo)
 {
+	if (OnDamagedSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), OnDamagedSound, GetActorLocation());
+	}
 }
 
 void AEnemyCharacter::OnDeath(FDamageInfo damageInfo)
@@ -71,6 +75,11 @@ void AEnemyCharacter::OnDeath(FDamageInfo damageInfo)
 			}
 		}
 	}
+
+	if (OnDeathSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), OnDeathSound, GetActorLocation());
+	}
 }
 
 void AEnemyCharacter::LoadDataFromDataAsset_Implementation(UEnemyDataAsset* enemyDataAsset)
@@ -80,6 +89,8 @@ void AEnemyCharacter::LoadDataFromDataAsset_Implementation(UEnemyDataAsset* enem
 		StaticMeshComponent->SetStaticMesh(enemyDataAsset->StaticMesh);
 		BehaviorTree = enemyDataAsset->BehaviorTree;
 		PickupTemplate = enemyDataAsset->PickupDataAsset;
+		OnDamagedSound = enemyDataAsset->OnDamagedSoundBase;
+		OnDeathSound = enemyDataAsset->OnDeathSoundBase;
 	}
 }
 
@@ -88,6 +99,8 @@ void AEnemyCharacter::ResetData_Implementation()
 	StaticMeshComponent->SetStaticMesh(nullptr);
 	BehaviorTree = nullptr;
 	PickupTemplate = nullptr;
+	OnDamagedSound = nullptr;
+	OnDeathSound = nullptr;
 }
 
 float AEnemyCharacter::GetCapsuleRadius_Implementation()
