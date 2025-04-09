@@ -4,6 +4,7 @@
 #include "Weapon.h"
 
 #include "EXPComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AWeapon::AWeapon()
@@ -28,7 +29,12 @@ void AWeapon::ResetWeaponTimer()
 
 void AWeapon::FireWeaponAction_Implementation()
 {
-	// This should be overridden in child weapon classes 
+	// This should be overridden in child weapon classes
+
+	if (WeaponActivatedSoundBase)
+	{
+		UGameplayStatics::PlaySound2D(GetWorld(), WeaponActivatedSoundBase);
+	}
 }
 
 bool AWeapon::UpgradeWeapon_Implementation()
