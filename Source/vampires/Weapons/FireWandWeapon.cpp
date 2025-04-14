@@ -9,6 +9,7 @@
 #include "vampires/ObjectPoolManager.h"
 #include "vampires/Interfaces/Pools.h"
 #include "vampires/Projectile.h"
+#include "vampires/ProjectileDataAsset.h"
 
 AFireWandWeapon::AFireWandWeapon()
 {
@@ -49,4 +50,42 @@ void AFireWandWeapon::FireWeaponAction_Implementation()
 			}
 		}
 	}
+}
+
+bool AFireWandWeapon::UpgradeWeapon_Implementation()
+{
+	if (!Super::UpgradeWeapon_Implementation()) return false;
+
+	switch (CurrentLevel)
+	{
+	case 1:
+		Damage += 10;
+		break;
+	case 2:
+		Damage += 10;
+		ProjectileTemplate->ProjectileSpeed *= 1.2f;
+		break;
+	case 3:
+		Damage += 10;
+		break;
+	case 4:
+		Damage += 10;
+		ProjectileTemplate->ProjectileSpeed *= 1.2f;
+		break;
+	case 5:
+		Damage += 10;
+		break;
+	case 6:
+		Damage += 10;
+		ProjectileTemplate->ProjectileSpeed *= 1.2f;
+		break;
+	case 7:
+		Damage += 10;
+		break;
+	default:
+		return false;
+	}
+
+	ResetWeaponTimer();
+	return true;
 }
