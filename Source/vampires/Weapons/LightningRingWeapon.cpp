@@ -35,30 +35,69 @@ void ALightningRingWeapon::FireWeaponAction_Implementation()
 	{
 		AEnemyCharacter* target = targetableEnemies[FMath::RandRange(0, targetableEnemies.Num() - 1)];
 
+		TArray<TEnumAsByte<EObjectTypeQuery>> traceObjectTypes;
+		traceObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_Pawn));
+		
 		TArray<AActor*> actorsToIgnore = TArray<AActor*>({ GetOwner() });
-		TArray<FHitResult> hitResults;
-		UKismetSystemLibrary::SphereTraceMultiByProfile(GetWorld(),
-			target->GetActorLocation(),
-			target->GetActorLocation(),
-			500.0f,
-			FName(TEXT("Funny")),
-			false,
-			actorsToIgnore,
-			EDrawDebugTrace::ForDuration,
-			hitResults,
-			true);
 
-		for (FHitResult EnemyHitResult : hitResults)
+		TArray<AActor*> hitResults;
+		
+		UKismetSystemLibrary::SphereOverlapActors(GetWorld(),
+			target->GetActorLocation(),
+			LightingBoltRadius,
+			traceObjectTypes,
+			AEnemyCharacter::StaticClass(),
+			actorsToIgnore,
+			hitResults);
+
+		for (AActor* EnemyHitResult : hitResults)
 		{			
-			UGameplayStatics::ApplyDamage(EnemyHitResult.GetActor(), Damage, nullptr, this, nullptr);
+			UGameplayStatics::ApplyDamage(EnemyHitResult, Damage, nullptr, this, nullptr);
 		}
 
 		targetableEnemies.Remove(target);
 	}
 }
 
+bool ALightningRingWeapon::UpgradeWeapon_Implementation()
+{
+	if (!Super::UpgradeWeapon_Implementation()) return false;
+
+	switch (CurrentLevel)
+	{
+		case 1:
+			LightningBolts++;
+			break;
+		case 2:
+			LightingBoltRadius += LightingBoltRadius;
+			Damage += 10;
+			break;
+		case 3:
+			LightningBolts++;
+			break;
+		case 4:
+			LightingBoltRadius += LightingBoltRadius;
+			Damage += 20;
+			break;
+		case 5:
+			LightningBolts++;
+			break;
+		case 6:
+			LightingBoltRadius += LightingBoltRadius;
+			Damage += 20;
+			break;
+		case 7:
+			LightningBolts++;
+			break;
+		default:
+			return false;
+	}
+
+	return true;
+}
+
 void ALightningRingWeapon::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                                          UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(OtherActor))
 	{

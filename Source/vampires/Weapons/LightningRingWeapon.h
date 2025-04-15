@@ -25,6 +25,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int LightningBolts = 1;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float LightingBoltRadius = 200.0f;
+
 public:
 	ALightningRingWeapon();
 
@@ -33,6 +36,8 @@ protected:
 
 public:
 	virtual void FireWeaponAction_Implementation() override;
+
+	virtual bool UpgradeWeapon_Implementation() override;
 
 protected:
 	UFUNCTION()
