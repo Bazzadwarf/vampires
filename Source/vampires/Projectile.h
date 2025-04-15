@@ -31,6 +31,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* StaticMeshComponent = nullptr;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int RemainingDamagableEnemies = 1;
+
 	// Sets default values for this actor's properties
 	AProjectile();
 

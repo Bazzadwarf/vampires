@@ -63,3 +63,20 @@ void AProjectileWeapon::OnWeaponEndOverlap(UPrimitiveComponent* OverlappedComp, 
 		OverlappedEnemies.Remove(Enemy);
 	}
 }
+
+void AProjectileWeapon::FireWeaponAction_Implementation()
+{
+	Super::FireWeaponAction_Implementation();
+
+	remainingProjectilesToSpawn = ProjectilesPerActivation;
+	GetWorldTimerManager().SetTimer(FireProjectileTimerHandler, this, &AProjectileWeapon::FireProjectile, ProjectileSpawningDelay, true, 0.0f);
+}
+
+void AProjectileWeapon::FireProjectile()
+{
+	remainingProjectilesToSpawn--;
+	if (remainingProjectilesToSpawn == 0)
+	{
+		GetWorldTimerManager().ClearTimer(FireProjectileTimerHandler);
+	}
+}

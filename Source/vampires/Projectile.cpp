@@ -69,12 +69,14 @@ void AProjectile::LoadDataFromDataAsset_Implementation(UProjectileDataAsset* pro
 	ProjectileSpeed = projectileDataAsset->ProjectileSpeed;
 	ProjectileMovement->InitialSpeed = ProjectileSpeed;
 	ProjectileMovement->MaxSpeed = ProjectileSpeed;
+	RemainingDamagableEnemies = projectileDataAsset->DamagableEnemies;
 }
 
 void AProjectile::ResetData_Implementation()
 {
 	ProjectileSpeed = NULL;
 	StaticMeshComponent->SetStaticMesh(nullptr);
+	RemainingDamagableEnemies = 1;
 }
 
 void AProjectile::OnProjectileBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -96,13 +98,18 @@ void AProjectile::OnProjectileBeginOverlap(UPrimitiveComponent* OverlappedCompon
 			AProjectileWeapon* ownerWeapon = Cast<AProjectileWeapon>(GetOwner());
 			EnemyHealthComponent->TakeDamage(Enemy, ownerWeapon->Damage, nullptr, ownerController, this);
 
-			AGameModeBase* gamemode = UGameplayStatics::GetGameMode(GetWorld());
+			RemainingDamagableEnemies--;
 
-			if (UKismetSystemLibrary::DoesImplementInterface(gamemode, UPools::StaticClass()))
+			if (RemainingDamagableEnemies == 0)
 			{
-				if (AObjectPoolManager* objectPoolManager = IPools::Execute_GetProjectileObjectPoolManager(gamemode))
+				AGameModeBase* gamemode = UGameplayStatics::GetGameMode(GetWorld());
+
+				if (UKismetSystemLibrary::DoesImplementInterface(gamemode, UPools::StaticClass()))
 				{
-					objectPoolManager->ReturnObject(this);
+					if (AObjectPoolManager* objectPoolManager = IPools::Execute_GetProjectileObjectPoolManager(gamemode))
+					{
+						objectPoolManager->ReturnObject(this);
+					}
 				}
 			}
 		}

@@ -25,8 +25,19 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
 	TObjectPtr<UProjectileDataAsset> ProjectileTemplate = nullptr;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	int ProjectilesPerActivation = 1;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	float ProjectileSpawningDelay = 0.25f;
+
 protected:
 	TArray<AActor*> OverlappedEnemies = TArray<AActor*>();
+
+	FTimerHandle FireProjectileTimerHandler;
+
+private:
+	int remainingProjectilesToSpawn = 0;
 
 public:
 	AProjectileWeapon();
@@ -43,4 +54,10 @@ public:
 	UFUNCTION()
 	void OnWeaponEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	                        int32 OtherBodyIndex);
+
+	virtual void FireWeaponAction_Implementation() override;
+
+protected:
+	UFUNCTION()
+	virtual void FireProjectile();
 };

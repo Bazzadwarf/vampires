@@ -20,4 +20,7 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UStaticMesh> StaticMesh;
+
+	UPROPERTY(EditAnywhere)
+	int DamagableEnemies = 1;
 };
