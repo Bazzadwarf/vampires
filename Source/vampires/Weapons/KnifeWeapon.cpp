@@ -8,6 +8,7 @@
 #include "vampires/ObjectPoolManager.h"
 #include "vampires/PlayerCharacter.h"
 #include "vampires/Projectile.h"
+#include "vampires/ProjectileDataAsset.h"
 #include "vampires/Interfaces/Pools.h"
 
 AKnifeWeapon::AKnifeWeapon()
@@ -22,7 +23,46 @@ void AKnifeWeapon::BeginPlay()
 void AKnifeWeapon::FireWeaponAction_Implementation()
 {
 	Super::FireWeaponAction_Implementation();
+}
 
+bool AKnifeWeapon::UpgradeWeapon_Implementation()
+{
+	if (!Super::UpgradeWeapon_Implementation()) return false;
+
+	switch (CurrentLevel)
+	{
+		case 1:
+			ProjectilesPerActivation++;
+			break;
+		case 2:
+			ProjectilesPerActivation++;
+			Damage += 5.0f;
+			break;
+		case 3:
+			ProjectilesPerActivation++;
+			break;
+		case 4:
+			ProjectileTemplate->DamagableEnemies++;
+			break;
+		case 5:
+			ProjectilesPerActivation++;
+			break;
+		case 6:
+			ProjectilesPerActivation++;
+			Damage += 5.0f;
+			break;
+		case 7:
+			ProjectileTemplate->DamagableEnemies++;
+			break;
+		default:
+			return false;
+	}
+	
+	return true;
+}
+
+void AKnifeWeapon::FireProjectile()
+{
 	if (UKismetSystemLibrary::DoesImplementInterface(GetOwner(), UInputable::StaticClass()))
 	{
 		if (ProjectileTemplate && OverlappedEnemies.Num() > 0)
@@ -46,6 +86,8 @@ void AKnifeWeapon::FireWeaponAction_Implementation()
 
 						IProjectilable::Execute_SetTargetDirection(projectile, direction);
 					}
+
+					Super::FireProjectile();
 				}
 			}
 		}

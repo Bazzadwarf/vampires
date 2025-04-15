@@ -13,7 +13,7 @@ UCLASS()
 class VAMPIRES_API AKnifeWeapon : public AProjectileWeapon
 {
 	GENERATED_BODY()
-
+	
 public:
 	AKnifeWeapon();
 
@@ -22,4 +22,9 @@ protected:
 
 public:
 	virtual void FireWeaponAction_Implementation() override;
+
+	virtual bool UpgradeWeapon_Implementation() override;
+
+protected:
+	virtual void FireProjectile() override;
 };
