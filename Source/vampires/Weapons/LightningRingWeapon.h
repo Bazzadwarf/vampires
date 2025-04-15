@@ -21,6 +21,11 @@ class VAMPIRES_API ALightningRingWeapon : public AWeapon
 	TArray<AEnemyCharacter*> OverlappedEnemies;
 
 public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int LightningBolts = 1;
+
+public:
 	ALightningRingWeapon();
 
 protected:

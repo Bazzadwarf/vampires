@@ -3,6 +3,8 @@
 
 #include "LightningRingWeapon.h"
 #include "Components/SphereComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "vampires/EnemyCharacter.h"
 #include "vampires/HealthComponent.h"
 
@@ -27,18 +29,31 @@ void ALightningRingWeapon::FireWeaponAction_Implementation()
 {
 	Super::FireWeaponAction_Implementation();
 
-	if (OverlappedEnemies.Num() > 0)
+	TArray<AEnemyCharacter*> targetableEnemies = OverlappedEnemies;
+
+	for (int i  = 0; i < LightningBolts && targetableEnemies.Num() > 0; i++)
 	{
-		AEnemyCharacter* target = OverlappedEnemies[FMath::RandRange(0, OverlappedEnemies.Num() - 1)];
-		UHealthComponent* EnemyHealthComponent = target->GetHealthComponent();
-		
-		AController* ownerController = nullptr;
-		if (AVampireCharacter* character = Cast<AVampireCharacter>(GetOwner()))
-		{
-			ownerController = character->GetController();
+		AEnemyCharacter* target = targetableEnemies[FMath::RandRange(0, targetableEnemies.Num() - 1)];
+
+		TArray<AActor*> actorsToIgnore = TArray<AActor*>({ GetOwner() });
+		TArray<FHitResult> hitResults;
+		UKismetSystemLibrary::SphereTraceMultiByProfile(GetWorld(),
+			target->GetActorLocation(),
+			target->GetActorLocation(),
+			500.0f,
+			FName(TEXT("Funny")),
+			false,
+			actorsToIgnore,
+			EDrawDebugTrace::ForDuration,
+			hitResults,
+			true);
+
+		for (FHitResult EnemyHitResult : hitResults)
+		{			
+			UGameplayStatics::ApplyDamage(EnemyHitResult.GetActor(), Damage, nullptr, this, nullptr);
 		}
-		
-		EnemyHealthComponent->TakeDamage(target, Damage, nullptr, ownerController, this);
+
+		targetableEnemies.Remove(target);
 	}
 }
 
