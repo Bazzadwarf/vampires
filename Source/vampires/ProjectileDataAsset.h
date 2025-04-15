@@ -16,7 +16,7 @@ class VAMPIRES_API UProjectileDataAsset : public UDataAsset
 
 public:
 	UPROPERTY(EditAnywhere)
-	float ProjectileSpeed = 500.0f;
+	float ProjectileSpeed = 1000.0f;
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UStaticMesh> StaticMesh;
