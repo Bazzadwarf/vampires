@@ -23,33 +23,6 @@ void AFireWandWeapon::BeginPlay()
 void AFireWandWeapon::FireWeaponAction_Implementation()
 {
 	Super::FireWeaponAction_Implementation();
-
-	if (ProjectileTemplate && OverlappedEnemies.Num() > 0)
-	{
-		AGameModeBase* gamemode = UGameplayStatics::GetGameMode(GetWorld());
-
-		if (UKismetSystemLibrary::DoesImplementInterface(gamemode, UPools::StaticClass()))
-		{
-			if (AObjectPoolManager* objectPoolManager = IPools::Execute_GetProjectileObjectPoolManager(gamemode))
-			{
-				AActor* projectile = objectPoolManager->GetObject();
-
-				if (UKismetSystemLibrary::DoesImplementInterface(projectile, UProjectilable::StaticClass()))
-				{
-					IProjectilable::Execute_LoadDataFromDataAsset(projectile, ProjectileTemplate);
-					projectile->SetOwner(this);
-
-					AActor* target = OverlappedEnemies[FMath::RandRange(0, OverlappedEnemies.Num() - 1)];
-					FVector direction = UKismetMathLibrary::GetDirectionUnitVector(
-						GetActorLocation(), target->GetActorLocation());
-					direction.Z = 0.0;
-					direction.Normalize();
-
-					IProjectilable::Execute_SetTargetDirection(projectile, direction);
-				}
-			}
-		}
-	}
 }
 
 bool AFireWandWeapon::UpgradeWeapon_Implementation()
@@ -88,4 +61,36 @@ bool AFireWandWeapon::UpgradeWeapon_Implementation()
 
 	ResetWeaponTimer();
 	return true;
+}
+
+void AFireWandWeapon::FireProjectile()
+{
+	if (ProjectileTemplate && OverlappedEnemies.Num() > 0)
+	{
+		AGameModeBase* gamemode = UGameplayStatics::GetGameMode(GetWorld());
+
+		if (UKismetSystemLibrary::DoesImplementInterface(gamemode, UPools::StaticClass()))
+		{
+			if (AObjectPoolManager* objectPoolManager = IPools::Execute_GetProjectileObjectPoolManager(gamemode))
+			{
+				AActor* projectile = objectPoolManager->GetObject();
+
+				if (UKismetSystemLibrary::DoesImplementInterface(projectile, UProjectilable::StaticClass()))
+				{
+					IProjectilable::Execute_LoadDataFromDataAsset(projectile, ProjectileTemplate);
+					projectile->SetOwner(this);
+
+					AActor* target = OverlappedEnemies[FMath::RandRange(0, OverlappedEnemies.Num() - 1)];
+					FVector direction = UKismetMathLibrary::GetDirectionUnitVector(
+						GetActorLocation(), target->GetActorLocation());
+					direction.Z = 0.0;
+					direction.Normalize();
+
+					IProjectilable::Execute_SetTargetDirection(projectile, direction);
+				}
+
+				Super::FireProjectile();
+			}
+		}
+	}
 }
