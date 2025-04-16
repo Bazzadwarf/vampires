@@ -9,6 +9,7 @@
 #include "vampires/ObjectPoolManager.h"
 #include "vampires/PlayerCharacter.h"
 #include "vampires/Projectile.h"
+#include "vampires/ProjectileDataAsset.h"
 #include "vampires/VampirePlayerController.h"
 #include "vampires/Interfaces/Pools.h"
 
@@ -24,8 +25,47 @@ void AGunWeapon::BeginPlay()
 void AGunWeapon::FireWeaponAction_Implementation()
 {
 	Super::FireWeaponAction_Implementation();
+}
 
-	if (ProjectileTemplate && OverlappedEnemies.Num() > 0)
+bool AGunWeapon::UpgradeWeapon_Implementation()
+{
+	if (!Super::UpgradeWeapon_Implementation()) return false;
+
+	switch (CurrentLevel)
+	{
+	case 1:
+		ProjectilesPerActivation++;
+		break;
+	case 2:
+		ProjectileTemplate->DamagableEnemies += 2;
+		break;
+	case 3:
+		ProjectilesPerActivation++;
+		break;
+	case 4:
+		Damage += 5.0f;
+		break;
+	case 5:
+		ProjectileTemplate->DamagableEnemies += 2;
+		break;
+	case 6:
+		Damage += 5.0f;
+		ProjectileTemplate->ProjectileSpeed *= 1.50f;
+		break;
+	case 7:
+		ProjectileTemplate->DamagableEnemies += 2;
+		break;
+	default:
+		return false;
+	}
+
+	ResetWeaponTimer();
+	return true;
+}
+
+void AGunWeapon::FireProjectile()
+{
+		if (ProjectileTemplate && OverlappedEnemies.Num() > 0)
 	{
 		AGameModeBase* gamemode = UGameplayStatics::GetGameMode(GetWorld());
 
@@ -66,6 +106,8 @@ void AGunWeapon::FireWeaponAction_Implementation()
 				SpawnProjectile(projectile, UKismetMathLibrary::GetDirectionUnitVector(actorLocation, BottomLeft));
 				projectile = objectPoolManager->GetObject();
 				SpawnProjectile(projectile, UKismetMathLibrary::GetDirectionUnitVector(actorLocation, BottomRight));
+
+				Super::FireProjectile();
 			}
 		}
 	}
