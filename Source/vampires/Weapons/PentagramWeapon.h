@@ -35,6 +35,8 @@ protected:
 public:
 	virtual void FireWeaponAction_Implementation() override;
 
+	bool UpgradeWeapon_Implementation() override;
+
 protected:
 	UFUNCTION()
 	void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,

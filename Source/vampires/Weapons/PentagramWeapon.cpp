@@ -62,6 +62,42 @@ void APentagramWeapon::FireWeaponAction_Implementation()
 	}
 }
 
+bool APentagramWeapon::UpgradeWeapon_Implementation()
+{
+	if (!Super::UpgradeWeapon_Implementation()) return false;
+
+	switch (CurrentLevel)
+	{
+	case 1:
+		WeaponCooldown -= 5.0f;
+		break;
+	case 2:
+		WeaponCooldown -= 5.0f;
+		break;
+	case 3:
+		WeaponCooldown -= 5.0f;
+		break;
+	case 4:
+		WeaponCooldown -= 5.0f;
+		break;
+	case 5:
+		WeaponCooldown -= 5.0f;
+		break;
+	case 6:
+		WeaponCooldown -= 2.5f;
+		break;
+	case 7:
+		WeaponCooldown -= 2.5f;
+		break;
+	default:
+		return false;
+	}
+
+	ResetWeaponTimer();
+	
+	return true;
+}
+
 void APentagramWeapon::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                       UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
                                       const FHitResult& SweepResult)
