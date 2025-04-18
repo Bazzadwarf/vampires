@@ -7,6 +7,8 @@
 #include "vampires/Weapon.h"
 #include "SwarmWeapon.generated.h"
 
+class ASwarmAgent;
+
 UCLASS()
 class VAMPIRES_API ASwarmWeapon : public AWeapon
 {
@@ -15,26 +17,24 @@ class VAMPIRES_API ASwarmWeapon : public AWeapon
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Timeline")
 	TObjectPtr<UTimelineComponent> TimelineComponent = nullptr;
-	
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TObjectPtr<UCurveFloat> SwarmCurve;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float TimelinePlayRate = 1;
-	
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	TSubclassOf<class AActor> SwarmActor;
+	TSubclassOf<ASwarmAgent> SwarmActor;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Distance = 250.0f;
 
-
-	
 private:
 	FOnTimelineFloat onTimelineCallback;
 
-	TArray<AActor*> SwarmActors;
-	
+	TArray<ASwarmAgent*> SwarmActors;
+
 public:
 	// Sets default values for this actor's properties
 	ASwarmWeapon();
@@ -46,6 +46,9 @@ protected:
 public:
 	UFUNCTION()
 	void TimelineCallback(float val);
-	
-	virtual bool UpgradeWeapon_Implementation() override;	
+
+	virtual bool UpgradeWeapon_Implementation() override;
+
+private:
+	void SpawnSwarmAgent();
 };

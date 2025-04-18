@@ -3,10 +3,7 @@
 
 #include "SwarmWeapon.h"
 
-#include "VectorTypes.h"
-#include "Kismet/KismetSystemLibrary.h"
-#include "vampires/EnemyCharacter.h"
-
+#include "SwarmAgent.h"
 
 // Sets default values
 ASwarmWeapon::ASwarmWeapon()
@@ -30,8 +27,8 @@ void ASwarmWeapon::BeginPlay()
 	Super::BeginPlay();
 
 	// Spawn the swarm actors in
-	SwarmActors.Add(GetWorld()->SpawnActor<AActor>(SwarmActor));
-	SwarmActors.Add(GetWorld()->SpawnActor<AActor>(SwarmActor));
+	SpawnSwarmAgent();
+	SpawnSwarmAgent();
 
 	// Start the timeline
 	if (SwarmCurve != nullptr)
@@ -41,7 +38,6 @@ void ASwarmWeapon::BeginPlay()
 
 	TimelineComponent->SetPlayRate(TimelinePlayRate);
 	TimelineComponent->PlayFromStart();
-	
 }
 
 void ASwarmWeapon::TimelineCallback(float val)
@@ -56,38 +52,42 @@ void ASwarmWeapon::TimelineCallback(float val)
 		FVector Direction = FVector(0.0, 1, 0.0);
 		FVector RotatedDirection = Direction.RotateAngleAxis(val * 360.0f + offset, FVector(0.0f, 0.0f, 1.0f));
 		FVector NewLocation = CenterLocation + (RotatedDirection * Distance);
+		NewLocation.Z = 140.0f;
 		SwarmActors[i]->SetActorLocation(NewLocation);
 	}
 }
 
 bool ASwarmWeapon::UpgradeWeapon_Implementation()
 {
-	if (!Super::UpgradeWeapon_Implementation()) return false;
+	if (!Super::UpgradeWeapon_Implementation())
+	{
+		return false;
+	}
 
 	switch (CurrentLevel)
 	{
 	case 1:
-		SwarmActors.Add(GetWorld()->SpawnActor<AActor>(SwarmActor));
+		SpawnSwarmAgent();
 		break;
 	case 2:
 		Distance *= 1.25f;
-		TimelineComponent->SetPlayRate(TimelineComponent->GetPlayRate() * 1.3f); 
+		TimelineComponent->SetPlayRate(TimelineComponent->GetPlayRate() * 1.3f);
 		break;
 	case 3:
 		Damage += 10;
 		break;
 	case 4:
-		SwarmActors.Add(GetWorld()->SpawnActor<AActor>(SwarmActor));
+		SpawnSwarmAgent();
 		break;
 	case 5:
 		Distance *= 1.25f;
-		TimelineComponent->SetPlayRate(TimelineComponent->GetPlayRate() * 1.3f); 
+		TimelineComponent->SetPlayRate(TimelineComponent->GetPlayRate() * 1.3f);
 		break;
 	case 6:
 		Damage += 10;
 		break;
 	case 7:
-		SwarmActors.Add(GetWorld()->SpawnActor<AActor>(SwarmActor));
+		SpawnSwarmAgent();
 		break;
 	default:
 		return false;
@@ -97,3 +97,9 @@ bool ASwarmWeapon::UpgradeWeapon_Implementation()
 	return true;
 }
 
+void ASwarmWeapon::SpawnSwarmAgent()
+{
+	ASwarmAgent* newAgent = GetWorld()->SpawnActor<ASwarmAgent>(SwarmActor, GetActorLocation() / 2, FRotator(0, 0, 0));
+	newAgent->SetOwner(this);
+	SwarmActors.Add(newAgent);
+}
