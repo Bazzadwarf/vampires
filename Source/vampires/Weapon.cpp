@@ -30,7 +30,7 @@ void AWeapon::BeginPlay()
 
 	FViewport::ViewportResizedEvent.AddUObject(this, &AWeapon::ResizeBoxComponent);
 	
-	ResizeBoxComponent(GEngine->GameViewport->Viewport, -1);
+	ResizeBoxComponent(GEngine->GameViewport->Viewport, -2);
 	
 	GetWorldTimerManager().SetTimer(WeaponTimerHandle, this, &AWeapon::FireWeaponAction, WeaponCooldown, true);
 }
@@ -82,6 +82,9 @@ void AWeapon::OnWeaponEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* Ot
 
 void AWeapon::ResizeBoxComponent(FViewport* Viewport, uint32 unused)
 {
+
+	if (!GEngine->GameViewport) return;
+	
 	FVector TopLeft, TopLeftDir;
 	FVector TopRight, TopRightDir;
 	FVector BottomLeft, BottomLeftDir;
@@ -99,7 +102,16 @@ void AWeapon::ResizeBoxComponent(FViewport* Viewport, uint32 unused)
 	PlayerController->DeprojectScreenPositionToWorld(0, ViewportSize.Y, BottomLeft, BottomLeftDir);
 	PlayerController->DeprojectScreenPositionToWorld(ViewportSize.X, ViewportSize.Y, BottomRight, BottomRightDir);
 
-	float width = FVector::Dist(TopLeft, TopRight) * 120;
-	float height = FVector::Dist(TopLeft, BottomLeft) * 120;
+	float width = FVector::Dist(TopLeft, TopRight) / 2;
+	float height = FVector::Dist(TopLeft, BottomLeft) / 2;
+
+	// I am using the unused flag to work around a bug where the DeprojectScreenPositionToWorld doesn't match the
+	// values that I am expecting, in that they are way too small, for any other resize event we can skip this nonsense.
+	if (unused == -2)
+	{
+		width *= 266.666;
+		height *= 266.666;
+	}
+	
 	BoxComponent->SetBoxExtent(FVector(height, width, 200.0f));
 }
