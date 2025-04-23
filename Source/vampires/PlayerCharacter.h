@@ -32,6 +32,9 @@ public:
 	UPROPERTY(EditAnywhere)
 	UWidgetComponent* HealthBarWidgetComponent;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UCameraShakeBase> CameraShake;
+
 	APlayerCharacter();
 
 protected:

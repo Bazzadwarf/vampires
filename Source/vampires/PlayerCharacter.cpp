@@ -77,6 +77,12 @@ void APlayerCharacter::OnDamaged(FDamageInfo damageInfo)
 	{
 		UGameplayStatics::PlaySoundAtLocation(GetWorld(), OnDamagedSound, GetActorLocation());
 	}
+
+	APlayerController* playerController = UGameplayStatics::GetPlayerController(this, 0);
+	if (playerController && CameraShake)
+	{
+		playerController->ClientStartCameraShake(CameraShake);
+	}
 }
 
 void APlayerCharacter::OnDeath(FDamageInfo damageInfo)
