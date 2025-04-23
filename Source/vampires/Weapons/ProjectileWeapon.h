@@ -8,7 +8,6 @@
 
 class UProjectileDataAsset;
 class AProjectile;
-class UBoxComponent;
 
 /**
  * 
@@ -19,9 +18,6 @@ class VAMPIRES_API AProjectileWeapon : public AWeapon
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	UBoxComponent* BoxComponent = nullptr;
-
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
 	TObjectPtr<UProjectileDataAsset> ProjectileTemplate = nullptr;
 
@@ -32,29 +28,12 @@ public:
 	float ProjectileSpawningDelay = 0.25f;
 
 protected:
-	TArray<AActor*> OverlappedEnemies = TArray<AActor*>();
-
 	FTimerHandle FireProjectileTimerHandler;
 
 private:
 	int remainingProjectilesToSpawn = 0;
 
 public:
-	AProjectileWeapon();
-
-protected:
-	virtual void BeginPlay() override;
-
-public:
-	UFUNCTION()
-	void OnWeaponBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	                          UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
-	                          const FHitResult& SweepResult);
-
-	UFUNCTION()
-	void OnWeaponEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-	                        int32 OtherBodyIndex);
-
 	virtual void FireWeaponAction_Implementation() override;
 
 protected:

@@ -30,7 +30,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	USphereComponent* SphereComponent;
 
-	TArray<FOverlappedEnemy> OverlappedEnemies;
+	TArray<FOverlappedEnemy> GarlicOverlappedEnemies;
 
 private:
 	float Range;

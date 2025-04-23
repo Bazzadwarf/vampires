@@ -4,8 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "UnrealClient.h"
 #include "Weapon.generated.h"
 
+class UBoxComponent;
 class UPaperSprite;
 class UWeaponDataAsset;
 
@@ -41,9 +43,18 @@ public:
 	
 	int CurrentLevel = 0;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Properties")
+	bool FollowPlayer = true;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	int MaxLevel = 0;
 
+protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UBoxComponent* BoxComponent = nullptr;
+
+	TArray<AActor*> OverlappedEnemies = TArray<AActor*>();
+	
 private:
 	FTimerHandle WeaponTimerHandle;
 
@@ -66,4 +77,17 @@ public:
 	UFUNCTION(BlueprintNativeEvent)
 	bool UpgradeWeapon();
 	virtual bool UpgradeWeapon_Implementation();
+
+	UFUNCTION()
+	virtual void OnWeaponBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+							  UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+							  const FHitResult& SweepResult);
+
+	UFUNCTION()
+	virtual void OnWeaponEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+							int32 OtherBodyIndex);
+
+private:
+	
+	void ResizeBoxComponent(FViewport* Viewport, uint32 unused);
 };

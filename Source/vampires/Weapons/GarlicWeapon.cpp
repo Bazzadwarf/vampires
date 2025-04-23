@@ -42,7 +42,7 @@ void AGarlicWeapon::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAc
 		                                                              overlappedEnemy),
 		                                WeaponCooldown,
 		                                true);
-		OverlappedEnemies.Add(overlappedEnemy);
+		GarlicOverlappedEnemies.Add(overlappedEnemy);
 	}
 }
 
@@ -51,12 +51,12 @@ void AGarlicWeapon::OnEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* Ot
 {
 	if (AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(OtherActor))
 	{
-		for (int i = 0; i < OverlappedEnemies.Num(); i++)
+		for (int i = 0; i < GarlicOverlappedEnemies.Num(); i++)
 		{
-			if (Enemy == OverlappedEnemies[i].OverlappedEnemyCharacter)
+			if (Enemy == GarlicOverlappedEnemies[i].OverlappedEnemyCharacter)
 			{
-				GetWorldTimerManager().ClearTimer(OverlappedEnemies[i].OverlappedTimerHandle);
-				OverlappedEnemies.RemoveAt(i);
+				GetWorldTimerManager().ClearTimer(GarlicOverlappedEnemies[i].OverlappedTimerHandle);
+				GarlicOverlappedEnemies.RemoveAt(i);
 				return;
 			}
 		}
