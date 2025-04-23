@@ -29,6 +29,16 @@ APlayerCharacter::APlayerCharacter()
 	HealthBarWidgetComponent->SetTwoSided(true);
 	HealthBarWidgetComponent->SetBackgroundColor(FLinearColor(1, 1, 1, 0));
 	HealthBarWidgetComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	CameraShakeTimelineComponent = CreateDefaultSubobject<UTimelineComponent>(TEXT("Camera Shake Timeline Component"));
+	CameraShakeTimelineComponent->SetDirectionPropertyName(FName("TimelineDirection"));
+	CameraShakeTimelineComponent->SetLooping(false);
+	CameraShakeTimelineComponent->SetTimelineLength(0.5f);
+	CameraShakeTimelineComponent->SetTimelineLengthMode(TL_TimelineLength);
+	CameraShakeTimelineComponent->SetPlaybackPosition(0.0f, false);
+
+	onTimelineCallback.BindUFunction(this, FName(TEXT("CameraShakeTimelineCallback")));
+	onTimelineFinishedCallback.BindUFunction(this, FName(TEXT("CameraShakeTimelineFinishedCallback")));
 }
 
 void APlayerCharacter::BeginPlay()
@@ -37,6 +47,14 @@ void APlayerCharacter::BeginPlay()
 
 	GetHealthComponent()->OnDamaged.AddDynamic(this, &APlayerCharacter::OnDamaged);
 	GetHealthComponent()->OnDeath.AddDynamic(this, &APlayerCharacter::OnDeath);
+
+	if (CameraShakeCurve != nullptr)
+	{
+		CameraShakeTimelineComponent->AddInterpFloat(CameraShakeCurve, onTimelineCallback);
+		CameraShakeTimelineComponent->SetTimelineFinishedFunc(onTimelineFinishedCallback);
+	}
+
+	PlayerCameraManager = GetWorld()->GetFirstPlayerController()->PlayerCameraManager;
 }
 
 void APlayerCharacter::Tick(float DeltaTime)
@@ -78,11 +96,7 @@ void APlayerCharacter::OnDamaged(FDamageInfo damageInfo)
 		UGameplayStatics::PlaySoundAtLocation(GetWorld(), OnDamagedSound, GetActorLocation());
 	}
 
-	APlayerController* playerController = UGameplayStatics::GetPlayerController(this, 0);
-	if (playerController && CameraShake)
-	{
-		playerController->ClientStartCameraShake(CameraShake);
-	}
+	CameraShakeTimelineComponent->PlayFromStart();
 }
 
 void APlayerCharacter::OnDeath(FDamageInfo damageInfo)
@@ -93,4 +107,18 @@ void APlayerCharacter::OnDeath(FDamageInfo damageInfo)
 	}
 
 	// TODO: End the game
+}
+
+void APlayerCharacter::CameraShakeTimelineCallback(float val)
+{
+	auto PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	auto cameraActor = PlayerController->GetViewTarget();
+	cameraActor->SetActorLocation(FVector(FMath::RandRange(0.0f, CameraShakeStrength) * val, FMath::RandRange(0.0f, CameraShakeStrength) * val, 0.0f));
+}
+
+void APlayerCharacter::CameraShakeTimelineFinishedCallback()
+{
+	auto PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	auto cameraActor = PlayerController->GetViewTarget();
+	cameraActor->SetActorLocation(FVector::ZeroVector);
 }

@@ -4,8 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "VampireCharacter.h"
+#include "Components/TimelineComponent.h"
 #include "PlayerCharacter.generated.h"
 
+struct FDamageInfo;
 struct FInputActionInstance;
 class UWidgetComponent;
 class UWeaponInventoryComponent;
@@ -32,10 +34,24 @@ public:
 	UPROPERTY(EditAnywhere)
 	UWidgetComponent* HealthBarWidgetComponent;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TObjectPtr<UTimelineComponent> CameraShakeTimelineComponent = nullptr;
+	
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<UCameraShakeBase> CameraShake;
+	TObjectPtr<UCurveFloat> CameraShakeCurve;
 
+	UPROPERTY(EditAnywhere)
+	float CameraShakeStrength = 100.0f;
+
+private:
+	
+	TObjectPtr<APlayerCameraManager> PlayerCameraManager = nullptr;
+	
 	APlayerCharacter();
+
+private:
+	FOnTimelineFloat onTimelineCallback;
+	FOnTimelineEventStatic onTimelineFinishedCallback;
 
 protected:
 	virtual void BeginPlay() override;
@@ -53,4 +69,10 @@ private:
 
 	UFUNCTION()
 	virtual void OnDeath(FDamageInfo damageInfo);
+
+	UFUNCTION()
+	void CameraShakeTimelineCallback(float val);
+
+	UFUNCTION()
+	void CameraShakeTimelineFinishedCallback();
 };
