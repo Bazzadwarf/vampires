@@ -7,8 +7,8 @@
 #include "Engine/DataAsset.h"
 #include "EnemyDataAsset.generated.h"
 
-class UPaperFlipbook;
 class UBehaviorTree;
+class UNiagaraSystem;
 
 /**
  * 
@@ -33,4 +33,10 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USoundBase> OnDeathSoundBase = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true"))
+	UNiagaraSystem* OnDamagedNiagaraSystem;
+
+	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true"))
+	UNiagaraSystem* OnDeathNiagaraSystem;
 };

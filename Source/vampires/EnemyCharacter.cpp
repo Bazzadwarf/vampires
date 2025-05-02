@@ -6,15 +6,14 @@
 #include "EnemyDataAsset.h"
 #include "EXPPickup.h"
 #include "HealthComponent.h"
-#include "MovieSceneTracksComponentTypes.h"
 #include "ObjectPoolComponent.h"
 #include "ObjectPoolManager.h"
-#include "PaperFlipbookComponent.h"
 #include "VampireAIController.h"
 #include "VampireGameMode.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "NiagaraFunctionLibrary.h"
 
 AEnemyCharacter::AEnemyCharacter(const FObjectInitializer& ObjectInitializer)
 {
@@ -54,6 +53,11 @@ void AEnemyCharacter::OnDamaged(FDamageInfo damageInfo)
 	{
 		UGameplayStatics::PlaySoundAtLocation(GetWorld(), OnDamagedSound, GetActorLocation());
 	}
+
+	if (OnDamagedNiagaraSystem)
+	{
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, OnDamagedNiagaraSystem, GetActorLocation());
+	}
 }
 
 void AEnemyCharacter::OnDeath(FDamageInfo damageInfo)
@@ -80,6 +84,11 @@ void AEnemyCharacter::OnDeath(FDamageInfo damageInfo)
 	{
 		UGameplayStatics::PlaySoundAtLocation(GetWorld(), OnDeathSound, GetActorLocation());
 	}
+
+	if (OnDeathNiagaraSystem)
+	{
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, OnDeathNiagaraSystem, GetActorLocation());
+	}
 }
 
 void AEnemyCharacter::LoadDataFromDataAsset_Implementation(UEnemyDataAsset* enemyDataAsset)
@@ -91,6 +100,8 @@ void AEnemyCharacter::LoadDataFromDataAsset_Implementation(UEnemyDataAsset* enem
 		PickupTemplate = enemyDataAsset->PickupDataAsset;
 		OnDamagedSound = enemyDataAsset->OnDamagedSoundBase;
 		OnDeathSound = enemyDataAsset->OnDeathSoundBase;
+		OnDamagedNiagaraSystem = enemyDataAsset->OnDamagedNiagaraSystem;
+		OnDeathNiagaraSystem = enemyDataAsset->OnDeathNiagaraSystem;
 	}
 }
 
@@ -101,6 +112,8 @@ void AEnemyCharacter::ResetData_Implementation()
 	PickupTemplate = nullptr;
 	OnDamagedSound = nullptr;
 	OnDeathSound = nullptr;
+	OnDamagedNiagaraSystem = nullptr;
+	OnDeathNiagaraSystem = nullptr;
 }
 
 float AEnemyCharacter::GetCapsuleRadius_Implementation()

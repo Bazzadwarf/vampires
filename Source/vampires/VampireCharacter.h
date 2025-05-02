@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "VampireCharacter.generated.h"
 
+class UNiagaraSystem;
 class AWeapon;
 class UWeaponInventoryComponent;
 class UInputAction;
@@ -42,6 +43,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USoundBase* OnDeathSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UNiagaraSystem* OnDamagedNiagaraSystem;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UNiagaraSystem* OnDeathNiagaraSystem;
 
 public:
 	// Sets default values for this character's properties
