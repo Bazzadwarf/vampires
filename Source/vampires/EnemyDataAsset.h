@@ -20,13 +20,13 @@ class VAMPIRES_API UEnemyDataAsset : public UDataAsset
 
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	UStaticMesh* StaticMesh;
+	TObjectPtr<UStaticMesh> StaticMesh;
 
 	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true"))
-	UBehaviorTree* BehaviorTree = nullptr;
+	TObjectPtr<UBehaviorTree> BehaviorTree = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true"))
-	UPickupDataAsset* PickupDataAsset = nullptr;
+	TObjectPtr<UPickupDataAsset> PickupDataAsset = nullptr;
 	
 	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USoundBase> OnDamagedSoundBase = nullptr;
@@ -35,8 +35,8 @@ public:
 	TObjectPtr<USoundBase> OnDeathSoundBase = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true"))
-	UNiagaraSystem* OnDamagedNiagaraSystem;
+	TObjectPtr<UNiagaraSystem> OnDamagedNiagaraSystem;
 
 	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true"))
-	UNiagaraSystem* OnDeathNiagaraSystem;
+	TObjectPtr<UNiagaraSystem> OnDeathNiagaraSystem;
 };

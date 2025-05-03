@@ -27,7 +27,7 @@ public:
 	TObjectPtr<UTexture2D> Icon;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon Properties")
-	USoundBase* WeaponActivatedSoundBase = nullptr;
+	TObjectPtr<USoundBase> WeaponActivatedSoundBase = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon Properties")
 	TObjectPtr<UPaperSprite> WeaponSprite = nullptr;
@@ -51,9 +51,9 @@ public:
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	UBoxComponent* BoxComponent = nullptr;
+	TObjectPtr<UBoxComponent> BoxComponent = nullptr;
 
-	TArray<AActor*> OverlappedEnemies = TArray<AActor*>();
+	TArray<TObjectPtr<AActor>> OverlappedEnemies = TArray<TObjectPtr<AActor>>();
 	
 private:
 	FTimerHandle WeaponTimerHandle;

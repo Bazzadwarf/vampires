@@ -15,10 +15,10 @@ class VAMPIRES_API ASwarmAgent : public AActor
 
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	USphereComponent* SphereComponent = nullptr;
+	TObjectPtr<USphereComponent> SphereComponent = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UStaticMeshComponent* StaticMeshComponent = nullptr;
+	TObjectPtr<UStaticMeshComponent> StaticMeshComponent = nullptr;
 
 	// Sets default values for this actor's properties
 	ASwarmAgent();

@@ -21,7 +21,7 @@ class VAMPIRES_API AVampireCharacter : public ACharacter, public IInputable
 
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	UStaticMeshComponent* StaticMeshComponent;
+	TObjectPtr<UStaticMeshComponent> StaticMeshComponent;
 
 	FVector2D PreviousMovementDirection = FVector2d(1.0f, 0.0f);
 
@@ -30,25 +30,25 @@ public:
 	
 protected:
 	UPROPERTY(VisibleAnywhere)
-	UHealthComponent* HealthComponent;
+	TObjectPtr<UHealthComponent> HealthComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UInputMappingContext> InputMappingContext;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UWeaponInventoryComponent* WeaponInventoryComponent;
+	TObjectPtr<UWeaponInventoryComponent> WeaponInventoryComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	USoundBase* OnDamagedSound;
+	TObjectPtr<USoundBase> OnDamagedSound;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	USoundBase* OnDeathSound;
+	TObjectPtr<USoundBase> OnDeathSound;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UNiagaraSystem* OnDamagedNiagaraSystem;
+	TObjectPtr<UNiagaraSystem> OnDamagedNiagaraSystem;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UNiagaraSystem* OnDeathNiagaraSystem;
+	TObjectPtr<UNiagaraSystem> OnDeathNiagaraSystem;
 
 public:
 	// Sets default values for this character's properties

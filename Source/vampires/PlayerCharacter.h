@@ -26,13 +26,13 @@ class VAMPIRES_API APlayerCharacter : public AVampireCharacter
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UEXPComponent* EXPComponent;
+	TObjectPtr<UEXPComponent> EXPComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UGoldComponent* GoldComponent;
+	TObjectPtr<UGoldComponent> GoldComponent;
 
 	UPROPERTY(EditAnywhere)
-	UWidgetComponent* HealthBarWidgetComponent;
+	TObjectPtr<UWidgetComponent> HealthBarWidgetComponent;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<UTimelineComponent> CameraShakeTimelineComponent = nullptr;

@@ -14,7 +14,8 @@ struct FOverlappedEnemy
 {
 	GENERATED_BODY()
 
-	AEnemyCharacter* OverlappedEnemyCharacter;
+	UPROPERTY()
+	TObjectPtr<AEnemyCharacter> OverlappedEnemyCharacter;
 
 	FTimerHandle OverlappedTimerHandle;
 };
@@ -28,7 +29,7 @@ class VAMPIRES_API AGarlicWeapon : public AWeapon
 	GENERATED_BODY()
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	USphereComponent* SphereComponent;
+	TObjectPtr<USphereComponent> SphereComponent;
 
 	TArray<FOverlappedEnemy> GarlicOverlappedEnemies;
 

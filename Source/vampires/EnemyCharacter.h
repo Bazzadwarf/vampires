@@ -35,13 +35,15 @@ public:
 
 private:
 	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true"))
-	UBehaviorTree* BehaviorTree = nullptr;
+	TObjectPtr<UBehaviorTree> BehaviorTree = nullptr;
 
-	UObjectPoolComponent* ObjectPoolComponent = nullptr;
+	UPROPERTY()
+	TObjectPtr<UObjectPoolComponent> ObjectPoolComponent = nullptr;
 
-	UPickupDataAsset* PickupTemplate = nullptr;
+	UPROPERTY()
+	TObjectPtr<UPickupDataAsset> PickupTemplate = nullptr;
 
-	TArray<AActor*> Player;
+	TArray<TObjectPtr<AActor>> Player;
 
 	FTimerHandle DamageTimerHandle;
 

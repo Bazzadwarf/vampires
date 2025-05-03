@@ -33,17 +33,20 @@ public:
 
 	// Inputs	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	UInputAction* MovementAction;
+	TObjectPtr<UInputAction> MovementAction;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	UInputAction* PauseAction;
+	TObjectPtr<UInputAction> PauseAction;
 
 private:
 
+	UPROPERTY()
 	TObjectPtr<UHUDWidget> currentPlayerHUD = nullptr;
 
+	UPROPERTY()
 	TObjectPtr<UPauseWidget> currentPauseUI = nullptr;
-	
+
+	UPROPERTY()
 	TObjectPtr<ULevelUpWidget> currentLevelUpUI = nullptr;
 
 	FTimerHandle pawnLifeTimeHandle;

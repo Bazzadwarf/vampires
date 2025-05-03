@@ -24,7 +24,7 @@ public:
 
 private:
 	UPROPERTY()
-	TArray<AWeapon*> inventory;
+	TArray<TObjectPtr<AWeapon>> inventory;
 
 public:
 	// Sets default values for this component's properties

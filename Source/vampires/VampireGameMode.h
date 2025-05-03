@@ -39,20 +39,26 @@ public:
 	TArray<TObjectPtr<UEnemyDataAsset>> EnemyDataAssets;
 
 private:
+	UPROPERTY()
 	TObjectPtr<APlayerCharacter> PlayerCharacter;
 
+	UPROPERTY()
 	TObjectPtr<AVampirePlayerController> PlayerController;
 
 	FTimerHandle SpawnEnemyTimerDelegate;
 
 	int EnemyDeathCount = 0;
 
+	UPROPERTY()
 	TObjectPtr<AObjectPoolManager> EnemyObjectPoolManager = nullptr;
 
+	UPROPERTY()
 	TObjectPtr<AObjectPoolManager> ProjectileObjectPoolManager = nullptr;
 
+	UPROPERTY()
 	TObjectPtr<AObjectPoolManager> PickupObjectPoolManager = nullptr;
-	
+
+	UPROPERTY()
 	TArray<TObjectPtr<UEnemyDataAsset>> SpawnableEnemyDataAssets;
 
 protected:

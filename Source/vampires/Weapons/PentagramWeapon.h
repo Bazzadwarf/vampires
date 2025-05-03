@@ -18,7 +18,7 @@ class VAMPIRES_API APentagramWeapon : public AWeapon
 	GENERATED_BODY()
 
 private:
-	TArray<APickup*> OverlappedPickups = TArray<APickup*>();
+	TArray<TObjectPtr<APickup>> OverlappedPickups = TArray<TObjectPtr<APickup>>();
 
 public:
 	APentagramWeapon();

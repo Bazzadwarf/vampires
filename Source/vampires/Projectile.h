@@ -18,10 +18,10 @@ class VAMPIRES_API AProjectile : public AActor, public IProjectilable
 
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	USphereComponent* SphereComponent = nullptr;
+	TObjectPtr<USphereComponent> SphereComponent = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	UProjectileMovementComponent* ProjectileMovement = nullptr;
+	TObjectPtr<UProjectileMovementComponent> ProjectileMovement = nullptr;
 
 	FVector TargetDirection = FVector::ZeroVector;
 
@@ -29,7 +29,7 @@ public:
 	float ProjectileSpeed = 500.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UStaticMeshComponent* StaticMeshComponent = nullptr;
+	TObjectPtr<UStaticMeshComponent> StaticMeshComponent = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int RemainingDamagableEnemies = 1;

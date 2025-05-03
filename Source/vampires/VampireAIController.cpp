@@ -15,7 +15,7 @@
 AVampireAIController::AVampireAIController(const FObjectInitializer& object_initializer) : Super(
 	object_initializer.SetDefaultSubobjectClass<UCrowdFollowingComponent>(TEXT("Path Following Component")))
 {
-	Blackboard = CreateDefaultSubobject<UBlackboardComponent>(TEXT("Blackboard"));
+	DefaultBlackboard = CreateDefaultSubobject<UBlackboardComponent>(TEXT("Blackboard"));
 	BehaviorTree = CreateDefaultSubobject<UBehaviorTreeComponent>(TEXT("Behavior Tree"));
 }
 
@@ -38,7 +38,7 @@ void AVampireAIController::Tick(float DeltaTime)
 
 	if (PlayerCharacter)
 	{
-		Blackboard->SetValueAsVector("PlayerLocation", PlayerCharacter->GetActorLocation());
+		DefaultBlackboard->SetValueAsVector("PlayerLocation", PlayerCharacter->GetActorLocation());
 	}
 }
 
@@ -56,13 +56,13 @@ void AVampireAIController::OnPossess(APawn* InPawn)
 
 	if (UBehaviorTree* bt = EnemyCharacter->GetBehaviorTree())
 	{
-		Blackboard->InitializeBlackboard(*bt->BlackboardAsset);
+		DefaultBlackboard->InitializeBlackboard(*bt->BlackboardAsset);
 		BehaviorTree->StartTree(*bt);
-		Blackboard->SetValueAsObject("SelfActor", EnemyCharacter);
+		DefaultBlackboard->SetValueAsObject("SelfActor", EnemyCharacter);
 
 		if (PlayerCharacter)
 		{
-			Blackboard->SetValueAsObject("Player", PlayerCharacter);
+			DefaultBlackboard->SetValueAsObject("Player", PlayerCharacter);
 		}
 	}
 }

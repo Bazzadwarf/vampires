@@ -11,7 +11,7 @@ class VAMPIRES_API AObjectPoolManager : public AActor
 {
 	GENERATED_BODY()
 
-	TArray<AActor*> ObjectPool = TArray<AActor*>();
+	TArray<TObjectPtr<AActor>> ObjectPool = TArray<TObjectPtr<AActor>>();
 
 public:
 	void InitializeObjectPool(TSubclassOf<AActor> Object, int InitialObjectPoolSize = 400);

@@ -22,22 +22,22 @@ public:
 	int PickupValue = 1;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	USphereComponent* InnerSphereComponent = nullptr;
+	TObjectPtr<USphereComponent> InnerSphereComponent = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	USphereComponent* OuterSphereComponent = nullptr;
+	TObjectPtr<USphereComponent> OuterSphereComponent = nullptr;
 
 	UPROPERTY(EditAnywhere)
-	UStaticMeshComponent* StaticMeshComponent = nullptr;
+	TObjectPtr<UStaticMeshComponent> StaticMeshComponent = nullptr;
 
 	UPROPERTY(EditDefaultsOnly)
-	USoundBase* PickupSoundBase = nullptr;
+	TObjectPtr<USoundBase> PickupSoundBase = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Timeline")
 	TObjectPtr<UTimelineComponent> TimelineComponent = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Timeline")
-	UCurveFloat* CurveFloat;
+	TObjectPtr<UCurveFloat> CurveFloat;
 
 private:
 	FOnTimelineFloat onTimelineCallback;

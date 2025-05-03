@@ -33,7 +33,7 @@ public:
 private:
 	FOnTimelineFloat onTimelineCallback;
 
-	TArray<ASwarmAgent*> SwarmActors;
+	TArray<TObjectPtr<ASwarmAgent>> SwarmActors;
 
 public:
 	// Sets default values for this actor's properties

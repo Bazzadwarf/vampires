@@ -18,13 +18,17 @@ class VAMPIRES_API AVampireAIController : public AAIController
 {
 	GENERATED_BODY()
 
-	UBlackboardComponent* Blackboard;
+	UPROPERTY()
+	TObjectPtr<UBlackboardComponent> DefaultBlackboard;
 
-	UBehaviorTreeComponent* BehaviorTree;
+	UPROPERTY()
+	TObjectPtr<UBehaviorTreeComponent> BehaviorTree;
 
-	ACharacter* PlayerCharacter;
+	UPROPERTY()
+	TObjectPtr<ACharacter> PlayerCharacter;
 
-	AEnemyCharacter* EnemyCharacter;
+	UPROPERTY()
+	TObjectPtr<AEnemyCharacter> EnemyCharacter;
 
 	FTimerHandle PawnMoveToTimerHandle;
 
