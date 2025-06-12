@@ -24,14 +24,10 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	UListView* UpgradesListView;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<TSubclassOf<UUpgradeButtonDataObject>> UpgradeItems;
 	
 	virtual void NativeConstruct() override;
 	
 private:
-
 	
 	UFUNCTION()
 	void ResumeButtonClicked();
