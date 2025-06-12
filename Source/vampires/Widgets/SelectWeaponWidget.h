@@ -3,20 +3,35 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Widgets/SCompoundWidget.h"
+#include "VampireInteractiveWidget.h"
+#include "SelectWeaponWidget.generated.h"
 
+
+class UListView;
+class UButton;
 /**
  * 
  */
-class VAMPIRES_API SelectWeaponWidget : public SCompoundWidget
+UCLASS()
+class VAMPIRES_API USelectWeaponWidget : public UVampireInteractiveWidget
 {
+	GENERATED_BODY()
 public:
-	SLATE_BEGIN_ARGS(SelectWeaponWidget)
-		{
-		}
 
-	SLATE_END_ARGS()
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	UButton* BackButton;
 
-	/** Constructs this widget with InArgs */
-	void Construct(const FArguments& InArgs);
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	UListView* UpgradesListView;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TSubclassOf<class UUserWidget> PreviousWidget;
+
+	virtual void NativeConstruct() override;
+	
+private:
+	
+	UFUNCTION()
+	void BackButtonClicked();
+
 };

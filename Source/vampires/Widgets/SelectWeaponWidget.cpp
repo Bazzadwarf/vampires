@@ -3,18 +3,32 @@
 
 #include "SelectWeaponWidget.h"
 
-#include "SlateOptMacros.h"
+#include "MainMenuWidget.h"
+#include "Components/Button.h"
+#include "Kismet/GameplayStatics.h"
 
-BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
-
-void SelectWeaponWidget::Construct(const FArguments& InArgs)
+void USelectWeaponWidget::NativeConstruct()
 {
-	/*
-	ChildSlot
-	[
-		// Populate the widget
-	];
-	*/
+	Super::NativeConstruct();
+
+	if (BackButton)
+	{
+		BackButton->OnClicked.AddUniqueDynamic(this, &USelectWeaponWidget::BackButtonClicked);
+	}
 }
 
-END_SLATE_FUNCTION_BUILD_OPTIMIZATION
+void USelectWeaponWidget::BackButtonClicked()
+{
+	if (PreviousWidget)
+	{
+		RemoveFromParent();
+
+		UUserWidget* selectWeaponWidget = CreateWidget<UUserWidget, APlayerController*>(
+			UGameplayStatics::GetPlayerController(GetWorld(), 0), PreviousWidget);
+
+		if (selectWeaponWidget)
+		{
+			selectWeaponWidget->AddToViewport();
+		}
+	}	
+}

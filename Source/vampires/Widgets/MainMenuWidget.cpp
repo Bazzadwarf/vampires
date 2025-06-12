@@ -3,6 +3,7 @@
 
 #include "MainMenuWidget.h"
 
+#include "SelectWeaponWidget.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
@@ -35,6 +36,8 @@ void UMainMenuWidget::NativeConstruct()
 		QuitButton->OnUnhovered.AddUniqueDynamic(this, &UMainMenuWidget::PlayUnhoveredSound);
 	}
 
+	QuitButton->SetIsEnabled(false);
+
 	if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
 	{
 		UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(PlayerController, this, EMouseLockMode::LockAlways);
@@ -44,18 +47,31 @@ void UMainMenuWidget::NativeConstruct()
 
 void UMainMenuWidget::NewGameButtonOnClicked()
 {
-	if (!NewGameLevel.IsNull())
+	if (NewGameMenuWidget)
 	{
-		UGameplayStatics::OpenLevelBySoftObjectPtr(GetWorld(), NewGameLevel);
-	}
+		RemoveFromParent();
 
-	if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
-	{
-		PlayerController->bShowMouseCursor = false;
-		UWidgetBlueprintLibrary::SetInputMode_GameOnly(PlayerController);
-	}
+		UUserWidget* selectWeaponWidget = CreateWidget<UUserWidget, APlayerController*>(
+			UGameplayStatics::GetPlayerController(GetWorld(), 0), NewGameMenuWidget);
 
-	SetIsFocusable(false);
+		if (selectWeaponWidget)
+		{
+			selectWeaponWidget->AddToViewport();
+		}
+	}	
+
+	// if (!NewGameLevel.IsNull())
+	// {
+	// 	UGameplayStatics::OpenLevelBySoftObjectPtr(GetWorld(), NewGameLevel);
+	// }
+	//
+	// if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+	// {
+	// 	PlayerController->bShowMouseCursor = false;
+	// 	UWidgetBlueprintLibrary::SetInputMode_GameOnly(PlayerController);
+	// }
+	//
+	// SetIsFocusable(false);
 }
 
 void UMainMenuWidget::QuitButtonOnClicked()
