@@ -7,6 +7,7 @@
 #include "SelectWeaponWidget.generated.h"
 
 
+class AWeapon;
 class UListView;
 class UButton;
 /**
@@ -23,6 +24,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	UListView* UpgradesListView;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TArray<TSubclassOf<AWeapon>> starterWeapons;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TSubclassOf<class UUserWidget> PreviousWidget;
