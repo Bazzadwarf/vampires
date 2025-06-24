@@ -49,10 +49,10 @@ UBehaviorTree* AEnemyCharacter::GetBehaviorTree()
 
 void AEnemyCharacter::OnDamaged(FDamageInfo damageInfo)
 {
-	if (OnDamagedSound)
-	{
+	// if (OnDamagedSound)
+	// {
 		UGameplayStatics::PlaySoundAtLocation(GetWorld(), OnDamagedSound, GetActorLocation());
-	}
+	// }
 
 	if (OnDamagedNiagaraSystem)
 	{
