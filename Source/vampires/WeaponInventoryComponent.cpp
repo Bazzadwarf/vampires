@@ -29,7 +29,10 @@ void UWeaponInventoryComponent::InitializeInventory()
 
 	for (TSubclassOf<AWeapon> weapon : initialInventory)
 	{
-		AddWeaponToInventory(weapon);
+		if (IsValid(weapon))
+		{
+			AddWeaponToInventory(weapon);
+		}
 	}
 }
 
@@ -39,7 +42,6 @@ void UWeaponInventoryComponent::AddWeaponToInventory(TSubclassOf<AWeapon> Weapon
 	SpawnParameters.Owner = GetOwner();
 	
 	AWeapon* weapon = GetWorld()->SpawnActor<AWeapon>(Weapon, GetOwner()->GetTransform(), SpawnParameters);
-
 	if (weapon->FollowPlayer)
 	{
 		weapon->AttachToActor(GetOwner(), FAttachmentTransformRules::KeepRelativeTransform);
@@ -50,6 +52,7 @@ void UWeaponInventoryComponent::AddWeaponToInventory(TSubclassOf<AWeapon> Weapon
 	}
 	
 	inventory.Add(weapon);
+	obtainableWeapons.Remove(Weapon);
 }
 
 TArray<AWeapon*> UWeaponInventoryComponent::GetInventory()

@@ -2,6 +2,8 @@
 
 
 #include "GarlicWeapon.h"
+
+#include "MovieSceneTracksComponentTypes.h"
 #include "Components/SphereComponent.h"
 #include "vampires/EnemyCharacter.h"
 #include "vampires/HealthComponent.h"
@@ -9,7 +11,7 @@
 AGarlicWeapon::AGarlicWeapon()
 {
 	SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere Component"));
-	SphereComponent->SetupAttachment(RootComponent);
+	SetRootComponent(SphereComponent);
 	SphereComponent->SetSphereRadius(150.0f);
 	SphereComponent->SetCollisionProfileName(TEXT("Weapon"));
 	

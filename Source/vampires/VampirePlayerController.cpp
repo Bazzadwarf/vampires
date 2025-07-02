@@ -8,7 +8,10 @@
 #include "EXPComponent.h"
 #include "GoldComponent.h"
 #include "Inputable.h"
+#include "VampireGameInstance.h"
 #include "VampireGameMode.h"
+#include "Weapon.h"
+#include "WeaponInventoryComponent.h"
 #include "Blueprint/UserWidget.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
@@ -56,6 +59,17 @@ void AVampirePlayerController::OnPossess(APawn* aPawn)
 		if (currentPlayerHUD)
 		{
 			currentPlayerHUD->AddToViewport();
+		}
+	}
+
+	if (UVampireGameInstance* gameInstance = Cast<UVampireGameInstance>(GetGameInstance()))
+	{
+		UWeaponInventoryComponent* weaponInventoryComponent = aPawn->GetComponentByClass<
+			UWeaponInventoryComponent>();
+		
+		if (weaponInventoryComponent && gameInstance->StarterWeapon)
+		{			
+			weaponInventoryComponent->initialInventory.Add(gameInstance->StarterWeapon);
 		}
 	}
 }

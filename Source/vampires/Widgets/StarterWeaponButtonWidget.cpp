@@ -4,9 +4,12 @@
 #include "StarterWeaponButtonWidget.h"
 
 #include "StarterWeaponButtonDataObject.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Components/Button.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
+#include "Kismet/GameplayStatics.h"
+#include "vampires/VampireGameInstance.h"
 
 void UStarterWeaponButtonWidget::NativeConstruct()
 {
@@ -34,4 +37,20 @@ void UStarterWeaponButtonWidget::NativeOnListItemObjectSet(UObject* ListItemObje
 
 void UStarterWeaponButtonWidget::OnClicked()
 {
+	if (UVampireGameInstance* gameInstance = Cast<UVampireGameInstance>(GetGameInstance()))
+	{
+		gameInstance->StarterWeapon = WeaponTemplate;
+
+		if (!gameInstance->GameWorld.IsNull())
+		{
+			UGameplayStatics::OpenLevelBySoftObjectPtr(GetWorld(), gameInstance->GameWorld);
+
+			if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+			{
+				PlayerController->bShowMouseCursor = false;
+				UWidgetBlueprintLibrary::SetInputMode_GameOnly(PlayerController);
+			}
+			SetIsFocusable(false);
+		}
+	}
 }
