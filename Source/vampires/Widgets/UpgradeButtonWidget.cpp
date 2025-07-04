@@ -53,6 +53,12 @@ void UUpgradeButtonWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 		if (Body)
 		{
 			Body->OnClicked.AddUniqueDynamic(this, &UUpgradeButtonWidget::OnClicked);
+
+			Body->OnHovered.AddUniqueDynamic(this, &UUpgradeButtonWidget::PlayHoveredSound);
+			Body->OnHovered.AddUniqueDynamic(this, &UUpgradeButtonWidget::OnHoveredDelegate);
+
+			Body->OnUnhovered.AddUniqueDynamic(this, &UUpgradeButtonWidget::OnUnhoveredDelegate);
+			Body->OnUnhovered.AddUniqueDynamic(this, &UUpgradeButtonWidget::PlayUnhoveredSound);
 		}
 	}
 

@@ -17,6 +17,13 @@ void USelectWeaponWidget::NativeConstruct()
 	if (BackButton)
 	{
 		BackButton->OnClicked.AddUniqueDynamic(this, &USelectWeaponWidget::BackButtonClicked);
+		BackButton->OnClicked.AddUniqueDynamic(this, &USelectWeaponWidget::PlayClickedSound);
+
+		BackButton->OnHovered.AddUniqueDynamic(this, &USelectWeaponWidget::PlayHoveredSound);
+		BackButton->OnHovered.AddUniqueDynamic(this, &USelectWeaponWidget::BackButtonTextBlockHoveredDelegate);
+
+		BackButton->OnUnhovered.AddUniqueDynamic(this, &USelectWeaponWidget::BackButtonTextBlockUnhoveredDelegate);
+		BackButton->OnUnhovered.AddUniqueDynamic(this, &USelectWeaponWidget::PlayUnhoveredSound);
 	}
 
 	if (UpgradesListView)

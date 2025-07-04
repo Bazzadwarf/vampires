@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "VampireInteractiveWidget.h"
 #include "Blueprint/IUserObjectListEntry.h"
 #include "Blueprint/UserWidget.h"
 #include "UpgradeButtonWidget.generated.h"
@@ -26,7 +27,7 @@ class UButton;
  * 
  */
 UCLASS()
-class VAMPIRES_API UUpgradeButtonWidget : public UUserWidget, public IUserObjectListEntry
+class VAMPIRES_API UUpgradeButtonWidget : public UVampireInteractiveWidget, public IUserObjectListEntry
 {
 	GENERATED_BODY()
 
@@ -79,4 +80,11 @@ protected:
 private:
 	UFUNCTION()
 	virtual void OnClicked();
+	
+	UFUNCTION()
+	void OnHoveredDelegate() { SetTextBlockHovered(WeaponNameTextBlock); SetTextBlockHovered(DescriptionTextBlock); }
+
+	UFUNCTION()
+	void OnUnhoveredDelegate() { SetTextBlockUnhovered(WeaponNameTextBlock); SetTextBlockUnhovered(DescriptionTextBlock); }
+	
 };

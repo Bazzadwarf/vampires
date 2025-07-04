@@ -31,6 +31,12 @@ void UStarterWeaponButtonWidget::NativeOnListItemObjectSet(UObject* ListItemObje
 		if (Body)
 		{
 			Body->OnClicked.AddUniqueDynamic(this, &UStarterWeaponButtonWidget::OnClicked);
+
+			Body->OnHovered.AddUniqueDynamic(this, &UStarterWeaponButtonWidget::PlayHoveredSound);
+			Body->OnHovered.AddUniqueDynamic(this, &UStarterWeaponButtonWidget::OnHoveredDelegate);
+
+			Body->OnUnhovered.AddUniqueDynamic(this, &UStarterWeaponButtonWidget::OnUnhoveredDelegate);
+			Body->OnUnhovered.AddUniqueDynamic(this, &UStarterWeaponButtonWidget::PlayUnhoveredSound);
 		}
 	}
 }
