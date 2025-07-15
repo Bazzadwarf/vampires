@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "TableRows/ExpTableRow.h"
 #include "EXPComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnEXPGainedDelegate, int, exp, float, currentLevelPercent);
@@ -21,10 +22,15 @@ public:
 	UPROPERTY(BlueprintAssignable, Category="EXP")
 	FOnEXPLevelUpDelegate OnEXPLevelUp;
 
+	UPROPERTY(EditDefaultsOnly, Category="EXP")
+	TObjectPtr<UDataTable> LevelsTable;
+
 protected:
 	int CurrentEXP = 0;
 
 	int CurrentLevel = 0;
+
+	FExpTableRow NextLevelRow;
 
 public:
 	// Sets default values for this component's properties
@@ -51,4 +57,8 @@ public:
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
+
+private:
+
+	void ProcessExp(int oldEXP, int oldLevel, int newEXP);
 };

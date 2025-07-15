@@ -3,6 +3,8 @@
 
 #include "EXPComponent.h"
 
+#include "TableRows/ExpTableRow.h"
+
 // Sets default values for this component's properties
 UEXPComponent::UEXPComponent()
 {
@@ -19,14 +21,39 @@ void UEXPComponent::IncrementEXP(int value)
 	int oldLevel = CurrentLevel;
 	
 	CurrentEXP += value;
-	OnEXPGained.Broadcast(CurrentEXP, GetCurrentLevelPercent());
-
-	CurrentLevel = FMath::Floor(CurrentEXP / 100.0f);
 	
-	if (CurrentLevel != oldLevel)
+	if (NextLevelRow.Level >= 0)
 	{
-		OnEXPLevelUp.Broadcast(CurrentLevel);
+		if (CurrentEXP >= NextLevelRow.CumulativeExpForNextLevel)
+		{
+			CurrentLevel = NextLevelRow.Level;
+	
+			if (FExpTableRow* newRow = LevelsTable->FindRow<FExpTableRow>(FName(*FString::FromInt(NextLevelRow.Level + 1)),"", true))
+			{
+				NextLevelRow = *newRow;	
+			}
+			else
+			{
+				NextLevelRow.Level++;
+				NextLevelRow.CumulativeExpForPreviousLevel = NextLevelRow.CumulativeExpForNextLevel;
+				NextLevelRow.ExpRequiredForNextLevel += 16;
+				NextLevelRow.CumulativeExpForNextLevel += NextLevelRow.ExpRequiredForNextLevel;
+			}
+						
+			OnEXPLevelUp.Broadcast(CurrentLevel);
+		}
 	}
+	else
+	{
+		CurrentLevel = FMath::Floor(CurrentEXP / 100.0f);
+		
+		if (CurrentLevel != oldLevel)
+		{
+			OnEXPLevelUp.Broadcast(CurrentLevel);
+		}
+	}
+	
+	OnEXPGained.Broadcast(CurrentEXP, GetCurrentLevelPercent());
 }
 
 void UEXPComponent::SetCurrentEXP(int value)
@@ -58,6 +85,14 @@ int UEXPComponent::GetCurrentLevel()
 
 void UEXPComponent::Reset()
 {
+	if (LevelsTable)
+	{
+		if (FExpTableRow* newRow = LevelsTable->FindRow<FExpTableRow>(FName("1"), "", true))
+		{
+			NextLevelRow = *newRow;
+		}
+	}
+	
 	CurrentEXP = 0;
 	CurrentLevel = 0;
 	OnEXPGained.Broadcast(CurrentEXP, GetCurrentLevelPercent());
@@ -66,7 +101,15 @@ void UEXPComponent::Reset()
 
 float UEXPComponent::GetCurrentLevelPercent()
 {
-	return (CurrentEXP % 100) / 100.0f;
+	int adjustedCurrentExp = CurrentEXP - NextLevelRow.CumulativeExpForPreviousLevel;
+	float res = static_cast<float>(adjustedCurrentExp) / static_cast<float>(NextLevelRow.ExpRequiredForNextLevel);
+
+	if (FMath::IsNaN(res))
+	{
+		return 0.0f;
+	}
+
+	return res;
 }
 
 // Called when the game starts
