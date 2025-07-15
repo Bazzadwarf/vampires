@@ -61,11 +61,26 @@ void UEXPComponent::SetCurrentEXP(int value)
 	int oldEXP = CurrentEXP;
 	int oldLevel = CurrentLevel;
 	
-	// TODO: I should be updating the level here
 	CurrentEXP = value;
+	
+	NextLevelRow = FExpTableRow();
+	
+	while (CurrentEXP < NextLevelRow.CumulativeExpForPreviousLevel && CurrentEXP < NextLevelRow.CumulativeExpForNextLevel)
+	{
+		if (FExpTableRow* newRow = LevelsTable->FindRow<FExpTableRow>(FName(*FString::FromInt(NextLevelRow.Level + 1)),"", true))
+		{
+			NextLevelRow = *newRow;	
+		}
+		else
+		{
+			NextLevelRow.Level++;
+			NextLevelRow.CumulativeExpForPreviousLevel = NextLevelRow.CumulativeExpForNextLevel;
+			NextLevelRow.ExpRequiredForNextLevel += 16;
+			NextLevelRow.CumulativeExpForNextLevel += NextLevelRow.ExpRequiredForNextLevel;
+		}
+	}	
+	
 	OnEXPGained.Broadcast(CurrentEXP, GetCurrentLevelPercent());
-
-	CurrentLevel = FMath::Floor(CurrentEXP / 100.0f);
 	
 	if (CurrentLevel != oldLevel)
 	{
