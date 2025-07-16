@@ -14,9 +14,11 @@ void AObjectPoolManager::InitializeObjectPool(TSubclassOf<AActor> Object, const 
 {
 	for (int i = 0; i < InitialObjectPoolSize; i++)
 	{
-		AActor* object = GetWorld()->SpawnActor<AActor>(Object, FVector(10000.0f, 10000.0f, 0), FRotator(0, 0, 0));
-		SetObjectStatus(false, object);
-		ObjectPool.Add(object);
+		if (AActor* object = GetWorld()->SpawnActor<AActor>(Object, FVector(100000.0f, 100000.0f, 0), FRotator(0, 0, 0)))
+		{
+			SetObjectStatus(false, object);
+			ObjectPool.Add(object);
+		}
 	}
 }
 
@@ -24,9 +26,11 @@ void AObjectPoolManager::InitializeObjectPool(UClass* Object, int InitialObjectP
 {
 	for (int i = 0; i < InitialObjectPoolSize; i++)
 	{
-		AActor* object = GetWorld()->SpawnActor<AActor>(Object);
-		SetObjectStatus(false, object);
-		ObjectPool.Add(object);
+		if (AActor* object = GetWorld()->SpawnActor<AActor>(Object))
+		{
+			SetObjectStatus(false, object);
+			ObjectPool.Add(object);
+		}
 	}
 }
 
