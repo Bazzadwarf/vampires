@@ -42,11 +42,13 @@ void ASwarmAgent::OnSwarmAgentBeginOverlap(UPrimitiveComponent* OverlappedCompon
 
 		if (!EnemyHealthComponent->GetIsDead())
 		{
-			if (AVampireCharacter* character = Cast<AVampireCharacter>(GetOwner()))
+			if (AWeapon* ownerWeapon = Cast<AWeapon>(GetOwner()))
 			{
-				AController* ownerController = character->GetController();
-				AWeapon* ownerWeapon = Cast<AWeapon>(GetOwner());
-				EnemyHealthComponent->TakeDamage(Enemy, ownerWeapon->Damage, nullptr, ownerController, this);
+				if (AVampireCharacter* character = Cast<AVampireCharacter>(ownerWeapon->GetOwner()))
+				{
+					AController* ownerController = character->GetController();
+					EnemyHealthComponent->TakeDamage(Enemy, ownerWeapon->Damage, nullptr, ownerController, this);
+				}
 			}
 		}
 	}

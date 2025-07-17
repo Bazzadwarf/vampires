@@ -52,7 +52,7 @@ void ASwarmWeapon::TimelineCallback(float val)
 		FVector Direction = FVector(0.0, 1, 0.0);
 		FVector RotatedDirection = Direction.RotateAngleAxis(val * 360.0f + offset, FVector(0.0f, 0.0f, 1.0f));
 		FVector NewLocation = CenterLocation + (RotatedDirection * Distance);
-		NewLocation.Z = 140.0f;
+		NewLocation.Z = 190.0f;
 		SwarmActors[i]->SetActorLocation(NewLocation);
 	}
 }
