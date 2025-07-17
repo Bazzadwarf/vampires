@@ -41,10 +41,10 @@ void UWeaponInventoryComponent::AddWeaponToInventory(TSubclassOf<AWeapon> Weapon
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.Owner = GetOwner();
 	
-	AWeapon* weapon = GetWorld()->SpawnActor<AWeapon>(Weapon, GetOwner()->GetTransform(), SpawnParameters);
+	AWeapon* weapon = GetWorld()->SpawnActor<AWeapon>(Weapon, SpawnParameters.Owner->GetTransform(), SpawnParameters);
 	if (weapon->FollowPlayer)
 	{
-		weapon->AttachToActor(GetOwner(), FAttachmentTransformRules::KeepRelativeTransform);
+		weapon->AttachToActor(GetOwner(), FAttachmentTransformRules::KeepWorldTransform);
 	}
 	else
 	{
