@@ -24,7 +24,7 @@ class VAMPIRES_API IPickupable
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	UFUNCTION(BlueprintNativeEvent)
-	void LoadDataFromDataAsset(UPickupDataAsset* PickupDataAsset);
+	void LoadDataFromDataAsset(UPickupDataAsset* PickupDataAsset, FVector Location);
 
 	UFUNCTION(BlueprintNativeEvent)
 	void ResetData();

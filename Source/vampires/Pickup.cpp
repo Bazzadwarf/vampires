@@ -60,7 +60,7 @@ void APickup::BeginPlay()
 	}
 }
 
-void APickup::LoadDataFromDataAsset_Implementation(UPickupDataAsset* PickupDataAsset)
+void APickup::LoadDataFromDataAsset_Implementation(UPickupDataAsset* PickupDataAsset, FVector Location)
 {
 	if (PickupDataAsset != nullptr)
 	{
@@ -68,7 +68,7 @@ void APickup::LoadDataFromDataAsset_Implementation(UPickupDataAsset* PickupDataA
 		StaticMeshComponent->SetStaticMesh(PickupDataAsset->PickupStaticMesh);
 		PickupSoundBase = PickupDataAsset->PickupSoundBase;
 		CurveFloat = PickupDataAsset->CurveFloat;
-		PickupLocation = GetActorLocation();
+		PickupLocation = Location;
 		
 		if (CurveFloat != nullptr)
 		{

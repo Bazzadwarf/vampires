@@ -53,7 +53,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
-	virtual void LoadDataFromDataAsset_Implementation(UPickupDataAsset* PickupDataAsset) override;
+	virtual void LoadDataFromDataAsset_Implementation(UPickupDataAsset* PickupDataAsset, FVector Location) override;
 
 	virtual void ResetData_Implementation() override;
 	
