@@ -33,6 +33,9 @@ public:
 
 	TArray<FOverlappedEnemy> GarlicOverlappedEnemies;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UStaticMeshComponent> VisualEffectMeshComponent;
+
 private:
 	float Range;
 public:

@@ -17,6 +17,11 @@ AGarlicWeapon::AGarlicWeapon()
 	
 	Damage = 51.0f;
 	Range = SphereComponent->GetScaledSphereRadius();
+
+	VisualEffectMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Visual Layout Mesh Component"));
+	VisualEffectMeshComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	VisualEffectMeshComponent->SetWorldScale3D(FVector(3.0f, 3.0f, 3.0f)); // This is to match the size of our sphere component
+	VisualEffectMeshComponent->SetCollisionProfileName("NoCollision");
 }
 
 void AGarlicWeapon::BeginPlay()
@@ -105,6 +110,7 @@ bool AGarlicWeapon::UpgradeWeapon_Implementation()
 			Range *= 1.4f;
 			SphereComponent->SetSphereRadius(Range);
 			Damage += 2.0f;
+			VisualEffectMeshComponent->SetWorldScale3D(VisualEffectMeshComponent->GetComponentTransform().GetScale3D() * 1.4f);
 			break;
 		case 2:
 			WeaponCooldown -= 0.1f;
@@ -114,6 +120,7 @@ bool AGarlicWeapon::UpgradeWeapon_Implementation()
 			Range *= 1.2f;
 			SphereComponent->SetSphereRadius(Range);
 			Damage += 1.0f;
+			VisualEffectMeshComponent->SetWorldScale3D(VisualEffectMeshComponent->GetComponentTransform().GetScale3D() * 1.2f);
 			break;
 		case 4:
 			WeaponCooldown -= 0.1f;
@@ -123,6 +130,7 @@ bool AGarlicWeapon::UpgradeWeapon_Implementation()
 			Range *= 1.2f;
 			SphereComponent->SetSphereRadius(Range);
 			Damage += 1.0f;
+			VisualEffectMeshComponent->SetWorldScale3D(VisualEffectMeshComponent->GetComponentTransform().GetScale3D() * 1.2f);
 			break;
 		case 6:
 			WeaponCooldown -= 0.1f;
@@ -132,6 +140,7 @@ bool AGarlicWeapon::UpgradeWeapon_Implementation()
 			Range *= 1.2f;
 			SphereComponent->SetSphereRadius(Range);
 			Damage += 1.0f;
+			VisualEffectMeshComponent->SetWorldScale3D(VisualEffectMeshComponent->GetComponentTransform().GetScale3D() * 1.2f);
 			break;
 		default:
 			return false;
