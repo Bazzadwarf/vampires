@@ -12,6 +12,8 @@ void AObjectPoolManager::BeginPlay()
 
 void AObjectPoolManager::InitializeObjectPool(TSubclassOf<AActor> Object, const int InitialObjectPoolSize)
 {
+	ObjectTemplate = Object;
+
 	for (int i = 0; i < InitialObjectPoolSize; i++)
 	{
 		if (AActor* object = GetWorld()->SpawnActor<AActor>(Object, FVector(100000.0f, 100000.0f, 0), FRotator(0, 0, 0)))
@@ -34,24 +36,27 @@ void AObjectPoolManager::InitializeObjectPool(UClass* Object, int InitialObjectP
 	}
 }
 
-AActor* AObjectPoolManager::GetObject()
+AActor* AObjectPoolManager::GetObject(int startingOffset)
 {
-	for (AActor* object : ObjectPool)
+	int ObjectPoolSize = ObjectPool.Num();
+	for (int i = startingOffset; i < ObjectPoolSize; i++)
 	{
-		if (object->IsHidden())
+		if (ObjectPool[i]->IsHidden())
 		{
-			SetObjectStatus(true, object);
+			SetObjectStatus(true, ObjectPool[i]);
 
-			if (UObjectPoolComponent* objectPoolComponent = object->GetComponentByClass<UObjectPoolComponent>())
+			if (UObjectPoolComponent* objectPoolComponent = ObjectPool[i]->GetComponentByClass<UObjectPoolComponent>())
 			{
 				objectPoolComponent->OnRetrieve.ExecuteIfBound();
 			}
 
-			return object;
+			return ObjectPool[i];
 		}
 	}
 
-	return nullptr;
+	InitializeObjectPool(ObjectTemplate);
+
+	return GetObject(ObjectPoolSize);
 }
 
 void AObjectPoolManager::ReturnObject(AActor* object)
