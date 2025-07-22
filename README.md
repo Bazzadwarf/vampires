@@ -4,5 +4,5 @@ A Vampire Survivors clone with a Geometry Wars aesthetic made using Unreal Engin
 
 ## Required Software
 
- - Unreal Engine 5.3 (or later)
+ - Unreal Engine 5.6 (or later)
  - An IDE (Visual Studio 20XX, Rider)
