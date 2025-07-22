@@ -18,6 +18,7 @@ AWeapon::AWeapon()
 	BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Component"));
 	BoxComponent->SetupAttachment(RootComponent);
 	BoxComponent->SetCollisionProfileName(TEXT("Weapon"));
+	SetRootComponent(BoxComponent);
 }
 
 // Called when the game starts or when spawned
