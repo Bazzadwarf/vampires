@@ -6,6 +6,7 @@
 #include "Engine/DataAsset.h"
 #include "ProjectileDataAsset.generated.h"
 
+class UNiagaraSystem;
 /**
  * 
  */
@@ -23,4 +24,7 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	int DamagableEnemies = 1;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UNiagaraSystem> NiagaraRibbonSystem = nullptr;
 };

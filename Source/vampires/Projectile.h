@@ -7,6 +7,7 @@
 #include "Interfaces/Projectilable.h"
 #include "Projectile.generated.h"
 
+class UNiagaraComponent;
 class UProjectileMovementComponent;
 class USphereComponent;
 class UProjectileDataAsset;
@@ -33,6 +34,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int RemainingDamagableEnemies = 1;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TObjectPtr<UNiagaraComponent> NiagaraRibbonComponent = nullptr;
 
 	// Sets default values for this actor's properties
 	AProjectile();

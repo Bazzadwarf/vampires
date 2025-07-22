@@ -5,6 +5,7 @@
 
 #include "EnemyCharacter.h"
 #include "HealthComponent.h"
+#include "NiagaraComponent.h"
 #include "ObjectPoolManager.h"
 #include "ProjectileDataAsset.h"
 #include "Components/SphereComponent.h"
@@ -34,6 +35,10 @@ AProjectile::AProjectile()
 	StaticMeshComponent->SetEnableGravity(false);
 	StaticMeshComponent->SetGenerateOverlapEvents(false);
 	StaticMeshComponent->SetCollisionProfileName(TEXT("NoCollision"));
+
+	NiagaraRibbonComponent = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Niagara Ribbon Component"));
+	NiagaraRibbonComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	NiagaraRibbonComponent->DeactivateImmediate();
 }
 
 // Called when the game starts or when spawned
@@ -70,6 +75,8 @@ void AProjectile::LoadDataFromDataAsset_Implementation(UProjectileDataAsset* pro
 	ProjectileMovement->InitialSpeed = ProjectileSpeed;
 	ProjectileMovement->MaxSpeed = ProjectileSpeed;
 	RemainingDamagableEnemies = projectileDataAsset->DamagableEnemies;
+	NiagaraRibbonComponent->SetAsset(projectileDataAsset->NiagaraRibbonSystem);
+	NiagaraRibbonComponent->ActivateSystem();
 }
 
 void AProjectile::ResetData_Implementation()
@@ -77,6 +84,8 @@ void AProjectile::ResetData_Implementation()
 	ProjectileSpeed = NULL;
 	StaticMeshComponent->SetStaticMesh(nullptr);
 	RemainingDamagableEnemies = 1;
+	NiagaraRibbonComponent->DeactivateImmediate();
+	NiagaraRibbonComponent->SetAsset(nullptr);
 }
 
 void AProjectile::OnProjectileBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -106,7 +115,8 @@ void AProjectile::OnProjectileBeginOverlap(UPrimitiveComponent* OverlappedCompon
 
 				if (UKismetSystemLibrary::DoesImplementInterface(gamemode, UPools::StaticClass()))
 				{
-					if (AObjectPoolManager* objectPoolManager = IPools::Execute_GetProjectileObjectPoolManager(gamemode))
+					if (AObjectPoolManager* objectPoolManager =
+						IPools::Execute_GetProjectileObjectPoolManager(gamemode))
 					{
 						objectPoolManager->ReturnObject(this);
 					}
