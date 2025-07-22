@@ -38,6 +38,12 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TObjectPtr<UNiagaraComponent> NiagaraRibbonComponent = nullptr;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	float ProjectileLifespan = 15.0f;
+
+private:
+	FTimerHandle ProjectileLifetimeTimerHandle;
+	
 	// Sets default values for this actor's properties
 	AProjectile();
 
@@ -59,4 +65,7 @@ private:
 	void OnProjectileBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	                              UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
 	                              const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void ReturnProjectileToPool();
 };

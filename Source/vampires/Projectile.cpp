@@ -56,6 +56,11 @@ void AProjectile::SetActorHiddenInGame(bool bNewHidden)
 	if (bNewHidden)
 	{
 		ResetData_Implementation();
+		GetWorldTimerManager().ClearTimer(ProjectileLifetimeTimerHandle);
+	}
+	else
+	{
+		GetWorldTimerManager().SetTimer(ProjectileLifetimeTimerHandle, this, &AProjectile::ReturnProjectileToPool, ProjectileLifespan, true);		
 	}
 }
 
@@ -111,17 +116,22 @@ void AProjectile::OnProjectileBeginOverlap(UPrimitiveComponent* OverlappedCompon
 
 			if (RemainingDamagableEnemies == 0)
 			{
-				AGameModeBase* gamemode = UGameplayStatics::GetGameMode(GetWorld());
-
-				if (UKismetSystemLibrary::DoesImplementInterface(gamemode, UPools::StaticClass()))
-				{
-					if (AObjectPoolManager* objectPoolManager =
-						IPools::Execute_GetProjectileObjectPoolManager(gamemode))
-					{
-						objectPoolManager->ReturnObject(this);
-					}
-				}
+				ReturnProjectileToPool();
 			}
+		}
+	}
+}
+
+void AProjectile::ReturnProjectileToPool()
+{
+	AGameModeBase* gamemode = UGameplayStatics::GetGameMode(GetWorld());
+
+	if (UKismetSystemLibrary::DoesImplementInterface(gamemode, UPools::StaticClass()))
+	{
+		if (AObjectPoolManager* objectPoolManager =
+			IPools::Execute_GetProjectileObjectPoolManager(gamemode))
+		{
+			objectPoolManager->ReturnObject(this);
 		}
 	}
 }
