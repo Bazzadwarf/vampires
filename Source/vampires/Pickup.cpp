@@ -10,6 +10,7 @@
 #include "PickupDataAsset.h"
 #include "GameFramework/GameModeBase.h"
 #include "Interfaces/Pools.h"
+#include "NiagaraComponent.h"
 
 // Sets default values
 APickup::APickup()
@@ -43,6 +44,10 @@ APickup::APickup()
 
 	onTimelineCallback.BindUFunction(this, FName(TEXT("TimelineCallback")));
 	onTimelineFinishedCallback.BindUFunction(this, FName(TEXT("TimelineFinishedCallback")));
+
+	NiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Niagara Component"));
+	NiagaraComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	NiagaraComponent->DeactivateImmediate();
 }
 
 // Called when the game starts or when spawned

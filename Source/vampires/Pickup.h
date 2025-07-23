@@ -8,6 +8,7 @@
 #include "Interfaces/Pickupable.h"
 #include "Pickup.generated.h"
 
+class UNiagaraComponent;
 class UPickupDataAsset;
 class UTimelineComponent;
 class USphereComponent;
@@ -38,6 +39,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Timeline")
 	TObjectPtr<UCurveFloat> CurveFloat;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TObjectPtr<UNiagaraComponent> NiagaraComponent = nullptr;
 
 private:
 	FOnTimelineFloat onTimelineCallback;
