@@ -6,6 +6,7 @@
 #include "../Weapon.h"
 #include "LightningRingWeapon.generated.h"
 
+class UNiagaraSystem;
 class AEnemyCharacter;
 class USphereComponent;
 /**
@@ -17,13 +18,15 @@ class VAMPIRES_API ALightningRingWeapon : public AWeapon
 	GENERATED_BODY()
 
 public:
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int LightningBolts = 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float LightingBoltRadius = 200.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UNiagaraSystem> LightningEffectSystem;
+	
 public:
 	ALightningRingWeapon();
 
