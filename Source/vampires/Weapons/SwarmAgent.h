@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "SwarmAgent.generated.h"
 
+class UNiagaraComponent;
 class USphereComponent;
 
 UCLASS()
@@ -19,6 +20,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UStaticMeshComponent> StaticMeshComponent = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TObjectPtr<UNiagaraComponent> NiagaraComponent = nullptr;
 
 	// Sets default values for this actor's properties
 	ASwarmAgent();

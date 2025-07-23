@@ -6,6 +6,7 @@
 #include "Components/SphereComponent.h"
 #include "vampires/EnemyCharacter.h"
 #include "vampires/HealthComponent.h"
+#include "NiagaraComponent.h"
 #include "vampires/Weapon.h"
 
 
@@ -22,6 +23,10 @@ ASwarmAgent::ASwarmAgent()
 	StaticMeshComponent->SetEnableGravity(false);
 	StaticMeshComponent->SetGenerateOverlapEvents(false);
 	StaticMeshComponent->SetCollisionProfileName(TEXT("NoCollision"));
+
+	NiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Niagara Component"));
+	NiagaraComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	NiagaraComponent->DeactivateImmediate();
 }
 
 // Called when the game starts or when spawned
