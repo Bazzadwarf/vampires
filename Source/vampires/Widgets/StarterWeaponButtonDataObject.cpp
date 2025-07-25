@@ -7,23 +7,22 @@
 
 void UStarterWeaponButtonDataObject::SetData(AWeapon* Weapon, UUserWidget* parent)
 {
-	WeaponName = Weapon->Name;
-	Description = Weapon->UpgradeDescriptions[Weapon->CurrentLevel];
-	WeaponIcon = Weapon->Icon;
+	WeaponName = Weapon->GetWeaponName();
+	WeaponIcon = Weapon->GetIcon();
 	WeaponInstance = Weapon;
 	Parent = parent;
+	
+	if (Weapon->GetUpgradeDescriptions().Num() > Weapon->GetWeaponLevel())
+	{
+		Description = Weapon->GetUpgradeDescriptions()[Weapon->GetWeaponLevel()];
+	}
 }
 
 void UStarterWeaponButtonDataObject::SetData(TSubclassOf<AWeapon> Weapon, UUserWidget* parent)
 {
-	AWeapon* temp = NewObject<AWeapon>(this, Weapon);
-	if (temp)
+	if (AWeapon* tempWeapon = NewObject<AWeapon>(this, Weapon))
 	{
-		WeaponName = temp->Name;
-		Description = temp->Description;
-		WeaponIcon = temp->Icon;
-		WeaponTemplate = Weapon;
-		Parent = parent;
+		SetData(tempWeapon, parent);
 	}
 }
 

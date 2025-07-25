@@ -43,7 +43,7 @@ void ULevelUpWidget::NativeConstruct()
 		TArray<UUpgradeButtonDataObject*> upgradeItems;
 		for (AWeapon* weapon : Inventory)
 		{
-			if (weapon->CurrentLevel < weapon->UpgradeDescriptions.Num())
+			if (weapon->GetWeaponLevel() < weapon->GetUpgradeDescriptions().Num())
 			{
 				UUpgradeButtonDataObject* Temp = NewObject<UUpgradeButtonDataObject>(this);
 				Temp->SetData(weapon, this);

@@ -28,12 +28,12 @@ class VAMPIRES_API AGarlicWeapon : public AWeapon
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Weapon | Garlic")
 	TObjectPtr<USphereComponent> SphereComponent;
 
 	TArray<FOverlappedEnemy> GarlicOverlappedEnemies;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Weapon | Garlic")
 	TObjectPtr<UStaticMeshComponent> VisualEffectMeshComponent;
 
 private:

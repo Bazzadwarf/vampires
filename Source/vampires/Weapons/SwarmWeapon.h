@@ -15,19 +15,19 @@ class VAMPIRES_API ASwarmWeapon : public AWeapon
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Timeline")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon | Swarm")
 	TObjectPtr<UTimelineComponent> TimelineComponent = nullptr;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon | Swarm")
 	TObjectPtr<UCurveFloat> SwarmCurve;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon | Swarm")
 	float TimelinePlayRate = 1;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon | Swarm")
 	TSubclassOf<ASwarmAgent> SwarmActor;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon | Swarm")
 	float Distance = 250.0f;
 
 private:

@@ -18,13 +18,13 @@ class VAMPIRES_API ALightningRingWeapon : public AWeapon
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon | Lightning Ring")
 	int LightningBolts = 1;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon | Lightning Ring")
 	float LightingBoltRadius = 200.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon | Lightning Ring")
 	TObjectPtr<UNiagaraSystem> LightningEffectSystem;
 	
 public:

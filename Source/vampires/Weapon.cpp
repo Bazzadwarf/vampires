@@ -12,7 +12,7 @@
 // Sets default values
 AWeapon::AWeapon()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
 	BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Component"));
@@ -30,9 +30,9 @@ void AWeapon::BeginPlay()
 	BoxComponent->OnComponentEndOverlap.AddDynamic(this, &AWeapon::OnWeaponEndOverlap);
 
 	FViewport::ViewportResizedEvent.AddUObject(this, &AWeapon::ResizeBoxComponent);
-	
+
 	ResizeBoxComponent(GEngine->GameViewport->Viewport, -2);
-	
+
 	GetWorldTimerManager().SetTimer(WeaponTimerHandle, this, &AWeapon::FireWeaponAction, WeaponCooldown, true);
 }
 
@@ -59,12 +59,13 @@ bool AWeapon::UpgradeWeapon_Implementation()
 		CurrentLevel++;
 		return true;
 	}
-	
+
 	return false;
 }
 
 void AWeapon::OnWeaponBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                                   UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+                                   const FHitResult& SweepResult)
 {
 	if (AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(OtherActor))
 	{
@@ -73,7 +74,7 @@ void AWeapon::OnWeaponBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAc
 }
 
 void AWeapon::OnWeaponEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+                                 UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	if (AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(OtherActor))
 	{
@@ -81,11 +82,13 @@ void AWeapon::OnWeaponEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* Ot
 	}
 }
 
-void AWeapon::ResizeBoxComponent(FViewport* Viewport, uint32 unused)
+void AWeapon::ResizeBoxComponent(FViewport* Viewport, const uint32 Unused)
 {
+	if (!GEngine->GameViewport)
+	{
+		return;
+	}
 
-	if (!GEngine->GameViewport) return;
-	
 	FVector TopLeft, TopLeftDir;
 	FVector TopRight, TopRightDir;
 	FVector BottomLeft, BottomLeftDir;
@@ -108,11 +111,11 @@ void AWeapon::ResizeBoxComponent(FViewport* Viewport, uint32 unused)
 
 	// I am using the unused flag to work around a bug where the DeprojectScreenPositionToWorld doesn't match the
 	// values that I am expecting, in that they are way too small, for any other resize event we can skip this nonsense.
-	if (unused == -2)
+	if (Unused == -2)
 	{
 		width *= 266.666;
 		height *= 266.666;
 	}
-	
+
 	BoxComponent->SetBoxExtent(FVector(height, width, 200.0f));
 }

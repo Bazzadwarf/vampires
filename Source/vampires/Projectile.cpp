@@ -110,7 +110,7 @@ void AProjectile::OnProjectileBeginOverlap(UPrimitiveComponent* OverlappedCompon
 			}
 
 			AProjectileWeapon* ownerWeapon = Cast<AProjectileWeapon>(GetOwner());
-			EnemyHealthComponent->TakeDamage(Enemy, ownerWeapon->Damage, nullptr, ownerController, this);
+			EnemyHealthComponent->TakeDamage(Enemy, ownerWeapon->GetDamage(), nullptr, ownerController, this);
 
 			RemainingDamagableEnemies--;
 

@@ -18,13 +18,13 @@ class VAMPIRES_API AProjectileWeapon : public AWeapon
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
+	UPROPERTY(EditAnywhere, Category = "Weapon | Projectiles")
 	TObjectPtr<UProjectileDataAsset> ProjectileTemplate = nullptr;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon | Projectiles")
 	int ProjectilesPerActivation = 1;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon | Projectiles")
 	float ProjectileSpawningDelay = 0.25f;
 
 protected:
