@@ -8,14 +8,10 @@
 void UStarterWeaponButtonDataObject::SetData(AWeapon* Weapon, UUserWidget* parent)
 {
 	WeaponName = Weapon->GetWeaponName();
+	Description = Weapon->GetDescription();
 	WeaponIcon = Weapon->GetIcon();
 	WeaponInstance = Weapon;
 	Parent = parent;
-	
-	if (Weapon->GetUpgradeDescriptions().Num() > Weapon->GetWeaponLevel())
-	{
-		Description = Weapon->GetUpgradeDescriptions()[Weapon->GetWeaponLevel()];
-	}
 }
 
 void UStarterWeaponButtonDataObject::SetData(TSubclassOf<AWeapon> Weapon, UUserWidget* parent)
@@ -23,6 +19,7 @@ void UStarterWeaponButtonDataObject::SetData(TSubclassOf<AWeapon> Weapon, UUserW
 	if (AWeapon* tempWeapon = NewObject<AWeapon>(this, Weapon))
 	{
 		SetData(tempWeapon, parent);
+		WeaponTemplate = Weapon;
 	}
 }
 
