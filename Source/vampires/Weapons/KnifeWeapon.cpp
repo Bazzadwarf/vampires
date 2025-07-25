@@ -42,7 +42,7 @@ bool AKnifeWeapon::UpgradeWeapon_Implementation()
 			ProjectilesPerActivation++;
 			break;
 		case 4:
-			ProjectileTemplate->DamagableEnemies++;
+			ProjectileTemplate->DamageableEnemies++;
 			break;
 		case 5:
 			ProjectilesPerActivation++;
@@ -52,7 +52,7 @@ bool AKnifeWeapon::UpgradeWeapon_Implementation()
 			Damage += 5.0f;
 			break;
 		case 7:
-			ProjectileTemplate->DamagableEnemies++;
+			ProjectileTemplate->DamageableEnemies++;
 			break;
 		default:
 			return false;

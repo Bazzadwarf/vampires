@@ -64,23 +64,23 @@ void AProjectile::SetActorHiddenInGame(bool bNewHidden)
 	}
 }
 
-void AProjectile::SetTargetDirection_Implementation(FVector direction)
+void AProjectile::SetTargetDirection_Implementation(FVector Direction)
 {
 	SetActorLocation(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetCharacter()->GetActorLocation());
 	SetActorRotation(FRotator(0, 0, 0));
-	TargetDirection = direction;
+	TargetDirection = Direction;
 	ProjectileMovement->SetVelocityInLocalSpace(TargetDirection * ProjectileSpeed);
 }
 
-void AProjectile::LoadDataFromDataAsset_Implementation(UProjectileDataAsset* projectileDataAsset)
+void AProjectile::LoadDataFromDataAsset_Implementation(UProjectileDataAsset* ProjectileDataAsset)
 {
-	ProjectileSpeed = projectileDataAsset->ProjectileSpeed;
-	StaticMeshComponent->SetStaticMesh(projectileDataAsset->StaticMesh);
-	ProjectileSpeed = projectileDataAsset->ProjectileSpeed;
+	ProjectileSpeed = ProjectileDataAsset->ProjectileSpeed;
+	StaticMeshComponent->SetStaticMesh(ProjectileDataAsset->StaticMesh);
+	ProjectileSpeed = ProjectileDataAsset->ProjectileSpeed;
 	ProjectileMovement->InitialSpeed = ProjectileSpeed;
 	ProjectileMovement->MaxSpeed = ProjectileSpeed;
-	RemainingDamagableEnemies = projectileDataAsset->DamagableEnemies;
-	NiagaraRibbonComponent->SetAsset(projectileDataAsset->NiagaraRibbonSystem);
+	RemainingDamageableEnemies = ProjectileDataAsset->DamageableEnemies;
+	NiagaraRibbonComponent->SetAsset(ProjectileDataAsset->NiagaraRibbonSystem);
 	NiagaraRibbonComponent->ActivateSystem();
 }
 
@@ -88,7 +88,7 @@ void AProjectile::ResetData_Implementation()
 {
 	ProjectileSpeed = NULL;
 	StaticMeshComponent->SetStaticMesh(nullptr);
-	RemainingDamagableEnemies = 1;
+	RemainingDamageableEnemies = 1;
 	NiagaraRibbonComponent->DeactivateImmediate();
 	NiagaraRibbonComponent->SetAsset(nullptr);
 }
@@ -112,9 +112,9 @@ void AProjectile::OnProjectileBeginOverlap(UPrimitiveComponent* OverlappedCompon
 			AProjectileWeapon* ownerWeapon = Cast<AProjectileWeapon>(GetOwner());
 			EnemyHealthComponent->TakeDamage(Enemy, ownerWeapon->GetDamage(), nullptr, ownerController, this);
 
-			RemainingDamagableEnemies--;
+			RemainingDamageableEnemies--;
 
-			if (RemainingDamagableEnemies == 0)
+			if (RemainingDamageableEnemies == 0)
 			{
 				ReturnProjectileToPool();
 			}

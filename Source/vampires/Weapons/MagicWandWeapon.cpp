@@ -47,7 +47,7 @@ bool AMagicWandWeapon::UpgradeWeapon_Implementation()
 			ProjectilesPerActivation++;
 			break;
 		case 6:
-			ProjectileTemplate->DamagableEnemies++;
+			ProjectileTemplate->DamageableEnemies++;
 			break;
 		case 7:
 			Damage += 10;

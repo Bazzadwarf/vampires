@@ -23,7 +23,7 @@ public:
 	TObjectPtr<UStaticMesh> StaticMesh;
 
 	UPROPERTY(EditAnywhere)
-	int DamagableEnemies = 1;
+	int DamageableEnemies = 1;
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UNiagaraSystem> NiagaraRibbonSystem = nullptr;

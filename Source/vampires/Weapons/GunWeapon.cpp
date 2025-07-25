@@ -37,7 +37,7 @@ bool AGunWeapon::UpgradeWeapon_Implementation()
 		ProjectilesPerActivation++;
 		break;
 	case 2:
-		ProjectileTemplate->DamagableEnemies += 2;
+		ProjectileTemplate->DamageableEnemies += 2;
 		break;
 	case 3:
 		ProjectilesPerActivation++;
@@ -46,14 +46,14 @@ bool AGunWeapon::UpgradeWeapon_Implementation()
 		Damage += 5.0f;
 		break;
 	case 5:
-		ProjectileTemplate->DamagableEnemies += 2;
+		ProjectileTemplate->DamageableEnemies += 2;
 		break;
 	case 6:
 		Damage += 5.0f;
 		ProjectileTemplate->ProjectileSpeed *= 1.50f;
 		break;
 	case 7:
-		ProjectileTemplate->DamagableEnemies += 2;
+		ProjectileTemplate->DamageableEnemies += 2;
 		break;
 	default:
 		return false;
@@ -65,7 +65,7 @@ bool AGunWeapon::UpgradeWeapon_Implementation()
 
 void AGunWeapon::FireProjectile()
 {
-		if (ProjectileTemplate && OverlappedEnemies.Num() > 0)
+	if (ProjectileTemplate && OverlappedEnemies.Num() > 0)
 	{
 		AGameModeBase* gamemode = UGameplayStatics::GetGameMode(GetWorld());
 

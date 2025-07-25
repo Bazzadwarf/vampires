@@ -17,33 +17,31 @@ class VAMPIRES_API AProjectile : public AActor, public IProjectilable
 {
 	GENERATED_BODY()
 
-public:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<USphereComponent> SphereComponent = nullptr;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovement = nullptr;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UStaticMeshComponent> StaticMeshComponent = nullptr;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UNiagaraComponent> NiagaraRibbonComponent = nullptr;
+
+	UPROPERTY(EditDefaultsOnly)
+	float ProjectileSpeed = 500.0f;
+
+	UPROPERTY(EditDefaultsOnly)
+	int RemainingDamageableEnemies = 1;
+
+	UPROPERTY(EditDefaultsOnly)
+	float ProjectileLifespan = 15.0f;
+
+	FTimerHandle ProjectileLifetimeTimerHandle;
 
 	FVector TargetDirection = FVector::ZeroVector;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float ProjectileSpeed = 500.0f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TObjectPtr<UStaticMeshComponent> StaticMeshComponent = nullptr;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int RemainingDamagableEnemies = 1;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	TObjectPtr<UNiagaraComponent> NiagaraRibbonComponent = nullptr;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	float ProjectileLifespan = 15.0f;
-
-private:
-	FTimerHandle ProjectileLifetimeTimerHandle;
-	
 	// Sets default values for this actor's properties
 	AProjectile();
 
@@ -54,9 +52,9 @@ protected:
 public:
 	virtual void SetActorHiddenInGame(bool bNewHidden) override;
 
-	virtual void SetTargetDirection_Implementation(FVector direction) override;
+	virtual void SetTargetDirection_Implementation(FVector Direction) override;
 
-	virtual void LoadDataFromDataAsset_Implementation(UProjectileDataAsset* projectileDataAsset) override;
+	virtual void LoadDataFromDataAsset_Implementation(UProjectileDataAsset* ProjectileDataAsset) override;
 
 	virtual void ResetData_Implementation() override;
 
