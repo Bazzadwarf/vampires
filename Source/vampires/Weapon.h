@@ -26,7 +26,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon | Information")
 	TObjectPtr<UTexture2D> Icon;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon | Properties")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon | Properties")
 	TObjectPtr<USoundBase> WeaponActivatedSoundBase = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon | Properties")
