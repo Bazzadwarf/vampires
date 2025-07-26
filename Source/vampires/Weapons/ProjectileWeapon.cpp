@@ -10,7 +10,8 @@ void AProjectileWeapon::FireWeaponAction_Implementation()
 	Super::FireWeaponAction_Implementation();
 
 	remainingProjectilesToSpawn = ProjectilesPerActivation;
-	GetWorldTimerManager().SetTimer(FireProjectileTimerHandler, this, &AProjectileWeapon::FireProjectile, ProjectileSpawningDelay, true, 0.0f);
+	GetWorldTimerManager().SetTimer(FireProjectileTimerHandler, this, &AProjectileWeapon::FireProjectile,
+	                                ProjectileSpawningDelay, true, 0.0f);
 }
 
 void AProjectileWeapon::FireProjectile()

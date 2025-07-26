@@ -17,8 +17,8 @@ class VAMPIRES_API AProjectileWeapon : public AWeapon
 {
 	GENERATED_BODY()
 
-public:
-	UPROPERTY(EditAnywhere, Category = "Weapon | Projectiles")
+protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon | Projectiles")
 	TObjectPtr<UProjectileDataAsset> ProjectileTemplate = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon | Projectiles")
@@ -27,16 +27,14 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon | Projectiles")
 	float ProjectileSpawningDelay = 0.25f;
 
-protected:
+private:
 	FTimerHandle FireProjectileTimerHandler;
 
-private:
 	int remainingProjectilesToSpawn = 0;
 
-public:
+protected:
 	virtual void FireWeaponAction_Implementation() override;
 
-protected:
 	UFUNCTION()
 	virtual void FireProjectile();
 };
