@@ -17,7 +17,7 @@ class VAMPIRES_API ALightningRingWeapon : public AWeapon
 {
 	GENERATED_BODY()
 
-public:
+protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon | Lightning Ring")
 	int LightningBolts = 1;
 
@@ -26,11 +26,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon | Lightning Ring")
 	TObjectPtr<UNiagaraSystem> LightningEffectSystem;
-	
-public:
+
 	ALightningRingWeapon();
 
-protected:
 	virtual void BeginPlay() override;
 
 public:

@@ -21,40 +21,40 @@ void ALightningRingWeapon::FireWeaponAction_Implementation()
 {
 	Super::FireWeaponAction_Implementation();
 
-	TArray<AActor*> targetableEnemies = OverlappedEnemies;
+	TArray<AActor*> TargetableEnemies = OverlappedEnemies;
 
-	for (int i = 0; i < LightningBolts && targetableEnemies.Num() > 0; i++)
+	for (int i = 0; i < LightningBolts && TargetableEnemies.Num() > 0; i++)
 	{
-		AActor* target = targetableEnemies[FMath::RandRange(0, targetableEnemies.Num() - 1)];
+		AActor* Target = TargetableEnemies[FMath::RandRange(0, TargetableEnemies.Num() - 1)];
 
 		TArray<TEnumAsByte<EObjectTypeQuery>> traceObjectTypes;
 		traceObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_Pawn));
 
-		TArray<AActor*> actorsToIgnore = TArray<AActor*>({GetOwner()});
+		TArray<AActor*> ActorsToIgnore = TArray<AActor*>({GetOwner()});
 
-		TArray<AActor*> hitResults;
+		TArray<AActor*> HitResults;
 
 		UKismetSystemLibrary::SphereOverlapActors(GetWorld(),
-		                                          target->GetActorLocation(),
+		                                          Target->GetActorLocation(),
 		                                          LightingBoltRadius,
 		                                          traceObjectTypes,
 		                                          AEnemyCharacter::StaticClass(),
-		                                          actorsToIgnore,
-		                                          hitResults);
+		                                          ActorsToIgnore,
+		                                          HitResults);
 
 		if (LightningEffectSystem)
 		{
-			float scale = FMath::FloorToFloat((CurrentLevel + 2.0f) / 2.0f);
-			UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, LightningEffectSystem, target->GetActorLocation(),
-			                                               GetActorRotation(), FVector(scale));
+			float Scale = FMath::FloorToFloat((CurrentLevel + 2.0f) / 2.0f);
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, LightningEffectSystem, Target->GetActorLocation(),
+			                                               GetActorRotation(), FVector(Scale));
 		}
 
-		for (AActor* EnemyHitResult : hitResults)
+		for (AActor* EnemyHitResult : HitResults)
 		{
 			UGameplayStatics::ApplyDamage(EnemyHitResult, Damage, nullptr, this, nullptr);
 		}
 
-		targetableEnemies.Remove(target);
+		TargetableEnemies.Remove(Target);
 	}
 }
 

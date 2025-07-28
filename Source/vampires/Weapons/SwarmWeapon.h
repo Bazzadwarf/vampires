@@ -14,20 +14,20 @@ class VAMPIRES_API ASwarmWeapon : public AWeapon
 {
 	GENERATED_BODY()
 
-public:
+protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon | Swarm")
 	TObjectPtr<UTimelineComponent> TimelineComponent = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon | Swarm")
 	TObjectPtr<UCurveFloat> SwarmCurve;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon | Swarm")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon | Swarm")
 	float TimelinePlayRate = 1;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon | Swarm")
 	TSubclassOf<ASwarmAgent> SwarmActor;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon | Swarm")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon | Swarm")
 	float Distance = 250.0f;
 
 private:
@@ -45,7 +45,7 @@ protected:
 
 public:
 	UFUNCTION()
-	void TimelineCallback(float val);
+	void TimelineCallback(float Val);
 
 	virtual bool UpgradeWeapon_Implementation() override;
 

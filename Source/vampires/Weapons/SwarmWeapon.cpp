@@ -40,7 +40,7 @@ void ASwarmWeapon::BeginPlay()
 	TimelineComponent->PlayFromStart();
 }
 
-void ASwarmWeapon::TimelineCallback(float val)
+void ASwarmWeapon::TimelineCallback(float Val)
 {
 	float num = SwarmActors.Num();
 
@@ -50,7 +50,7 @@ void ASwarmWeapon::TimelineCallback(float val)
 		float offset = (actorIndex / num) * 360.0f;
 		FVector CenterLocation = GetActorLocation();
 		FVector Direction = FVector(0.0, 1, 0.0);
-		FVector RotatedDirection = Direction.RotateAngleAxis(val * 360.0f + offset, FVector(0.0f, 0.0f, 1.0f));
+		FVector RotatedDirection = Direction.RotateAngleAxis(Val * 360.0f + offset, FVector(0.0f, 0.0f, 1.0f));
 		FVector NewLocation = CenterLocation + (RotatedDirection * Distance);
 		NewLocation.Z = 190.0f;
 		SwarmActors[i]->SetActorLocation(NewLocation);

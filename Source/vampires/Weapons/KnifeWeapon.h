@@ -13,7 +13,7 @@ UCLASS()
 class VAMPIRES_API AKnifeWeapon : public AProjectileWeapon
 {
 	GENERATED_BODY()
-	
+
 public:
 	AKnifeWeapon();
 

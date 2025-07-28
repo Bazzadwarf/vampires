@@ -29,5 +29,5 @@ protected:
 	virtual void FireProjectile() override;
 
 private:
-	void SpawnProjectile(AActor* projectile, FVector direction);
+	void SpawnProjectile(AActor* Projectile, const FVector& Direction);
 };

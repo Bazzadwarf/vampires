@@ -25,6 +25,6 @@ public:
 
 	virtual bool UpgradeWeapon_Implementation() override;
 
-	protected:
+protected:
 	virtual void FireProjectile() override;
 };

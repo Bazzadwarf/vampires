@@ -14,7 +14,7 @@ class VAMPIRES_API ASwarmAgent : public AActor
 {
 	GENERATED_BODY()
 
-public:
+protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TObjectPtr<USphereComponent> SphereComponent = nullptr;
 
@@ -27,7 +27,6 @@ public:
 	// Sets default values for this actor's properties
 	ASwarmAgent();
 
-protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 

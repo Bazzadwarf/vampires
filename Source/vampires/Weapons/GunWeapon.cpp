@@ -29,7 +29,10 @@ void AGunWeapon::FireWeaponAction_Implementation()
 
 bool AGunWeapon::UpgradeWeapon_Implementation()
 {
-	if (!Super::UpgradeWeapon_Implementation()) return false;
+	if (!Super::UpgradeWeapon_Implementation())
+	{
+		return false;
+	}
 
 	switch (CurrentLevel)
 	{
@@ -67,11 +70,11 @@ void AGunWeapon::FireProjectile()
 {
 	if (ProjectileTemplate && OverlappedEnemies.Num() > 0)
 	{
-		AGameModeBase* gamemode = UGameplayStatics::GetGameMode(GetWorld());
+		AGameModeBase* Gamemode = UGameplayStatics::GetGameMode(GetWorld());
 
-		if (UKismetSystemLibrary::DoesImplementInterface(gamemode, UPools::StaticClass()))
+		if (UKismetSystemLibrary::DoesImplementInterface(Gamemode, UPools::StaticClass()))
 		{
-			if (AObjectPoolManager* objectPoolManager = IPools::Execute_GetProjectileObjectPoolManager(gamemode))
+			if (AObjectPoolManager* ObjectPoolManager = IPools::Execute_GetProjectileObjectPoolManager(Gamemode))
 			{
 				FVector2d ViewportSize;
 				GEngine->GameViewport->GetViewportSize(ViewportSize);
@@ -92,20 +95,20 @@ void AGunWeapon::FireProjectile()
 				PlayerController->DeprojectScreenPositionToWorld(ViewportSize.X, ViewportSize.Y, BottomRight,
 				                                                 BottomRightDir);
 
-				FVector actorLocation = GetActorLocation();
-				TopLeft.Z = actorLocation.Z;
-				TopRight.Z = actorLocation.Z;
-				BottomLeft.Z = actorLocation.Z;
-				BottomRight.Z = actorLocation.Z;
+				FVector ActorLocation = GetActorLocation();
+				TopLeft.Z = ActorLocation.Z;
+				TopRight.Z = ActorLocation.Z;
+				BottomLeft.Z = ActorLocation.Z;
+				BottomRight.Z = ActorLocation.Z;
 
-				AActor* projectile = objectPoolManager->GetObject();
-				SpawnProjectile(projectile, UKismetMathLibrary::GetDirectionUnitVector(actorLocation, TopLeft));
-				projectile = objectPoolManager->GetObject();
-				SpawnProjectile(projectile, UKismetMathLibrary::GetDirectionUnitVector(actorLocation, TopRight));
-				projectile = objectPoolManager->GetObject();
-				SpawnProjectile(projectile, UKismetMathLibrary::GetDirectionUnitVector(actorLocation, BottomLeft));
-				projectile = objectPoolManager->GetObject();
-				SpawnProjectile(projectile, UKismetMathLibrary::GetDirectionUnitVector(actorLocation, BottomRight));
+				AActor* projectile = ObjectPoolManager->GetObject();
+				SpawnProjectile(projectile, UKismetMathLibrary::GetDirectionUnitVector(ActorLocation, TopLeft));
+				projectile = ObjectPoolManager->GetObject();
+				SpawnProjectile(projectile, UKismetMathLibrary::GetDirectionUnitVector(ActorLocation, TopRight));
+				projectile = ObjectPoolManager->GetObject();
+				SpawnProjectile(projectile, UKismetMathLibrary::GetDirectionUnitVector(ActorLocation, BottomLeft));
+				projectile = ObjectPoolManager->GetObject();
+				SpawnProjectile(projectile, UKismetMathLibrary::GetDirectionUnitVector(ActorLocation, BottomRight));
 
 				Super::FireProjectile();
 			}
@@ -113,12 +116,12 @@ void AGunWeapon::FireProjectile()
 	}
 }
 
-void AGunWeapon::SpawnProjectile(AActor* projectile, FVector direction)
+void AGunWeapon::SpawnProjectile(AActor* Projectile, const FVector& Direction)
 {
-	if (UKismetSystemLibrary::DoesImplementInterface(projectile, UProjectilable::StaticClass()))
+	if (UKismetSystemLibrary::DoesImplementInterface(Projectile, UProjectilable::StaticClass()))
 	{
-		IProjectilable::Execute_LoadDataFromDataAsset(projectile, ProjectileTemplate);
-		projectile->SetOwner(this);
-		IProjectilable::Execute_SetTargetDirection(projectile, direction);
+		IProjectilable::Execute_LoadDataFromDataAsset(Projectile, ProjectileTemplate);
+		Projectile->SetOwner(this);
+		IProjectilable::Execute_SetTargetDirection(Projectile, Direction);
 	}
 }
