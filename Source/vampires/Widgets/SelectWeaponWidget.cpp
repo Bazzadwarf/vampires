@@ -29,10 +29,10 @@ void USelectWeaponWidget::NativeConstruct()
 	if (UpgradesListView)
 	{
 		// Get a list of weapons that the player owns that can be upgraded
-		for (TSubclassOf<AWeapon> weapon : starterWeapons)
+		for (TSubclassOf<AWeapon> Weapon : StarterWeapons)
 		{
 			UStarterWeaponButtonDataObject* Temp = NewObject<UStarterWeaponButtonDataObject>(this);
-			Temp->SetData(weapon, this);
+			Temp->SetData(Weapon, this);
 			UpgradesListView->AddItem(Temp);
 		}
 	}
@@ -44,12 +44,12 @@ void USelectWeaponWidget::BackButtonClicked()
 	{
 		RemoveFromParent();
 
-		UUserWidget* selectWeaponWidget = CreateWidget<UUserWidget, APlayerController*>(
+		UUserWidget* SelectWeaponWidget = CreateWidget<UUserWidget, APlayerController*>(
 			UGameplayStatics::GetPlayerController(GetWorld(), 0), PreviousWidget);
 
-		if (selectWeaponWidget)
+		if (SelectWeaponWidget)
 		{
-			selectWeaponWidget->AddToViewport();
+			SelectWeaponWidget->AddToViewport();
 		}
-	}	
+	}
 }

@@ -31,7 +31,7 @@ class VAMPIRES_API UUpgradeButtonWidget : public UVampireInteractiveWidget, publ
 {
 	GENERATED_BODY()
 
-public:
+protected:
 	UPROPERTY(EditDefaultsOnly, meta=(BindWidget))
 	TObjectPtr<UButton> Body;
 
@@ -80,11 +80,10 @@ protected:
 private:
 	UFUNCTION()
 	virtual void OnClicked();
-	
+
 	UFUNCTION()
 	void OnHoveredDelegate() { SetTextBlockHovered(WeaponNameTextBlock); SetTextBlockHovered(DescriptionTextBlock); }
 
 	UFUNCTION()
 	void OnUnhoveredDelegate() { SetTextBlockUnhovered(WeaponNameTextBlock); SetTextBlockUnhovered(DescriptionTextBlock); }
-	
 };

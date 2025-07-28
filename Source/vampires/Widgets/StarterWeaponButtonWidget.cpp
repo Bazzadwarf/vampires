@@ -18,12 +18,10 @@ void UStarterWeaponButtonWidget::NativeConstruct()
 
 void UStarterWeaponButtonWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 {
-	UStarterWeaponButtonDataObject* Item = Cast<UStarterWeaponButtonDataObject>(ListItemObject);
-	
-	if (Item)
+	if (UStarterWeaponButtonDataObject* Item = Cast<UStarterWeaponButtonDataObject>(ListItemObject))
 	{
 		WeaponNameTextBlock->SetText(Item->WeaponName);
-		DescriptionTextBlock->SetText(Item->Description);
+		DescriptionTextBlock->SetText(Item->WeaponDescription);
 		WeaponIcon->SetBrushFromTexture(Item->WeaponIcon);
 		Parent = Item->Parent;
 		WeaponTemplate = Item->WeaponTemplate;
@@ -43,13 +41,13 @@ void UStarterWeaponButtonWidget::NativeOnListItemObjectSet(UObject* ListItemObje
 
 void UStarterWeaponButtonWidget::OnClicked()
 {
-	if (UVampireGameInstance* gameInstance = Cast<UVampireGameInstance>(GetGameInstance()))
+	if (UVampireGameInstance* GameInstance = Cast<UVampireGameInstance>(GetGameInstance()))
 	{
-		gameInstance->StarterWeapon = WeaponTemplate;
+		GameInstance->StarterWeapon = WeaponTemplate;
 
-		if (!gameInstance->GameWorld.IsNull())
+		if (!GameInstance->GameWorld.IsNull())
 		{
-			UGameplayStatics::OpenLevelBySoftObjectPtr(GetWorld(), gameInstance->GameWorld);
+			UGameplayStatics::OpenLevelBySoftObjectPtr(GetWorld(), GameInstance->GameWorld);
 
 			if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
 			{

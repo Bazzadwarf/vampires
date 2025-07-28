@@ -5,29 +5,29 @@
 
 #include "vampires/Weapon.h"
 
-void UStarterWeaponButtonDataObject::SetData(AWeapon* Weapon, UUserWidget* parent)
+void UStarterWeaponButtonDataObject::SetData(AWeapon* Weapon, UUserWidget* ParentWidget)
 {
 	WeaponName = Weapon->GetWeaponName();
-	Description = Weapon->GetDescription();
+	WeaponDescription = Weapon->GetDescription();
 	WeaponIcon = Weapon->GetIcon();
 	WeaponInstance = Weapon;
-	Parent = parent;
+	Parent = ParentWidget;
 }
 
-void UStarterWeaponButtonDataObject::SetData(TSubclassOf<AWeapon> Weapon, UUserWidget* parent)
+void UStarterWeaponButtonDataObject::SetData(TSubclassOf<AWeapon> Weapon, UUserWidget* ParentWidget)
 {
 	if (AWeapon* tempWeapon = NewObject<AWeapon>(this, Weapon))
 	{
-		SetData(tempWeapon, parent);
+		SetData(tempWeapon, ParentWidget);
 		WeaponTemplate = Weapon;
 	}
 }
 
-void UStarterWeaponButtonDataObject::SetData(FText weaponName, FText description, TObjectPtr<UTexture2D> weaponIcon,
-	UUserWidget* parent)
+void UStarterWeaponButtonDataObject::SetData(FText NewWeaponName, FText NewWeaponDescription, TObjectPtr<UTexture2D> NewWeaponIcon,
+	UUserWidget* ParentWidget)
 {
-	WeaponName = weaponName;
-	Description = description;
-	WeaponIcon = weaponIcon;
-	Parent = parent;
+	WeaponName = NewWeaponName;
+	WeaponDescription = NewWeaponDescription;
+	WeaponIcon = NewWeaponIcon;
+	Parent = ParentWidget;
 }

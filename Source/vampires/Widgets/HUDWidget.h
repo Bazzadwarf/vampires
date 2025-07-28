@@ -15,18 +15,17 @@ UCLASS()
 class VAMPIRES_API UHUDWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
-public:
-	
+
+protected:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	UProgressBar* EXPbar;
-	
+
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	UTextBlock* LevelBlock;
-		
+
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	UTextBlock* TimerBLock;
-		
+
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	UTextBlock* KillBLock;
 
@@ -34,20 +33,20 @@ public:
 	UTextBlock* GoldBLock;
 
 	void Init();
-	
+
+public:
 	UFUNCTION()
-	void UpdateEXPBar(float currentLevelPercent);
+	void UpdateEXPBar(float CurrentLevelPercent);
 
 	UFUNCTION()
-	void UpdateLevelBlock(int level);
+	void UpdateLevelBlock(int Level);
 
 	UFUNCTION()
-	void UpdateTimerBlock(float deltaTime);
+	void UpdateTimerBlock(float DeltaTime);
 
 	UFUNCTION()
-	void UpdateKillBlock(int killCount);
+	void UpdateKillBlock(int KillCount);
 
 	UFUNCTION()
-	void UpdateGoldBlock(int goldCount);
-	
+	void UpdateGoldBlock(int GoldCount);
 };

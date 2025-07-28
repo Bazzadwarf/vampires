@@ -19,7 +19,7 @@ public:
 	FText WeaponName;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FText Description;
+	FText WeaponDescription;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UTexture2D> WeaponIcon;
@@ -33,7 +33,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UUserWidget> Parent;
 
-	void SetData(AWeapon* Weapon, UUserWidget* parent);
-	void SetData(TSubclassOf<AWeapon> Weapon, UUserWidget* parent);
-	void SetData(FText weaponName, FText description, TObjectPtr<UTexture2D> weaponIcon, UUserWidget* parent);
+	void SetData(AWeapon* Weapon, UUserWidget* ParentWidget);
+	void SetData(TSubclassOf<AWeapon> Weapon, UUserWidget* ParentWidget);
+	void SetData(FText NewWeaponName, FText NewWeaponDescription, TObjectPtr<UTexture2D> NewWeaponIcon, UUserWidget* ParentWidget);
 };

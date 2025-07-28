@@ -5,32 +5,32 @@
 
 #include "vampires/Weapon.h"
 
-void UUpgradeButtonDataObject::SetData(AWeapon* Weapon, UUserWidget* parent)
+void UUpgradeButtonDataObject::SetData(AWeapon* Weapon, UUserWidget* ParentWidget)
 {
 	WeaponName = Weapon->GetWeaponName();
 	WeaponIcon = Weapon->GetIcon();
 	WeaponInstance = Weapon;
-	Parent = parent;
+	Parent = ParentWidget;
 	
 	if (Weapon->GetUpgradeDescriptions().Num() > Weapon->GetWeaponLevel())
 	{
-		Description = Weapon->GetUpgradeDescriptions()[Weapon->GetWeaponLevel()];
+		WeaponDescription = Weapon->GetUpgradeDescriptions()[Weapon->GetWeaponLevel()];
 	}
 }
 
-void UUpgradeButtonDataObject::SetData(TSubclassOf<AWeapon> Weapon, UUserWidget* parent)
+void UUpgradeButtonDataObject::SetData(TSubclassOf<AWeapon> Weapon, UUserWidget* ParentWidget)
 {
 	if (AWeapon* tempWeapon = NewObject<AWeapon>(this, Weapon))
 	{
-		SetData(tempWeapon, parent);
+		SetData(tempWeapon, ParentWidget);
 	}
 }
 
-void UUpgradeButtonDataObject::SetData(FText weaponName, FText description, TObjectPtr<UTexture2D> weaponIcon,
-                                       UUserWidget* parent)
+void UUpgradeButtonDataObject::SetData(FText NewWeaponName, FText NewDescription, TObjectPtr<UTexture2D> NewWeaponIcon,
+                                       UUserWidget* ParentWidget)
 {
-	WeaponName = weaponName;
-	Description = description;
-	WeaponIcon = weaponIcon;
-	Parent = parent;
+	WeaponName = NewWeaponName;
+	WeaponDescription = NewDescription;
+	WeaponIcon = NewWeaponIcon;
+	Parent = ParentWidget;
 }

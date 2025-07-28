@@ -27,11 +27,11 @@ void UPauseWidget::ResumeButtonClicked()
 {
 	RemoveFromParent();
 
-	if (APlayerController* playerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+	if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
 	{
-		UWidgetBlueprintLibrary::SetInputMode_GameOnly(playerController);
-		playerController->bShowMouseCursor = false;
-		playerController->SetPause(false);
+		UWidgetBlueprintLibrary::SetInputMode_GameOnly(PlayerController);
+		PlayerController->bShowMouseCursor = false;
+		PlayerController->SetPause(false);
 	}
 
 	SetIsFocusable(false);

@@ -12,23 +12,23 @@ void UHealthbarWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	if (ACharacter* character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
+	if (ACharacter* Character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
 	{
-		if (UHealthComponent* healthComponent = character->FindComponentByClass<UHealthComponent>())
+		if (UHealthComponent* HealthComponent = Character->FindComponentByClass<UHealthComponent>())
 		{
-			healthComponent->OnDamaged.AddDynamic(this, &UHealthbarWidget::UpdateHealthBar);
+			HealthComponent->OnDamaged.AddDynamic(this, &UHealthbarWidget::UpdateHealthBar);
 			UpdateHealthBar({});
 		}
 	}
 }
 
-void UHealthbarWidget::UpdateHealthBar(FDamageInfo damageInfo)
+void UHealthbarWidget::UpdateHealthBar(FDamageInfo DamageInfo)
 {
-	if (ACharacter* character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
+	if (ACharacter* Character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
 	{
-		if (UHealthComponent* healthComponent = character->FindComponentByClass<UHealthComponent>())
+		if (UHealthComponent* HealthComponent = Character->FindComponentByClass<UHealthComponent>())
 		{
-			float percent = healthComponent->GetCurrentHealth() / healthComponent->GetMaxHealth();
+			float percent = HealthComponent->GetCurrentHealth() / HealthComponent->GetMaxHealth();
 			HealthBar->SetPercent(percent);
 		}
 	}

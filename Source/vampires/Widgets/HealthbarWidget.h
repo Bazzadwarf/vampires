@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "HealthbarWidget.generated.h"
 
+struct FDamageInfo;
 class UProgressBar;
 /**
  * 
@@ -15,13 +16,13 @@ class VAMPIRES_API UHealthbarWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
-public:
+protected:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	UProgressBar* HealthBar;
+	TObjectPtr<UProgressBar> HealthBar;
 
 	virtual void NativeConstruct() override;
-	
+
 private:
 	UFUNCTION()
-	void UpdateHealthBar(FDamageInfo damageInfo);
+	void UpdateHealthBar(FDamageInfo DamageInfo);
 };

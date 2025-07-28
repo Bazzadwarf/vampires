@@ -9,41 +9,41 @@ void UHUDWidget::Init()
 {
 }
 
-void UHUDWidget::UpdateEXPBar(float currentLevelPercent)
+void UHUDWidget::UpdateEXPBar(float CurrentLevelPercent)
 {
-	EXPbar->SetPercent(currentLevelPercent);
+	EXPbar->SetPercent(CurrentLevelPercent);
 }
 
-void UHUDWidget::UpdateLevelBlock(int level)
+void UHUDWidget::UpdateLevelBlock(int Level)
 {
-	LevelBlock->SetText(FText::FromString("LV" + FString::FromInt(level)));
+	LevelBlock->SetText(FText::FromString("LV" + FString::FromInt(Level)));
 }
 
-void UHUDWidget::UpdateTimerBlock(float deltaTime)
+void UHUDWidget::UpdateTimerBlock(float DeltaTime)
 {
-	int timeSinceStart = FMath::FloorToInt(deltaTime);
+	int TimeSinceStart = FMath::FloorToInt(DeltaTime);
 
-	FString mins = FString::FromInt(timeSinceStart / 60);
-	if (timeSinceStart / 60 < 10)
+	FString Mins = FString::FromInt(TimeSinceStart / 60);
+	if (TimeSinceStart / 60 < 10)
 	{
-		mins = "0" + mins;	
-	}
-	
-	FString secs = FString::FromInt(timeSinceStart % 60);
-	if (timeSinceStart % 60 < 10)
-	{
-		secs = "0" + secs;
+		Mins = "0" + Mins;
 	}
 
-	TimerBLock->SetText(FText::FromString(mins + ":" + secs));
+	FString Secs = FString::FromInt(TimeSinceStart % 60);
+	if (TimeSinceStart % 60 < 10)
+	{
+		Secs = "0" + Secs;
+	}
+
+	TimerBLock->SetText(FText::FromString(Mins + ":" + Secs));
 }
 
-void UHUDWidget::UpdateKillBlock(int killCount)
+void UHUDWidget::UpdateKillBlock(int KillCount)
 {
-	KillBLock->SetText(FText::FromString("Kills: " + FString::FromInt(killCount)));
+	KillBLock->SetText(FText::FromString("Kills: " + FString::FromInt(KillCount)));
 }
 
-void UHUDWidget::UpdateGoldBlock(int goldCount)
+void UHUDWidget::UpdateGoldBlock(int GoldCount)
 {
-	GoldBLock->SetText(FText::FromString("Gold: " + FString::FromInt(goldCount)));
+	GoldBLock->SetText(FText::FromString("Gold: " + FString::FromInt(GoldCount)));
 }

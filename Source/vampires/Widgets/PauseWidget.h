@@ -16,7 +16,6 @@ class VAMPIRES_API UPauseWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	UButton* ResumeButton;
 
@@ -25,7 +24,6 @@ public:
 	virtual void NativeConstruct() override;
 
 private:
-
 	UFUNCTION()
 	void ResumeButtonClicked();
 };

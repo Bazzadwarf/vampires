@@ -17,7 +17,7 @@ class VAMPIRES_API UMainMenuWidget : public UVampireInteractiveWidget
 
 	// TODO: Add options menu
 
-public:
+protected:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<UButton> NewGameButton;
 
@@ -38,7 +38,7 @@ public:
 
 private:
 	UPROPERTY()
-	TObjectPtr<UUserWidget> currentNewGameWidget;
+	TObjectPtr<UUserWidget> CurrentNewGameWidget;
 
 public:
 	virtual void NativeConstruct() override;

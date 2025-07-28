@@ -20,7 +20,7 @@ class VAMPIRES_API UStarterWeaponButtonWidget : public UVampireInteractiveWidget
 {
 	GENERATED_BODY()
 
-public:
+protected:
 	UPROPERTY(EditDefaultsOnly, meta=(BindWidget))
 	TObjectPtr<UButton> Body;
 
@@ -39,7 +39,6 @@ public:
 	UPROPERTY()
 	TObjectPtr<UUserWidget> Parent;
 
-protected:
 	virtual void NativeConstruct() override;
 
 	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;

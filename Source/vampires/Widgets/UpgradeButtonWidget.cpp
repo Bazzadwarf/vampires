@@ -22,12 +22,10 @@ void UUpgradeButtonWidget::NativeConstruct()
 
 void UUpgradeButtonWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 {
-	UUpgradeButtonDataObject* Item = Cast<UUpgradeButtonDataObject>(ListItemObject);
-
-	if (Item)
+	if (UUpgradeButtonDataObject* Item = Cast<UUpgradeButtonDataObject>(ListItemObject))
 	{
 		WeaponNameTextBlock->SetText(Item->WeaponName);
-		DescriptionTextBlock->SetText(Item->Description);
+		DescriptionTextBlock->SetText(Item->WeaponDescription);
 		WeaponIcon->SetBrushFromTexture(Item->WeaponIcon);
 		Parent = Item->Parent;
 
@@ -83,7 +81,7 @@ void UUpgradeButtonWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 
 void UUpgradeButtonWidget::OnClicked()
 {
-	APlayerController* playerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 
 	switch (UpgradeType)
 	{
@@ -92,8 +90,7 @@ void UUpgradeButtonWidget::OnClicked()
 		break;
 
 	case NewWeapon:
-		if (UWeaponInventoryComponent* Inventory = playerController->GetPawn()->GetComponentByClass<
-			UWeaponInventoryComponent>())
+		if (UWeaponInventoryComponent* Inventory = PlayerController->GetPawn()->GetComponentByClass<UWeaponInventoryComponent>())
 		{
 			Inventory->AddWeaponToInventory(WeaponTemplate);
 			Inventory->obtainableWeapons.Remove(WeaponTemplate);
@@ -101,22 +98,21 @@ void UUpgradeButtonWidget::OnClicked()
 		break;
 
 	case Health:
-		if (playerController)
+		if (PlayerController)
 		{
-			if (UHealthComponent* healthComponent = playerController->GetPawn()->GetComponentByClass<
-				UHealthComponent>())
+			if (UHealthComponent* HealthComponent = PlayerController->GetPawn()->GetComponentByClass<UHealthComponent>())
 			{
-				healthComponent->RecoverHealth(healthComponent->GetMaxHealth() / 10.0f);
+				HealthComponent->RecoverHealth(HealthComponent->GetMaxHealth() / 10.0f);
 			}
 		}
 		break;
 
 	case Gold:
-		if (playerController)
+		if (PlayerController)
 		{
-			if (UGoldComponent* goldComponent = playerController->GetPawn()->GetComponentByClass<UGoldComponent>())
+			if (UGoldComponent* GoldComponent = PlayerController->GetPawn()->GetComponentByClass<UGoldComponent>())
 			{
-				goldComponent->IncrementGold(10);
+				GoldComponent->IncrementGold(10);
 			}
 		}
 		break;
@@ -129,11 +125,11 @@ void UUpgradeButtonWidget::OnClicked()
 	{
 		Parent->RemoveFromParent();
 
-		if (playerController)
+		if (PlayerController)
 		{
-			UWidgetBlueprintLibrary::SetInputMode_GameOnly(playerController);
-			playerController->bShowMouseCursor = false;
-			playerController->SetPause(false);
+			UWidgetBlueprintLibrary::SetInputMode_GameOnly(PlayerController);
+			PlayerController->bShowMouseCursor = false;
+			PlayerController->SetPause(false);
 		}
 
 		Parent->SetIsFocusable(false);

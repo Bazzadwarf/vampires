@@ -17,18 +17,16 @@ class VAMPIRES_API ULevelUpWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
-public:
-
+protected:
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	UButton* ResumeButton;
 
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	UListView* UpgradesListView;
-	
+
 	virtual void NativeConstruct() override;
-	
+
 private:
-	
 	UFUNCTION()
 	void ResumeButtonClicked();
 };

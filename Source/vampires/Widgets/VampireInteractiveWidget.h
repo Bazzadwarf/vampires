@@ -14,12 +14,11 @@ UCLASS()
 class VAMPIRES_API UVampireInteractiveWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
-public:
 
+protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TObjectPtr<USoundBase> ButtonHoveredSound;
-	
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	FLinearColor ButtonHoveredTextColor = {0, 1, 0, 1};
 
@@ -37,9 +36,8 @@ protected:
 	TObjectPtr<UUserWidget> PreviousScreen;
 
 public:
-
 	UFUNCTION()
-	void SetReturnScreen(UUserWidget* userWidget);
+	void SetReturnScreen(UUserWidget* UserWidget);
 
 protected:
 	UFUNCTION()

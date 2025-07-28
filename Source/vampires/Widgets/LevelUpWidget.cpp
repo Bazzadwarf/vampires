@@ -40,50 +40,50 @@ void ULevelUpWidget::NativeConstruct()
 		TArray<AWeapon*> Inventory = InventoryComponent->GetInventory();
 
 		// Get list of weapons that the player owns that can be upgraded
-		TArray<UUpgradeButtonDataObject*> upgradeItems;
-		for (AWeapon* weapon : Inventory)
+		TArray<UUpgradeButtonDataObject*> UpgradeItems;
+		for (AWeapon* Weapon : Inventory)
 		{
-			if (weapon->GetWeaponLevel() < weapon->GetUpgradeDescriptions().Num())
+			if (Weapon->GetWeaponLevel() < Weapon->GetUpgradeDescriptions().Num())
 			{
 				UUpgradeButtonDataObject* Temp = NewObject<UUpgradeButtonDataObject>(this);
-				Temp->SetData(weapon, this);
-				upgradeItems.Add(Temp);
+				Temp->SetData(Weapon, this);
+				UpgradeItems.Add(Temp);
 			}
 		}
 
 		// Get list of weapons that the player can still obtain 
 		TArray<TSubclassOf<AWeapon>> ObtainableWeapons = InventoryComponent->obtainableWeapons;
-		for (TSubclassOf<AWeapon> weapon : ObtainableWeapons)
+		for (TSubclassOf<AWeapon> Weapon : ObtainableWeapons)
 		{
 			UUpgradeButtonDataObject* Temp = NewObject<UUpgradeButtonDataObject>(this);
-			Temp->SetData(weapon, this);
-			upgradeItems.Add(Temp);
+			Temp->SetData(Weapon, this);
+			UpgradeItems.Add(Temp);
 		}
 
 		// If no valid options exist, populate list with default options
-		if (upgradeItems.Num() == 0)
+		if (UpgradeItems.Num() == 0)
 		{
-			UUpgradeButtonDataObject* tempHealth = NewObject<UUpgradeButtonDataObject>(this);
-			tempHealth->SetData(FText::FromString("Health"),
-					  FText::FromString("Recover 10% of your health"),
-					  nullptr,
-					     this);
-			upgradeItems.Add(tempHealth);
+			UUpgradeButtonDataObject* TempHealth = NewObject<UUpgradeButtonDataObject>(this);
+			TempHealth->SetData(FText::FromString("Health"),
+			                    FText::FromString("Recover 10% of your health"),
+			                    nullptr,
+			                    this);
+			UpgradeItems.Add(TempHealth);
 
-			UUpgradeButtonDataObject* tempGold = NewObject<UUpgradeButtonDataObject>(this);
-			tempGold->SetData(FText::FromString("Gold"),
-					FText::FromString("Gain 10 gold"),
-					nullptr,
-					   this);
-			upgradeItems.Add(tempGold);
+			UUpgradeButtonDataObject* TempGold = NewObject<UUpgradeButtonDataObject>(this);
+			TempGold->SetData(FText::FromString("Gold"),
+			                  FText::FromString("Gain 10 gold"),
+			                  nullptr,
+			                  this);
+			UpgradeItems.Add(TempGold);
 		}
 
 		// Select up to three random options from the list of options
-		for (int i = 0; i < 3 && upgradeItems.Num() > 0; i++)
+		for (int i = 0; i < 3 && UpgradeItems.Num() > 0; i++)
 		{
-			int rand = FMath::RandRange(0, upgradeItems.Num() - 1);
-			UpgradesListView->AddItem(upgradeItems[rand]);
-			upgradeItems.RemoveAt(rand);
+			int Rand = FMath::RandRange(0, UpgradeItems.Num() - 1);
+			UpgradesListView->AddItem(UpgradeItems[Rand]);
+			UpgradeItems.RemoveAt(Rand);
 		}
 	}
 	SetIsFocusable(true);
@@ -93,11 +93,11 @@ void ULevelUpWidget::ResumeButtonClicked()
 {
 	RemoveFromParent();
 
-	if (APlayerController* playerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+	if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
 	{
-		UWidgetBlueprintLibrary::SetInputMode_GameOnly(playerController);
-		playerController->bShowMouseCursor = false;
-		playerController->SetPause(false);
+		UWidgetBlueprintLibrary::SetInputMode_GameOnly(PlayerController);
+		PlayerController->bShowMouseCursor = false;
+		PlayerController->SetPause(false);
 	}
 
 	SetIsFocusable(false);

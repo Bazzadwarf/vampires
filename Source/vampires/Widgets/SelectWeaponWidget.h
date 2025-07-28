@@ -17,7 +17,7 @@ UCLASS()
 class VAMPIRES_API USelectWeaponWidget : public UVampireInteractiveWidget
 {
 	GENERATED_BODY()
-public:
+protected:
 
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	TObjectPtr<UButton> BackButton;
@@ -29,7 +29,7 @@ public:
 	TObjectPtr<UListView> UpgradesListView;
 	
 	UPROPERTY(EditDefaultsOnly)
-	TArray<TSubclassOf<AWeapon>> starterWeapons;
+	TArray<TSubclassOf<AWeapon>> StarterWeapons;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TSubclassOf<class UUserWidget> PreviousWidget;

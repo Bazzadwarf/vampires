@@ -7,11 +7,11 @@
 #include "GameFramework/GameUserSettings.h"
 #include "Kismet/GameplayStatics.h"
 
-void UVampireInteractiveWidget::SetReturnScreen(UUserWidget* userWidget)
+void UVampireInteractiveWidget::SetReturnScreen(UUserWidget* UserWidget)
 {
-	if (userWidget)
+	if (UserWidget)
 	{
-		PreviousScreen = userWidget;
+		PreviousScreen = UserWidget;
 	}
 }
 

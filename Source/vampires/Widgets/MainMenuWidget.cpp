@@ -51,27 +51,14 @@ void UMainMenuWidget::NewGameButtonOnClicked()
 	{
 		RemoveFromParent();
 
-		UUserWidget* selectWeaponWidget = CreateWidget<UUserWidget, APlayerController*>(
+		UUserWidget* SelectWeaponWidget = CreateWidget<UUserWidget, APlayerController*>(
 			UGameplayStatics::GetPlayerController(GetWorld(), 0), NewGameMenuWidget);
 
-		if (selectWeaponWidget)
+		if (SelectWeaponWidget)
 		{
-			selectWeaponWidget->AddToViewport();
+			SelectWeaponWidget->AddToViewport();
 		}
-	}	
-
-	// if (!NewGameLevel.IsNull())
-	// {
-	// 	UGameplayStatics::OpenLevelBySoftObjectPtr(GetWorld(), NewGameLevel);
-	// }
-	//
-	// if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
-	// {
-	// 	PlayerController->bShowMouseCursor = false;
-	// 	UWidgetBlueprintLibrary::SetInputMode_GameOnly(PlayerController);
-	// }
-	//
-	// SetIsFocusable(false);
+	}
 }
 
 void UMainMenuWidget::QuitButtonOnClicked()
