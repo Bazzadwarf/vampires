@@ -56,44 +56,44 @@ public:
 	UHealthComponent();
 
 	UFUNCTION()
-	virtual void TakeDamage(AActor* damagedActor, float damage, const UDamageType* damageType,
-	                        AController* instigatedBy,
-	                        AActor* damageCauser);
+	virtual void TakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
+	                        AController* InstigatedBy,
+	                        AActor* DamageCauser);
 
 	UFUNCTION()
 	float GetMaxHealth();
 
 	UFUNCTION()
-	void SetMaxHealth(float value);
+	void SetMaxHealth(float Value);
 
 	UFUNCTION()
 	float GetCurrentHealth();
 
 	UFUNCTION()
-	void SetCurrentHealth(float value);
+	void SetCurrentHealth(float Value);
 
 	UFUNCTION()
 	void ResetHealth();
 
 	UFUNCTION()
-	void RecoverHealth(float healing);
+	void RecoverHealth(float Healing);
 
 	UFUNCTION()
 	bool GetIsDead();
 
 	UFUNCTION()
-	void SetIsDead(bool isDead);
+	void SetIsDead(bool bIsDead);
 
 	UFUNCTION()
 	bool GetCanDamage();
 
 	UFUNCTION()
-	void SetCanDamage(bool canDamage);
+	void SetCanDamage(bool bCanDamage);
 
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
 	UFUNCTION()
-	void IncrementHealth(float value);
+	void IncrementHealth(float Value);
 };

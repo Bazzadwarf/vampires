@@ -54,10 +54,11 @@ protected:
 private:
 	FTimerHandle WeaponTimerHandle;
 
-public:
+protected:
 	// Sets default values for this actor's 
 	AWeapon();
 
+public:
 	UFUNCTION(BlueprintNativeEvent)
 	bool UpgradeWeapon();
 	virtual bool UpgradeWeapon_Implementation();

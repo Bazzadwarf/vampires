@@ -23,53 +23,55 @@ void AVampirePlayerController::OnPossess(APawn* aPawn)
 {
 	Super::OnPossess(aPawn);
 
-	if (UEnhancedInputLocalPlayerSubsystem* subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
+	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(
+		GetLocalPlayer()))
 	{
 		if (UKismetSystemLibrary::DoesImplementInterface(aPawn, UInputable::StaticClass()))
 		{
-			subsystem->AddMappingContext(IInputable::Execute_Input_GetInputMappingContext(aPawn), 0);
+			Subsystem->AddMappingContext(IInputable::Execute_Input_GetInputMappingContext(aPawn), 0);
 		}
 	}
-	
+
 	if (PlayerHUD)
 	{
-		currentPlayerHUD = CreateWidget<UHUDWidget, AVampirePlayerController*>(this, PlayerHUD.Get());
+		CurrentPlayerHUD = CreateWidget<UHUDWidget, AVampirePlayerController*>(this, PlayerHUD.Get());
 
-		if (UEXPComponent* expComponent = aPawn->GetComponentByClass<UEXPComponent>())
+		if (UEXPComponent* ExpComponent = aPawn->GetComponentByClass<UEXPComponent>())
 		{
-			expComponent->OnEXPGained.AddUniqueDynamic(this, &AVampirePlayerController::UpdatePlayerEXPHUD);
-			expComponent->OnEXPLevelUp.AddUniqueDynamic(this, &AVampirePlayerController::UpdatePlayerLevelHUD);
-			expComponent->OnEXPLevelUp.AddUniqueDynamic(this, &AVampirePlayerController::ShowLevelUpScreen);
-			UpdatePlayerEXPHUD(expComponent->GetCurrentEXP(), expComponent->GetCurrentLevelPercent());
-			UpdatePlayerLevelHUD(expComponent->GetCurrentLevel());
+			ExpComponent->OnEXPGained.AddUniqueDynamic(this, &AVampirePlayerController::UpdatePlayerEXPHUD);
+			ExpComponent->OnEXPLevelUp.AddUniqueDynamic(this, &AVampirePlayerController::UpdatePlayerLevelHUD);
+			ExpComponent->OnEXPLevelUp.AddUniqueDynamic(this, &AVampirePlayerController::ShowLevelUpScreen);
+			UpdatePlayerEXPHUD(ExpComponent->GetCurrentEXP(), ExpComponent->GetCurrentLevelPercent());
+			UpdatePlayerLevelHUD(ExpComponent->GetCurrentLevel());
 		}
 
-		if (UGoldComponent* goldComponent = aPawn->GetComponentByClass<UGoldComponent>())
+		if (UGoldComponent* GoldComponent = aPawn->GetComponentByClass<UGoldComponent>())
 		{
-			goldComponent->OnGoldGained.AddUniqueDynamic(this, &AVampirePlayerController::UpdateGoldCountHUD);
-			UpdateGoldCountHUD(goldComponent->GetCurrentGold());
+			GoldComponent->OnGoldGained.AddUniqueDynamic(this, &AVampirePlayerController::UpdateGoldCountHUD);
+			UpdateGoldCountHUD(GoldComponent->GetCurrentGold());
 		}
 
-		if (AVampireGameMode* gamemode = Cast<AVampireGameMode>(UGameplayStatics::GetGameMode(GetWorld())))
+		if (AVampireGameMode* Gamemode = Cast<AVampireGameMode>(UGameplayStatics::GetGameMode(GetWorld())))
 		{
-			gamemode->OnEnemyDeathCountIncrementDelegate.AddDynamic(this, &AVampirePlayerController::UpdateKillCountHUD);
-			UpdateKillCountHUD(gamemode->GetEnemyDeathCount());
+			Gamemode->OnEnemyDeathCountIncrementDelegate.
+			          AddDynamic(this, &AVampirePlayerController::UpdateKillCountHUD);
+			UpdateKillCountHUD(Gamemode->GetEnemyDeathCount());
 		}
-		
-		if (currentPlayerHUD)
+
+		if (CurrentPlayerHUD)
 		{
-			currentPlayerHUD->AddToViewport();
+			CurrentPlayerHUD->AddToViewport();
 		}
 	}
 
-	if (UVampireGameInstance* gameInstance = Cast<UVampireGameInstance>(GetGameInstance()))
+	if (UVampireGameInstance* GameInstance = Cast<UVampireGameInstance>(GetGameInstance()))
 	{
-		UWeaponInventoryComponent* weaponInventoryComponent = aPawn->GetComponentByClass<
+		UWeaponInventoryComponent* WeaponInventoryComponent = aPawn->GetComponentByClass<
 			UWeaponInventoryComponent>();
-		
-		if (weaponInventoryComponent && gameInstance->StarterWeapon)
-		{			
-			weaponInventoryComponent->initialInventory.Add(gameInstance->StarterWeapon);
+
+		if (WeaponInventoryComponent && GameInstance->StarterWeapon)
+		{
+			WeaponInventoryComponent->InitialInventory.Add(GameInstance->StarterWeapon);
 		}
 	}
 }
@@ -78,7 +80,7 @@ void AVampirePlayerController::OnUnPossess()
 {
 	Super::OnUnPossess();
 
-	GetWorld()->GetTimerManager().ClearTimer(pawnLifeTimeHandle);
+	GetWorld()->GetTimerManager().ClearTimer(PawnLifeTimeHandle);
 }
 
 void AVampirePlayerController::SetupInputComponent()
@@ -94,13 +96,13 @@ void AVampirePlayerController::SetupInputComponent()
 
 void AVampirePlayerController::Move(const FInputActionValue& MovementInput)
 {
-	FVector2D movement = MovementInput.Get<FVector2D>();
+	FVector2D Movement = MovementInput.Get<FVector2D>();
 
 	if (APawn* pawn = GetPawn())
 	{
 		if (UKismetSystemLibrary::DoesImplementInterface(pawn, UInputable::StaticClass()))
 		{
-			IInputable::Execute_Input_Move(pawn, movement);
+			IInputable::Execute_Input_Move(pawn, Movement);
 		}
 	}
 }
@@ -114,95 +116,96 @@ void AVampirePlayerController::OnPause(const FInputActionValue& PauseInput)
 			IInputable::Execute_Input_Pause(pawn);
 		}
 	}
-	
+
 	if (PauseUI)
 	{
 		if (SetPause(true))
 		{
-			currentPauseUI = CreateWidget<UPauseWidget, AVampirePlayerController*>(this, PauseUI.Get());
-			if (currentPauseUI)
+			CurrentPauseUI = CreateWidget<UPauseWidget, AVampirePlayerController*>(this, PauseUI.Get());
+			if (CurrentPauseUI)
 			{
-				currentPauseUI->AddToViewport();
-				UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(this, currentPauseUI, EMouseLockMode::LockInFullscreen);
+				CurrentPauseUI->AddToViewport();
+				UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(this, CurrentPauseUI, EMouseLockMode::LockInFullscreen);
 				bShowMouseCursor = true;
 			}
-		}		
+		}
 	}
 }
 
-void AVampirePlayerController::UpdatePlayerEXPHUD(int exp, float currentLevelPercent)
+void AVampirePlayerController::UpdatePlayerEXPHUD(int Exp, float CurrentLevelPercent)
 {
-	if (currentPlayerHUD)
+	if (CurrentPlayerHUD)
 	{
-		currentPlayerHUD->UpdateEXPBar(currentLevelPercent);
+		CurrentPlayerHUD->UpdateEXPBar(CurrentLevelPercent);
 	}
 }
 
-void AVampirePlayerController::ShowLevelUpScreen(int level)
+void AVampirePlayerController::ShowLevelUpScreen(int Level)
 {
 	APawn* pawn = GetPawn();
 	if (!pawn)
 	{
 		return;
 	}
-	
-	UEXPComponent* expComponent = pawn->GetComponentByClass<UEXPComponent>();
-	if (!expComponent || expComponent->GetCurrentLevel() == 0)
+
+	UEXPComponent* ExpComponent = pawn->GetComponentByClass<UEXPComponent>();
+	if (!ExpComponent || ExpComponent->GetCurrentLevel() == 0)
 	{
 		return;
 	}
-	
+
 	if (LevelUpUI)
 	{
 		if (SetPause(true))
 		{
-			currentLevelUpUI = CreateWidget<ULevelUpWidget, AVampirePlayerController*>(this, LevelUpUI.Get());
-			if (currentLevelUpUI)
+			CurrentLevelUpUI = CreateWidget<ULevelUpWidget, AVampirePlayerController*>(this, LevelUpUI.Get());
+			if (CurrentLevelUpUI)
 			{
-				currentLevelUpUI->AddToViewport();
-				UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(this, currentLevelUpUI, EMouseLockMode::LockInFullscreen);
+				CurrentLevelUpUI->AddToViewport();
+				UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(this, CurrentLevelUpUI,
+				                                               EMouseLockMode::LockInFullscreen);
 				bShowMouseCursor = true;
 			}
-		}		
+		}
 	}
 }
 
-void AVampirePlayerController::UpdatePlayerLevelHUD(int level)
+void AVampirePlayerController::UpdatePlayerLevelHUD(int Level)
 {
-	if (currentPlayerHUD)
+	if (CurrentPlayerHUD)
 	{
-		currentPlayerHUD->UpdateLevelBlock(level);
+		CurrentPlayerHUD->UpdateLevelBlock(Level);
 	}
 }
 
-void AVampirePlayerController::UpdateTimerHUD(float deltaTime)
+void AVampirePlayerController::UpdateTimerHUD(float DeltaTime)
 {
-	if (currentPlayerHUD)
+	if (CurrentPlayerHUD)
 	{
-		currentPlayerHUD->UpdateTimerBlock(deltaTime);
+		CurrentPlayerHUD->UpdateTimerBlock(DeltaTime);
 	}
 }
 
-void AVampirePlayerController::UpdateKillCountHUD(int killCount)
+void AVampirePlayerController::UpdateKillCountHUD(int KillCount)
 {
-	if (currentPlayerHUD)
+	if (CurrentPlayerHUD)
 	{
-		currentPlayerHUD->UpdateKillBlock(killCount);
+		CurrentPlayerHUD->UpdateKillBlock(KillCount);
 	}
 }
 
-void AVampirePlayerController::UpdateGoldCountHUD(int goldCount)
+void AVampirePlayerController::UpdateGoldCountHUD(int GoldCount)
 {
-	if (currentPlayerHUD)
+	if (CurrentPlayerHUD)
 	{
-		currentPlayerHUD->UpdateGoldBlock(goldCount);
+		CurrentPlayerHUD->UpdateGoldBlock(GoldCount);
 	}
 }
 
-void AVampirePlayerController::UpdateTimerHUDElement_Implementation(float deltaTime)
+void AVampirePlayerController::UpdateTimerHUDElement_Implementation(float DeltaTime)
 {
-	if (currentPlayerHUD)
+	if (CurrentPlayerHUD)
 	{
-		currentPlayerHUD->UpdateTimerBlock(deltaTime);
+		CurrentPlayerHUD->UpdateTimerBlock(DeltaTime);
 	}
 }

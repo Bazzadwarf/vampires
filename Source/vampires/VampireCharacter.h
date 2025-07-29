@@ -27,7 +27,7 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float SlerpSpeed = 10.0f;
-	
+
 protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UHealthComponent> HealthComponent;
@@ -58,15 +58,15 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void Input_Move_Implementation(FVector2D value) override;
+	virtual void Input_Move_Implementation(FVector2D Value) override;
 
 	virtual UInputMappingContext* Input_GetInputMappingContext_Implementation() override;
 
 	virtual FVector2D Input_GetPreviousMovementDirection_Implementation() override;
 
+public:
 	UHealthComponent* GetHealthComponent();
 };

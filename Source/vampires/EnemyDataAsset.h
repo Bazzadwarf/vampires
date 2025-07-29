@@ -19,24 +19,24 @@ class VAMPIRES_API UEnemyDataAsset : public UDataAsset
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UStaticMesh> StaticMesh;
 
-	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UBehaviorTree> BehaviorTree = nullptr;
 
-	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UPickupDataAsset> PickupDataAsset = nullptr;
-	
-	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true"))
+
+	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<USoundBase> OnDamagedSoundBase = nullptr;
 
-	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<USoundBase> OnDeathSoundBase = nullptr;
 
-	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UNiagaraSystem> OnDamagedNiagaraSystem;
 
-	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UNiagaraSystem> OnDeathNiagaraSystem;
 };

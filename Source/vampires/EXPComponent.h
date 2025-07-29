@@ -8,6 +8,7 @@
 #include "EXPComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnEXPGainedDelegate, int, exp, float, currentLevelPercent);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEXPLevelUpDelegate, int, level);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
@@ -16,16 +17,16 @@ class VAMPIRES_API UEXPComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
-	
 	UPROPERTY(BlueprintAssignable, Category="EXP")
 	FOnEXPGainedDelegate OnEXPGained;
+
 	UPROPERTY(BlueprintAssignable, Category="EXP")
 	FOnEXPLevelUpDelegate OnEXPLevelUp;
 
 	UPROPERTY(EditDefaultsOnly, Category="EXP")
 	TObjectPtr<UDataTable> LevelsTable;
 
-protected:
+private:
 	int CurrentEXP = 0;
 
 	int CurrentLevel = 0;
@@ -37,10 +38,10 @@ public:
 	UEXPComponent();
 
 	UFUNCTION(BlueprintCallable)
-	void IncrementEXP(int value);
+	void IncrementEXP(int Value);
 
 	UFUNCTION(BlueprintCallable)
-	void SetCurrentEXP(int value);
+	void SetCurrentEXP(int Value);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	int GetCurrentEXP();
@@ -57,8 +58,4 @@ public:
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
-
-private:
-
-	void ProcessExp(int oldEXP, int oldLevel, int newEXP);
 };

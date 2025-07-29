@@ -1,4 +1,4 @@
- // Louis Hobbs | 2024-2025
+// Louis Hobbs | 2024-2025
 
 #pragma once
 
@@ -15,11 +15,11 @@ UCLASS()
 class VAMPIRES_API UVampireGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
-public:
 
+public:
 	UPROPERTY()
 	TSubclassOf<AWeapon> StarterWeapon;
-	
+
 	UPROPERTY(EditDefaultsOnly)
 	TSoftObjectPtr<UWorld> MainMenuWorld;
 

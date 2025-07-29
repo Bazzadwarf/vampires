@@ -18,10 +18,10 @@ class VAMPIRES_API APickup : public AActor, public IPickupable
 {
 	GENERATED_BODY()
 
-public:
+protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	int PickupValue = 1;
-	
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TObjectPtr<USphereComponent> InnerSphereComponent = nullptr;
 
@@ -44,8 +44,8 @@ public:
 	TObjectPtr<UNiagaraComponent> NiagaraComponent = nullptr;
 
 private:
-	FOnTimelineFloat onTimelineCallback;
-	FOnTimelineEventStatic onTimelineFinishedCallback;
+	FOnTimelineFloat OnTimelineCallback;
+	FOnTimelineEventStatic OnTimelineFinishedCallback;
 
 	FVector PickupLocation;
 
@@ -56,11 +56,11 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	
+
 	virtual void LoadDataFromDataAsset_Implementation(UPickupDataAsset* PickupDataAsset, FVector Location) override;
 
 	virtual void ResetData_Implementation() override;
-	
+
 	UFUNCTION()
 	virtual void OnInnerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	                                 UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
@@ -72,7 +72,7 @@ protected:
 	                                 const FHitResult& SweepResult);
 
 	UFUNCTION()
-	void TimelineCallback(float val);
+	void TimelineCallback(float Value);
 
 	UFUNCTION()
 	void TimelineFinishedCallback();

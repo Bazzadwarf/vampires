@@ -24,6 +24,9 @@ class VAMPIRES_API AVampireGameMode : public AGameMode, public IPools
 	GENERATED_BODY()
 
 public:
+	FOnEnemyDeathCountIncrementDelegate OnEnemyDeathCountIncrementDelegate;
+
+protected:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AEnemyCharacter> EnemyTemplate;
 
@@ -32,8 +35,6 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AEXPPickup> PickupTemplate;
-
-	FOnEnemyDeathCountIncrementDelegate OnEnemyDeathCountIncrementDelegate;
 
 	UPROPERTY(EditDefaultsOnly)
 	TArray<TObjectPtr<UEnemyDataAsset>> EnemyDataAssets;
@@ -68,6 +69,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	int GetEnemyDeathCount();
 
+protected:
 	UFUNCTION()
 	void HandleOnEnemyDeath(FDamageInfo damageInfo);
 
@@ -86,7 +88,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void EndGame();
 
-protected:
 	UFUNCTION()
 	void SpawnEnemy();
 };

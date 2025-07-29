@@ -60,7 +60,8 @@ void AProjectile::SetActorHiddenInGame(bool bNewHidden)
 	}
 	else
 	{
-		GetWorldTimerManager().SetTimer(ProjectileLifetimeTimerHandle, this, &AProjectile::ReturnProjectileToPool, ProjectileLifespan, true);		
+		GetWorldTimerManager().SetTimer(ProjectileLifetimeTimerHandle, this, &AProjectile::ReturnProjectileToPool,
+		                                ProjectileLifespan, true);
 	}
 }
 
@@ -103,14 +104,14 @@ void AProjectile::OnProjectileBeginOverlap(UPrimitiveComponent* OverlappedCompon
 
 		if (!EnemyHealthComponent->GetIsDead())
 		{
-			AController* ownerController = nullptr;
-			if (AVampireCharacter* character = Cast<AVampireCharacter>(GetOwner()))
+			AController* OwnerController = nullptr;
+			if (AVampireCharacter* Character = Cast<AVampireCharacter>(GetOwner()))
 			{
-				ownerController = character->GetController();
+				OwnerController = Character->GetController();
 			}
 
-			AProjectileWeapon* ownerWeapon = Cast<AProjectileWeapon>(GetOwner());
-			EnemyHealthComponent->TakeDamage(Enemy, ownerWeapon->GetDamage(), nullptr, ownerController, this);
+			AProjectileWeapon* OwnerWeapon = Cast<AProjectileWeapon>(GetOwner());
+			EnemyHealthComponent->TakeDamage(Enemy, OwnerWeapon->GetDamage(), nullptr, OwnerController, this);
 
 			RemainingDamageableEnemies--;
 
@@ -124,14 +125,14 @@ void AProjectile::OnProjectileBeginOverlap(UPrimitiveComponent* OverlappedCompon
 
 void AProjectile::ReturnProjectileToPool()
 {
-	AGameModeBase* gamemode = UGameplayStatics::GetGameMode(GetWorld());
+	AGameModeBase* Gamemode = UGameplayStatics::GetGameMode(GetWorld());
 
-	if (UKismetSystemLibrary::DoesImplementInterface(gamemode, UPools::StaticClass()))
+	if (UKismetSystemLibrary::DoesImplementInterface(Gamemode, UPools::StaticClass()))
 	{
-		if (AObjectPoolManager* objectPoolManager =
-			IPools::Execute_GetProjectileObjectPoolManager(gamemode))
+		if (AObjectPoolManager* ObjectPoolManager =
+			IPools::Execute_GetProjectileObjectPoolManager(Gamemode))
 		{
-			objectPoolManager->ReturnObject(this);
+			ObjectPoolManager->ReturnObject(this);
 		}
 	}
 }

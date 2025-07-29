@@ -41,15 +41,15 @@ public:
 private:
 
 	UPROPERTY()
-	TObjectPtr<UHUDWidget> currentPlayerHUD = nullptr;
+	TObjectPtr<UHUDWidget> CurrentPlayerHUD = nullptr;
 
 	UPROPERTY()
-	TObjectPtr<UPauseWidget> currentPauseUI = nullptr;
+	TObjectPtr<UPauseWidget> CurrentPauseUI = nullptr;
 
 	UPROPERTY()
-	TObjectPtr<ULevelUpWidget> currentLevelUpUI = nullptr;
+	TObjectPtr<ULevelUpWidget> CurrentLevelUpUI = nullptr;
 
-	FTimerHandle pawnLifeTimeHandle;
+	FTimerHandle PawnLifeTimeHandle;
 
 protected:
 	virtual void OnPossess(APawn* aPawn) override;
@@ -65,22 +65,22 @@ protected:
 	void OnPause(const FInputActionValue& PauseInput);
 
 	UFUNCTION()
-	void UpdatePlayerEXPHUD(int exp, float currentLevelPercent);
+	void UpdatePlayerEXPHUD(int Exp, float CurrentLevelPercent);
 
 	UFUNCTION()
-	void ShowLevelUpScreen(int level);
+	void ShowLevelUpScreen(int Level);
 
 	UFUNCTION()
-	void UpdatePlayerLevelHUD(int level);
+	void UpdatePlayerLevelHUD(int Level);
 
 	UFUNCTION(BlueprintCallable)
-	void UpdateTimerHUD(float deltaTime);
+	void UpdateTimerHUD(float DeltaTime);
 
 	UFUNCTION()
-	void UpdateKillCountHUD(int killCount);
+	void UpdateKillCountHUD(int KillCount);
 
 	UFUNCTION()
-	void UpdateGoldCountHUD(int goldCount);
+	void UpdateGoldCountHUD(int GoldCount);
 
-	virtual void UpdateTimerHUDElement_Implementation(float deltaTime) override;
+	virtual void UpdateTimerHUDElement_Implementation(float DeltaTime) override;
 };

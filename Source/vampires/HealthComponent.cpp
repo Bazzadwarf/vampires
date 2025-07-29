@@ -13,28 +13,28 @@ UHealthComponent::UHealthComponent()
 	// ...
 }
 
-void UHealthComponent::TakeDamage(AActor* damagedActor, float damage, const UDamageType* damageType,
-                                  AController* instigatedBy, AActor* damageCauser)
+void UHealthComponent::TakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
+                                  AController* InstigatedBy, AActor* DamageCauser)
 {
-	if (damagedActor == nullptr || IsDead || !CanDamage)
+	if (DamagedActor == nullptr || IsDead || !CanDamage)
 	{
 		return;
 	}
 
-	CurrentHealth -= damage;
+	CurrentHealth -= Damage;
 
-	OnDamaged.Broadcast({damagedActor, damage, damageType, instigatedBy, damageCauser});
+	OnDamaged.Broadcast({DamagedActor, Damage, DamageType, InstigatedBy, DamageCauser});
 
 	if (CurrentHealth <= 0.0f)
 	{
 		IsDead = true;
-		OnDeath.Broadcast({damagedActor, damage, damageType, instigatedBy, damageCauser});
+		OnDeath.Broadcast({DamagedActor, Damage, DamageType, InstigatedBy, DamageCauser});
 	}
 }
 
-void UHealthComponent::IncrementHealth(float value)
+void UHealthComponent::IncrementHealth(float Value)
 {
-	CurrentHealth += value;
+	CurrentHealth += Value;
 
 	if (CurrentHealth > MaxHealth)
 	{
@@ -47,9 +47,9 @@ float UHealthComponent::GetMaxHealth()
 	return MaxHealth;
 }
 
-void UHealthComponent::SetMaxHealth(float value)
+void UHealthComponent::SetMaxHealth(float Value)
 {
-	MaxHealth = value;
+	MaxHealth = Value;
 }
 
 float UHealthComponent::GetCurrentHealth()
@@ -57,9 +57,9 @@ float UHealthComponent::GetCurrentHealth()
 	return CurrentHealth;
 }
 
-void UHealthComponent::SetCurrentHealth(float value)
+void UHealthComponent::SetCurrentHealth(float Value)
 {
-	CurrentHealth = value;
+	CurrentHealth = Value;
 
 	if (CurrentHealth > MaxHealth)
 	{
@@ -84,9 +84,9 @@ bool UHealthComponent::GetIsDead()
 	return IsDead;
 }
 
-void UHealthComponent::SetIsDead(bool isDead)
+void UHealthComponent::SetIsDead(bool bIsDead)
 {
-	IsDead = isDead;
+	IsDead = bIsDead;
 }
 
 bool UHealthComponent::GetCanDamage()
@@ -94,9 +94,9 @@ bool UHealthComponent::GetCanDamage()
 	return CanDamage;
 }
 
-void UHealthComponent::SetCanDamage(bool canDamage)
+void UHealthComponent::SetCanDamage(bool bCanDamage)
 {
-	CanDamage = canDamage;
+	CanDamage = bCanDamage;
 }
 
 

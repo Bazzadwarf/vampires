@@ -8,6 +8,7 @@
 #include "Interfaces/Enemyable.h"
 #include "EnemyCharacter.generated.h"
 
+struct FDamageInfo;
 class USphereComponent;
 class UObjectPoolComponent;
 class UBehaviorTree;
@@ -20,7 +21,7 @@ class VAMPIRES_API AEnemyCharacter : public AVampireCharacter, public IEnemyable
 {
 	GENERATED_BODY()
 
-public:
+protected:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AEXPPickup> EXPPickupTemplate = nullptr;
 
@@ -28,7 +29,7 @@ public:
 	TObjectPtr<USphereComponent> DamageSphere = nullptr;
 
 	UPROPERTY(EditDefaultsOnly)
-	float Damage = 5.0f;;
+	float Damage = 5.0f;
 
 	UPROPERTY(EditDefaultsOnly)
 	float AttackCooldown = 1.0f;
@@ -53,19 +54,20 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-public:
 	virtual void Tick(float DeltaTime) override;
 
+public:
 	UBehaviorTree* GetBehaviorTree();
 
 	UFUNCTION()
-	virtual void OnDamaged(FDamageInfo damageInfo);
+	virtual void OnDamaged(FDamageInfo DamageInfo);
 
 	UFUNCTION()
-	virtual void OnDeath(FDamageInfo damageInfo);
-	
+	virtual void OnDeath(FDamageInfo DamageInfo);
+
+protected:
 	UFUNCTION()
-	virtual void LoadDataFromDataAsset_Implementation(UEnemyDataAsset* enemyDataAsset) override;
+	virtual void LoadDataFromDataAsset_Implementation(UEnemyDataAsset* EnemyDataAsset) override;
 
 	UFUNCTION()
 	virtual void ResetData_Implementation() override;
@@ -81,12 +83,12 @@ public:
 
 	UFUNCTION()
 	void OnDamageBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-						UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
-						const FHitResult& SweepResult);
+	                          UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+	                          const FHitResult& SweepResult);
 
 	UFUNCTION()
 	void OnDamageEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-					  int32 OtherBodyIndex);
+	                        int32 OtherBodyIndex);
 
 private:
 	UFUNCTION()

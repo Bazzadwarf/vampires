@@ -52,7 +52,7 @@ void ULevelUpWidget::NativeConstruct()
 		}
 
 		// Get list of weapons that the player can still obtain 
-		TArray<TSubclassOf<AWeapon>> ObtainableWeapons = InventoryComponent->obtainableWeapons;
+		TArray<TSubclassOf<AWeapon>> ObtainableWeapons = InventoryComponent->ObtainableWeapons;
 		for (TSubclassOf<AWeapon> Weapon : ObtainableWeapons)
 		{
 			UUpgradeButtonDataObject* Temp = NewObject<UUpgradeButtonDataObject>(this);

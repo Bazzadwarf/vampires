@@ -17,8 +17,7 @@ class VAMPIRES_API AEXPPickup : public APickup
 protected:
 	virtual void BeginPlay() override;
 
-public:
 	virtual void OnInnerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	                            UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
-	                            const FHitResult& SweepResult) override;
+	                                 UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+	                                 const FHitResult& SweepResult) override;
 };

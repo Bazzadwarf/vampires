@@ -38,18 +38,15 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-public:
 	virtual void Tick(float DeltaTime) override;
 
-protected:
 	virtual void OnPossess(APawn* InPawn) override;
 
-public:
 	UFUNCTION()
-	virtual void OnDamaged(FDamageInfo info);
+	virtual void OnDamaged(FDamageInfo Info);
 
 	UFUNCTION()
-	virtual void OnDeath(FDamageInfo info);
+	virtual void OnDeath(FDamageInfo Info);
 
 private:
 	UFUNCTION()

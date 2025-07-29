@@ -10,44 +10,45 @@ void AObjectPoolManager::BeginPlay()
 	Super::BeginPlay();
 }
 
-void AObjectPoolManager::InitializeObjectPool(TSubclassOf<AActor> Object, const int InitialObjectPoolSize)
+void AObjectPoolManager::InitializeObjectPool(const TSubclassOf<AActor>& TemplateObject, const int InitialObjectPoolSize)
 {
-	ObjectTemplate = Object;
+	ObjectTemplate = TemplateObject;
 
 	for (int i = 0; i < InitialObjectPoolSize; i++)
 	{
-		if (AActor* object = GetWorld()->SpawnActor<AActor>(Object, FVector(100000.0f, 100000.0f, 0), FRotator(0, 0, 0)))
+		if (AActor* Object = GetWorld()->SpawnActor<
+			AActor>(TemplateObject, FVector(100000.0f, 100000.0f, 0), FRotator(0, 0, 0)))
 		{
-			SetObjectStatus(false, object);
-			ObjectPool.Add(object);
+			SetObjectStatus(false, Object);
+			ObjectPool.Add(Object);
 		}
 	}
 }
 
-void AObjectPoolManager::InitializeObjectPool(UClass* Object, int InitialObjectPoolSize)
+void AObjectPoolManager::InitializeObjectPool(UClass* TemplateObject, int InitialObjectPoolSize)
 {
 	for (int i = 0; i < InitialObjectPoolSize; i++)
 	{
-		if (AActor* object = GetWorld()->SpawnActor<AActor>(Object))
+		if (AActor* Object = GetWorld()->SpawnActor<AActor>(TemplateObject))
 		{
-			SetObjectStatus(false, object);
-			ObjectPool.Add(object);
+			SetObjectStatus(false, Object);
+			ObjectPool.Add(Object);
 		}
 	}
 }
 
-AActor* AObjectPoolManager::GetObject(int startingOffset)
+AActor* AObjectPoolManager::GetObject(int StartingOffset)
 {
 	int ObjectPoolSize = ObjectPool.Num();
-	for (int i = startingOffset; i < ObjectPoolSize; i++)
+	for (int i = StartingOffset; i < ObjectPoolSize; i++)
 	{
 		if (ObjectPool[i]->IsHidden())
 		{
 			SetObjectStatus(true, ObjectPool[i]);
 
-			if (UObjectPoolComponent* objectPoolComponent = ObjectPool[i]->GetComponentByClass<UObjectPoolComponent>())
+			if (UObjectPoolComponent* ObjectPoolComponent = ObjectPool[i]->GetComponentByClass<UObjectPoolComponent>())
 			{
-				objectPoolComponent->OnRetrieve.ExecuteIfBound();
+				ObjectPoolComponent->OnRetrieve.ExecuteIfBound();
 			}
 
 			return ObjectPool[i];
@@ -59,19 +60,19 @@ AActor* AObjectPoolManager::GetObject(int startingOffset)
 	return GetObject(ObjectPoolSize);
 }
 
-void AObjectPoolManager::ReturnObject(AActor* object)
+void AObjectPoolManager::ReturnObject(AActor* Object)
 {
-	SetObjectStatus(false, object);
+	SetObjectStatus(false, Object);
 
-	if (UObjectPoolComponent* objectPoolComponent = object->GetComponentByClass<UObjectPoolComponent>())
+	if (UObjectPoolComponent* ObjectPoolComponent = Object->GetComponentByClass<UObjectPoolComponent>())
 	{
-		objectPoolComponent->OnReturn.ExecuteIfBound();
+		ObjectPoolComponent->OnReturn.ExecuteIfBound();
 	}
 }
 
-void AObjectPoolManager::SetObjectStatus(bool enabled, AActor* object)
+void AObjectPoolManager::SetObjectStatus(bool bEnabled, AActor* Object)
 {
-	object->SetActorHiddenInGame(!enabled);
-	object->SetActorTickEnabled(enabled);
-	object->SetActorEnableCollision(enabled);
+	Object->SetActorHiddenInGame(!bEnabled);
+	Object->SetActorTickEnabled(bEnabled);
+	Object->SetActorEnableCollision(bEnabled);
 }

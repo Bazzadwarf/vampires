@@ -37,8 +37,8 @@ APlayerCharacter::APlayerCharacter()
 	CameraShakeTimelineComponent->SetTimelineLengthMode(TL_TimelineLength);
 	CameraShakeTimelineComponent->SetPlaybackPosition(0.0f, false);
 
-	onTimelineCallback.BindUFunction(this, FName(TEXT("CameraShakeTimelineCallback")));
-	onTimelineFinishedCallback.BindUFunction(this, FName(TEXT("CameraShakeTimelineFinishedCallback")));
+	OnTimelineCallback.BindUFunction(this, FName(TEXT("CameraShakeTimelineCallback")));
+	OnTimelineFinishedCallback.BindUFunction(this, FName(TEXT("CameraShakeTimelineFinishedCallback")));
 }
 
 void APlayerCharacter::BeginPlay()
@@ -50,8 +50,8 @@ void APlayerCharacter::BeginPlay()
 
 	if (CameraShakeCurve != nullptr)
 	{
-		CameraShakeTimelineComponent->AddInterpFloat(CameraShakeCurve, onTimelineCallback);
-		CameraShakeTimelineComponent->SetTimelineFinishedFunc(onTimelineFinishedCallback);
+		CameraShakeTimelineComponent->AddInterpFloat(CameraShakeCurve, OnTimelineCallback);
+		CameraShakeTimelineComponent->SetTimelineFinishedFunc(OnTimelineFinishedCallback);
 	}
 
 	PlayerCameraManager = GetWorld()->GetFirstPlayerController()->PlayerCameraManager;
@@ -62,7 +62,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	auto PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-	
+
 	FVector TopLeft, TopLeftDir;
 	FVector BottomRight, BottomRightDir;
 
@@ -113,7 +113,8 @@ void APlayerCharacter::CameraShakeTimelineCallback(float val)
 {
 	auto PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	auto cameraActor = PlayerController->GetViewTarget();
-	cameraActor->SetActorLocation(FVector(FMath::RandRange(0.0f, CameraShakeStrength) * val, FMath::RandRange(0.0f, CameraShakeStrength) * val, 0.0f));
+	cameraActor->SetActorLocation(FVector(FMath::RandRange(0.0f, CameraShakeStrength) * val,
+	                                      FMath::RandRange(0.0f, CameraShakeStrength) * val, 0.0f));
 }
 
 void APlayerCharacter::CameraShakeTimelineFinishedCallback()

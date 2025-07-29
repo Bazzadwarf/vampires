@@ -13,9 +13,9 @@ void AEXPPickup::OnInnerBeginOverlap(UPrimitiveComponent* OverlappedComponent, A
                                      UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
                                      const FHitResult& SweepResult)
 {
-	if (UEXPComponent* expComponent = OtherActor->GetComponentByClass<UEXPComponent>())
+	if (UEXPComponent* ExpComponent = OtherActor->GetComponentByClass<UEXPComponent>())
 	{
-		expComponent->IncrementEXP(PickupValue);
+		ExpComponent->IncrementEXP(PickupValue);
 		Super::OnInnerBeginOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
 	}
 }

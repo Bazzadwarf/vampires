@@ -24,7 +24,7 @@ class VAMPIRES_API APlayerCharacter : public AVampireCharacter
 {
 	GENERATED_BODY()
 
-public:
+protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UEXPComponent> EXPComponent;
 
@@ -36,7 +36,7 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<UTimelineComponent> CameraShakeTimelineComponent = nullptr;
-	
+
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UCurveFloat> CameraShakeCurve;
 
@@ -44,14 +44,13 @@ public:
 	float CameraShakeStrength = 100.0f;
 
 private:
-	
+	UPROPERTY()
 	TObjectPtr<APlayerCameraManager> PlayerCameraManager = nullptr;
-	
+
 	APlayerCharacter();
 
-private:
-	FOnTimelineFloat onTimelineCallback;
-	FOnTimelineEventStatic onTimelineFinishedCallback;
+	FOnTimelineFloat OnTimelineCallback;
+	FOnTimelineEventStatic OnTimelineFinishedCallback;
 
 protected:
 	virtual void BeginPlay() override;

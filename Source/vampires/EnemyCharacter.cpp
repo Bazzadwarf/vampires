@@ -47,12 +47,12 @@ UBehaviorTree* AEnemyCharacter::GetBehaviorTree()
 	return BehaviorTree;
 }
 
-void AEnemyCharacter::OnDamaged(FDamageInfo damageInfo)
+void AEnemyCharacter::OnDamaged(FDamageInfo DamageInfo)
 {
-	// if (OnDamagedSound)
-	// {
+	if (OnDamagedSound)
+	{
 		UGameplayStatics::PlaySoundAtLocation(GetWorld(), OnDamagedSound, GetActorLocation());
-	// }
+	}
 
 	if (OnDamagedNiagaraSystem)
 	{
@@ -60,22 +60,22 @@ void AEnemyCharacter::OnDamaged(FDamageInfo damageInfo)
 	}
 }
 
-void AEnemyCharacter::OnDeath(FDamageInfo damageInfo)
+void AEnemyCharacter::OnDeath(FDamageInfo DamageInfo)
 {
 	if (PickupTemplate)
 	{
-		AGameModeBase* gamemode = UGameplayStatics::GetGameMode(GetWorld());
-		if (UKismetSystemLibrary::DoesImplementInterface(gamemode, UPools::StaticClass()))
+		AGameModeBase* Gamemode = UGameplayStatics::GetGameMode(GetWorld());
+		if (UKismetSystemLibrary::DoesImplementInterface(Gamemode, UPools::StaticClass()))
 		{
-			if (AObjectPoolManager* objectPoolManager = IPools::Execute_GetPickupObjectPoolManager(gamemode))
+			if (AObjectPoolManager* ObjectPoolManager = IPools::Execute_GetPickupObjectPoolManager(Gamemode))
 			{
-				AActor* pickup = objectPoolManager->GetObject();
+				AActor* Pickup = ObjectPoolManager->GetObject();
 
-				if (UKismetSystemLibrary::DoesImplementInterface(pickup, UPickupable::StaticClass()))
+				if (UKismetSystemLibrary::DoesImplementInterface(Pickup, UPickupable::StaticClass()))
 				{
-					FVector pickupLocation = GetActorLocation();
-					pickup->SetActorLocation(pickupLocation);
-					IPickupable::Execute_LoadDataFromDataAsset(pickup, PickupTemplate, pickupLocation);
+					FVector PickupLocation = GetActorLocation();
+					Pickup->SetActorLocation(PickupLocation);
+					IPickupable::Execute_LoadDataFromDataAsset(Pickup, PickupTemplate, PickupLocation);
 				}
 			}
 		}
@@ -92,17 +92,17 @@ void AEnemyCharacter::OnDeath(FDamageInfo damageInfo)
 	}
 }
 
-void AEnemyCharacter::LoadDataFromDataAsset_Implementation(UEnemyDataAsset* enemyDataAsset)
+void AEnemyCharacter::LoadDataFromDataAsset_Implementation(UEnemyDataAsset* EnemyDataAsset)
 {
-	if (enemyDataAsset != nullptr)
+	if (EnemyDataAsset != nullptr)
 	{
-		StaticMeshComponent->SetStaticMesh(enemyDataAsset->StaticMesh);
-		BehaviorTree = enemyDataAsset->BehaviorTree;
-		PickupTemplate = enemyDataAsset->PickupDataAsset;
-		OnDamagedSound = enemyDataAsset->OnDamagedSoundBase;
-		OnDeathSound = enemyDataAsset->OnDeathSoundBase;
-		OnDamagedNiagaraSystem = enemyDataAsset->OnDamagedNiagaraSystem;
-		OnDeathNiagaraSystem = enemyDataAsset->OnDeathNiagaraSystem;
+		StaticMeshComponent->SetStaticMesh(EnemyDataAsset->StaticMesh);
+		BehaviorTree = EnemyDataAsset->BehaviorTree;
+		PickupTemplate = EnemyDataAsset->PickupDataAsset;
+		OnDamagedSound = EnemyDataAsset->OnDamagedSoundBase;
+		OnDeathSound = EnemyDataAsset->OnDeathSoundBase;
+		OnDamagedNiagaraSystem = EnemyDataAsset->OnDamagedNiagaraSystem;
+		OnDeathNiagaraSystem = EnemyDataAsset->OnDeathNiagaraSystem;
 	}
 }
 
@@ -129,10 +129,10 @@ void AEnemyCharacter::SpawnController_Implementation()
 		SpawnDefaultController();
 	}
 
-	if (BehaviorTree != nullptr)
+	if (AVampireAIController* VampireAIController = Cast<AVampireAIController>(Controller); VampireAIController &&
+		BehaviorTree)
 	{
-		AVampireAIController* controller = Cast<AVampireAIController>(Controller);
-		controller->RunBehaviorTree(BehaviorTree);
+		VampireAIController->RunBehaviorTree(BehaviorTree);
 	}
 }
 
@@ -142,20 +142,23 @@ UHealthComponent* AEnemyCharacter::GetEnemyHealthComponent_Implementation()
 }
 
 void AEnemyCharacter::OnDamageBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                                           UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+                                           const FHitResult& SweepResult)
 {
-	if (Cast<ACharacter>(OtherActor) == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0) && !Player.Contains(OtherActor))
+	if (Cast<ACharacter>(OtherActor) == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0) && !Player.
+		Contains(OtherActor))
 	{
 		Player.Add(OtherActor);
-		
+
 		GetWorldTimerManager().SetTimer(DamageTimerHandle, this, &AEnemyCharacter::DamagePlayer, AttackCooldown, true);
 	}
 }
 
 void AEnemyCharacter::OnDamageEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+                                         UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	if (Cast<ACharacter>(OtherActor) == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0) && Player.Contains(OtherActor))
+	if (Cast<ACharacter>(OtherActor) == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0) && Player.
+		Contains(OtherActor))
 	{
 		Player.Remove(OtherActor);
 
@@ -170,8 +173,8 @@ void AEnemyCharacter::ResetHealth()
 
 void AEnemyCharacter::DamagePlayer()
 {
-	for (auto player : Player)
+	for (auto DamagedPlayer : Player)
 	{
-		UGameplayStatics::ApplyDamage(player, Damage, GetController(), this, nullptr);
+		UGameplayStatics::ApplyDamage(DamagedPlayer, Damage, GetController(), this, nullptr);
 	}
 }

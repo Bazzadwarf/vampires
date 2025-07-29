@@ -15,16 +15,15 @@ class VAMPIRES_API UWeaponInventoryComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<TSubclassOf<AWeapon>> ObtainableWeapons;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<TSubclassOf<AWeapon>> obtainableWeapons;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<TSubclassOf<AWeapon>> initialInventory;
+	TArray<TSubclassOf<AWeapon>> InitialInventory;
 
 private:
 	UPROPERTY()
-	TArray<TObjectPtr<AWeapon>> inventory;
+	TArray<TObjectPtr<AWeapon>> Inventory;
 
 public:
 	// Sets default values for this component's properties
@@ -39,7 +38,7 @@ public:
 	void InitializeInventory();
 
 	UFUNCTION()
-	void AddWeaponToInventory(TSubclassOf<AWeapon> Weapon);
+	void AddWeaponToInventory(TSubclassOf<AWeapon> NewWeapon);
 
 	UFUNCTION()
 	TArray<AWeapon*> GetInventory();

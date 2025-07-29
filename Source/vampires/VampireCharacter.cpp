@@ -10,7 +10,7 @@
 // Sets default values
 AVampireCharacter::AVampireCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	// Create Health Component
@@ -22,15 +22,13 @@ AVampireCharacter::AVampireCharacter()
 	//Create Weapon Inventory Component
 	WeaponInventoryComponent = CreateDefaultSubobject<UWeaponInventoryComponent>(TEXT("Weapon Inventory Component"));
 
-	GetCharacterMovement()->SetPlaneConstraintNormal({0.0f, 0.0f, 1.0f}); 
+	GetCharacterMovement()->SetPlaneConstraintNormal({0.0f, 0.0f, 1.0f});
 }
 
 // Called when the game starts or when spawned
 void AVampireCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	
 }
 
 // Called every frame
@@ -38,21 +36,21 @@ void AVampireCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	float newYaw = FMath::Atan2(PreviousMovementDirection.Y, PreviousMovementDirection.X) * 180.0f / PI;
-	FQuat newRotation = FQuat::Slerp(StaticMeshComponent->GetComponentRotation().Quaternion(),
-	                                 FRotator(0.0f, newYaw, 0.0f).Quaternion(),
+	float NewYaw = FMath::Atan2(PreviousMovementDirection.Y, PreviousMovementDirection.X) * 180.0f / PI;
+	FQuat NewRotation = FQuat::Slerp(StaticMeshComponent->GetComponentRotation().Quaternion(),
+	                                 FRotator(0.0f, NewYaw, 0.0f).Quaternion(),
 	                                 DeltaTime * SlerpSpeed);
-	StaticMeshComponent->SetRelativeRotation(newRotation);
+	StaticMeshComponent->SetRelativeRotation(NewRotation);
 }
 
-void AVampireCharacter::Input_Move_Implementation(FVector2D value)
+void AVampireCharacter::Input_Move_Implementation(FVector2D Value)
 {
-	PreviousMovementDirection = value;
-	
-	if (value.Size() != 0.0f)
+	PreviousMovementDirection = Value;
+
+	if (Value.Size() != 0.0f)
 	{
-		AddMovementInput({0.0f, 1.0f, 0.0f}, value.Y);
-		AddMovementInput({1.0f, 0.0f, 0.0f}, value.X);
+		AddMovementInput({0.0f, 1.0f, 0.0f}, Value.Y);
+		AddMovementInput({1.0f, 0.0f, 0.0f}, Value.X);
 	}
 }
 
@@ -70,4 +68,3 @@ UHealthComponent* AVampireCharacter::GetHealthComponent()
 {
 	return HealthComponent;
 }
-

@@ -16,9 +16,9 @@ void AGoldPickup::OnInnerBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
                                       UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
                                       const FHitResult& SweepResult)
 {
-	if (UGoldComponent* goldComponent = OtherActor->GetComponentByClass<UGoldComponent>())
+	if (UGoldComponent* GoldComponent = OtherActor->GetComponentByClass<UGoldComponent>())
 	{
-		goldComponent->IncrementGold(PickupValue);
+		GoldComponent->IncrementGold(PickupValue);
 		Super::OnInnerBeginOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
 	}
 }

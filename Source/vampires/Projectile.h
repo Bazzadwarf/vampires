@@ -49,7 +49,6 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:
 	virtual void SetActorHiddenInGame(bool bNewHidden) override;
 
 	virtual void SetTargetDirection_Implementation(FVector Direction) override;

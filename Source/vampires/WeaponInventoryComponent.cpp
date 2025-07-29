@@ -25,37 +25,37 @@ void UWeaponInventoryComponent::BeginPlay()
 
 void UWeaponInventoryComponent::InitializeInventory()
 {
-	inventory.Empty();
+	Inventory.Empty();
 
-	for (TSubclassOf<AWeapon> weapon : initialInventory)
+	for (TSubclassOf<AWeapon> Weapon : InitialInventory)
 	{
-		if (IsValid(weapon))
+		if (IsValid(Weapon))
 		{
-			AddWeaponToInventory(weapon);
+			AddWeaponToInventory(Weapon);
 		}
 	}
 }
 
-void UWeaponInventoryComponent::AddWeaponToInventory(TSubclassOf<AWeapon> Weapon)
+void UWeaponInventoryComponent::AddWeaponToInventory(TSubclassOf<AWeapon> NewWeapon)
 {
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.Owner = GetOwner();
-	
-	AWeapon* weapon = GetWorld()->SpawnActor<AWeapon>(Weapon, SpawnParameters.Owner->GetTransform(), SpawnParameters);
-	if (weapon->GetFollowPlayer())
+
+	AWeapon* Weapon = GetWorld()->SpawnActor<AWeapon>(NewWeapon, SpawnParameters.Owner->GetTransform(), SpawnParameters);
+	if (Weapon->GetFollowPlayer())
 	{
-		weapon->AttachToActor(GetOwner(), FAttachmentTransformRules::KeepWorldTransform);
+		Weapon->AttachToActor(GetOwner(), FAttachmentTransformRules::KeepWorldTransform);
 	}
 	else
 	{
-		weapon->SetActorLocation(FVector::ZeroVector);
+		Weapon->SetActorLocation(FVector::ZeroVector);
 	}
-	
-	inventory.Add(weapon);
-	obtainableWeapons.Remove(Weapon);
+
+	Inventory.Add(Weapon);
+	ObtainableWeapons.Remove(NewWeapon);
 }
 
 TArray<AWeapon*> UWeaponInventoryComponent::GetInventory()
 {
-	return inventory;
+	return Inventory;
 }

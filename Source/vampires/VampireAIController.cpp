@@ -54,10 +54,10 @@ void AVampireAIController::OnPossess(APawn* InPawn)
 
 	PlayerCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 
-	if (UBehaviorTree* bt = EnemyCharacter->GetBehaviorTree())
+	if (UBehaviorTree* BT = EnemyCharacter->GetBehaviorTree())
 	{
-		DefaultBlackboard->InitializeBlackboard(*bt->BlackboardAsset);
-		BehaviorTree->StartTree(*bt);
+		DefaultBlackboard->InitializeBlackboard(*BT->BlackboardAsset);
+		BehaviorTree->StartTree(*BT);
 		DefaultBlackboard->SetValueAsObject("SelfActor", EnemyCharacter);
 
 		if (PlayerCharacter)
@@ -67,7 +67,7 @@ void AVampireAIController::OnPossess(APawn* InPawn)
 	}
 }
 
-void AVampireAIController::OnDamaged(FDamageInfo info)
+void AVampireAIController::OnDamaged(FDamageInfo Info)
 {
 	if (EnemyCharacter->GetHealthComponent()->GetCurrentHealth() > 0.0f)
 	{
@@ -75,22 +75,9 @@ void AVampireAIController::OnDamaged(FDamageInfo info)
 	}
 }
 
-void AVampireAIController::OnDeath(FDamageInfo info)
+void AVampireAIController::OnDeath(FDamageInfo Info)
 {
-	// TODO: Do stuff here
-	EnemyCharacter->OnDeath(info);
-	/*EnemyCharacter->DetachFromControllerPendingDestroy();
-	EnemyCharacter->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	EnemyCharacter->GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Ignore);
-
-	if (UPawnMovementComponent* characterMovementComponent = EnemyCharacter->GetMovementComponent())
-	{
-		characterMovementComponent->StopMovementImmediately();
-		characterMovementComponent->StopActiveMovement();
-		characterMovementComponent->SetComponentTickEnabled(false);
-	}
-	GetWorldTimerManager().ClearTimer(PawnMoveToTimerHandle);
-	EnemyCharacter->SetLifeSpan(0.1f);*/
+	EnemyCharacter->OnDeath(Info);
 }
 
 void AVampireAIController::PawnMoveTo()

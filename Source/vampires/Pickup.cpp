@@ -42,8 +42,8 @@ APickup::APickup()
 	TimelineComponent->SetTimelineLengthMode(TL_TimelineLength);
 	TimelineComponent->SetPlaybackPosition(0.0f, false);
 
-	onTimelineCallback.BindUFunction(this, FName(TEXT("TimelineCallback")));
-	onTimelineFinishedCallback.BindUFunction(this, FName(TEXT("TimelineFinishedCallback")));
+	OnTimelineCallback.BindUFunction(this, FName(TEXT("TimelineCallback")));
+	OnTimelineFinishedCallback.BindUFunction(this, FName(TEXT("TimelineFinishedCallback")));
 
 	NiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Niagara Component"));
 	NiagaraComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
@@ -60,8 +60,8 @@ void APickup::BeginPlay()
 
 	if (CurveFloat != nullptr)
 	{
-		TimelineComponent->AddInterpFloat(CurveFloat, onTimelineCallback);
-		TimelineComponent->SetTimelineFinishedFunc(onTimelineFinishedCallback);
+		TimelineComponent->AddInterpFloat(CurveFloat, OnTimelineCallback);
+		TimelineComponent->SetTimelineFinishedFunc(OnTimelineFinishedCallback);
 	}
 }
 
@@ -74,11 +74,11 @@ void APickup::LoadDataFromDataAsset_Implementation(UPickupDataAsset* PickupDataA
 		PickupSoundBase = PickupDataAsset->PickupSoundBase;
 		CurveFloat = PickupDataAsset->CurveFloat;
 		PickupLocation = Location;
-		
+
 		if (CurveFloat != nullptr)
 		{
-			TimelineComponent->AddInterpFloat(CurveFloat, onTimelineCallback);
-			TimelineComponent->SetTimelineFinishedFunc(onTimelineFinishedCallback);
+			TimelineComponent->AddInterpFloat(CurveFloat, OnTimelineCallback);
+			TimelineComponent->SetTimelineFinishedFunc(OnTimelineFinishedCallback);
 		}
 	}
 }
@@ -110,14 +110,14 @@ void APickup::OnInnerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 			UGameplayStatics::PlaySound2D(GetWorld(), PickupSoundBase);
 		}
 
-		AGameModeBase* gamemode = UGameplayStatics::GetGameMode(GetWorld());
-		if (UKismetSystemLibrary::DoesImplementInterface(gamemode, UPools::StaticClass()))
+		AGameModeBase* Gamemode = UGameplayStatics::GetGameMode(GetWorld());
+		if (UKismetSystemLibrary::DoesImplementInterface(Gamemode, UPools::StaticClass()))
 		{
-			if (AObjectPoolManager* objectPoolManager = IPools::Execute_GetProjectileObjectPoolManager(gamemode))
+			if (AObjectPoolManager* ObjectPoolManager = IPools::Execute_GetProjectileObjectPoolManager(Gamemode))
 			{
 				TimelineComponent->Stop();
 				ResetData_Implementation();
-				objectPoolManager->ReturnObject(this);
+				ObjectPoolManager->ReturnObject(this);
 			}
 		}
 		else
@@ -131,18 +131,19 @@ void APickup::OnOuterBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAct
                                   UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
                                   const FHitResult& SweepResult)
 {
-	if (!TimelineComponent->IsPlaying() && UGameplayStatics::GetPlayerCharacter(GetWorld(), 0) == Cast<ACharacter>(OtherActor))
+	if (!TimelineComponent->IsPlaying() && UGameplayStatics::GetPlayerCharacter(GetWorld(), 0) == Cast<
+		ACharacter>(OtherActor))
 	{
 		PlayTimeLine();
-	}	
+	}
 }
 
-void APickup::TimelineCallback(float val)
+void APickup::TimelineCallback(float Value)
 {
-	FVector actorLocation = PickupLocation;
-	FVector playerLocation = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation();
-	FVector location = FMath::Lerp(actorLocation, playerLocation, val);
-	SetActorLocation(location);
+	FVector ActorLocation = PickupLocation;
+	FVector PlayerLocation = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation();
+	FVector Location = FMath::Lerp(ActorLocation, PlayerLocation, Value);
+	SetActorLocation(Location);
 }
 
 void APickup::TimelineFinishedCallback()

@@ -16,7 +16,7 @@ class VAMPIRES_API UGoldComponent : public UActorComponent
 public:
 	FOnGoldGainedDelegate OnGoldGained;
 
-protected:
+private:
 	int CurrentGold = 0;
 
 public:
@@ -24,10 +24,10 @@ public:
 	UGoldComponent();
 
 	UFUNCTION()
-	void IncrementGold(int value);
+	void IncrementGold(int Value);
 
 	UFUNCTION()
-	void SetCurrentGold(int value);
+	void SetCurrentGold(int Value);
 
 	UFUNCTION()
 	int GetCurrentGold();

@@ -93,7 +93,7 @@ void UUpgradeButtonWidget::OnClicked()
 		if (UWeaponInventoryComponent* Inventory = PlayerController->GetPawn()->GetComponentByClass<UWeaponInventoryComponent>())
 		{
 			Inventory->AddWeaponToInventory(WeaponTemplate);
-			Inventory->obtainableWeapons.Remove(WeaponTemplate);
+			Inventory->ObtainableWeapons.Remove(WeaponTemplate);
 		}
 		break;
 

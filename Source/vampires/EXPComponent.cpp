@@ -15,22 +15,21 @@ UEXPComponent::UEXPComponent()
 	// ...
 }
 
-void UEXPComponent::IncrementEXP(int value)
+void UEXPComponent::IncrementEXP(int Value)
 {
-	int oldEXP = CurrentEXP;
-	int oldLevel = CurrentLevel;
-	
-	CurrentEXP += value;
-	
+	int OldLevel = CurrentLevel;
+	CurrentEXP += Value;
+
 	if (NextLevelRow.Level >= 0)
 	{
 		if (CurrentEXP >= NextLevelRow.CumulativeExpForNextLevel)
 		{
 			CurrentLevel = NextLevelRow.Level;
-	
-			if (FExpTableRow* newRow = LevelsTable->FindRow<FExpTableRow>(FName(*FString::FromInt(NextLevelRow.Level + 1)),"", true))
+
+			if (FExpTableRow* NewRow = LevelsTable->FindRow<FExpTableRow>(
+				FName(*FString::FromInt(NextLevelRow.Level + 1)), "", true))
 			{
-				NextLevelRow = *newRow;	
+				NextLevelRow = *NewRow;
 			}
 			else
 			{
@@ -39,37 +38,36 @@ void UEXPComponent::IncrementEXP(int value)
 				NextLevelRow.ExpRequiredForNextLevel += 16;
 				NextLevelRow.CumulativeExpForNextLevel += NextLevelRow.ExpRequiredForNextLevel;
 			}
-						
+
 			OnEXPLevelUp.Broadcast(CurrentLevel);
 		}
 	}
 	else
 	{
 		CurrentLevel = FMath::Floor(CurrentEXP / 100.0f);
-		
-		if (CurrentLevel != oldLevel)
+
+		if (CurrentLevel != OldLevel)
 		{
 			OnEXPLevelUp.Broadcast(CurrentLevel);
 		}
 	}
-	
+
 	OnEXPGained.Broadcast(CurrentEXP, GetCurrentLevelPercent());
 }
 
-void UEXPComponent::SetCurrentEXP(int value)
+void UEXPComponent::SetCurrentEXP(int Value)
 {
-	int oldEXP = CurrentEXP;
-	int oldLevel = CurrentLevel;
-	
-	CurrentEXP = value;
-	
+	int OldLevel = CurrentLevel;
+	CurrentEXP = Value;
 	NextLevelRow = FExpTableRow();
-	
-	while (CurrentEXP < NextLevelRow.CumulativeExpForPreviousLevel && CurrentEXP < NextLevelRow.CumulativeExpForNextLevel)
+
+	while (CurrentEXP < NextLevelRow.CumulativeExpForPreviousLevel && CurrentEXP < NextLevelRow.
+		CumulativeExpForNextLevel)
 	{
-		if (FExpTableRow* newRow = LevelsTable->FindRow<FExpTableRow>(FName(*FString::FromInt(NextLevelRow.Level + 1)),"", true))
+		if (FExpTableRow* NewRow = LevelsTable->FindRow<FExpTableRow>(FName(*FString::FromInt(NextLevelRow.Level + 1)),
+		                                                              "", true))
 		{
-			NextLevelRow = *newRow;	
+			NextLevelRow = *NewRow;
 		}
 		else
 		{
@@ -78,11 +76,11 @@ void UEXPComponent::SetCurrentEXP(int value)
 			NextLevelRow.ExpRequiredForNextLevel += 16;
 			NextLevelRow.CumulativeExpForNextLevel += NextLevelRow.ExpRequiredForNextLevel;
 		}
-	}	
-	
+	}
+
 	OnEXPGained.Broadcast(CurrentEXP, GetCurrentLevelPercent());
-	
-	if (CurrentLevel != oldLevel)
+
+	if (CurrentLevel != OldLevel)
 	{
 		OnEXPLevelUp.Broadcast(CurrentLevel);
 	}
@@ -102,12 +100,12 @@ void UEXPComponent::Reset()
 {
 	if (LevelsTable)
 	{
-		if (FExpTableRow* newRow = LevelsTable->FindRow<FExpTableRow>(FName("1"), "", true))
+		if (FExpTableRow* NewRow = LevelsTable->FindRow<FExpTableRow>(FName("1"), "", true))
 		{
-			NextLevelRow = *newRow;
+			NextLevelRow = *NewRow;
 		}
 	}
-	
+
 	CurrentEXP = 0;
 	CurrentLevel = 0;
 	OnEXPGained.Broadcast(CurrentEXP, GetCurrentLevelPercent());
@@ -116,15 +114,16 @@ void UEXPComponent::Reset()
 
 float UEXPComponent::GetCurrentLevelPercent()
 {
-	int adjustedCurrentExp = CurrentEXP - NextLevelRow.CumulativeExpForPreviousLevel;
-	float res = static_cast<float>(adjustedCurrentExp) / static_cast<float>(NextLevelRow.ExpRequiredForNextLevel);
+	int AdjustedCurrentExp = CurrentEXP - NextLevelRow.CumulativeExpForPreviousLevel;
+	float CurrentLevelPercent = static_cast<float>(AdjustedCurrentExp) / static_cast<float>(NextLevelRow.
+		ExpRequiredForNextLevel);
 
-	if (FMath::IsNaN(res))
+	if (FMath::IsNaN(CurrentLevelPercent))
 	{
 		return 0.0f;
 	}
 
-	return res;
+	return CurrentLevelPercent;
 }
 
 // Called when the game starts

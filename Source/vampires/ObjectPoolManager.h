@@ -13,19 +13,19 @@ class VAMPIRES_API AObjectPoolManager : public AActor
 
 	TArray<TObjectPtr<AActor>> ObjectPool = TArray<TObjectPtr<AActor>>();
 	TSubclassOf<AActor> ObjectTemplate;
-	
+
 public:
-	void InitializeObjectPool(TSubclassOf<AActor> Object, int InitialObjectPoolSize = 400);
-	void InitializeObjectPool(UClass* Object, int InitialObjectPoolSize = 400);
+	void InitializeObjectPool(const TSubclassOf<AActor>& TemplateObject, int InitialObjectPoolSize = 400);
+	void InitializeObjectPool(UClass* TemplateObject, int InitialObjectPoolSize = 400);
 
-	AActor* GetObject(int startingOffset = 0);
+	AActor* GetObject(int StartingOffset = 0);
 
-	void ReturnObject(AActor* object);
+	void ReturnObject(AActor* Object);
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 private:
-	void SetObjectStatus(bool enabled, AActor* object);
+	void SetObjectStatus(bool bEnabled, AActor* Object);
 };
