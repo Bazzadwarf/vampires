@@ -61,7 +61,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	auto PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 
 	FVector TopLeft, TopLeftDir;
 	FVector BottomRight, BottomRightDir;
@@ -72,11 +72,14 @@ void APlayerCharacter::Tick(float DeltaTime)
 	PlayerController->DeprojectScreenPositionToWorld(0, 0, TopLeft, TopLeftDir);
 	PlayerController->DeprojectScreenPositionToWorld(ViewportSize.X, ViewportSize.Y, BottomRight, BottomRightDir);
 
-	auto location = GetActorLocation();
-	location.X = FMath::Clamp(location.X, BottomRight.X, TopLeft.X);
-	location.Y = FMath::Clamp(location.Y, TopLeft.Y, BottomRight.Y);
+	FVector Location = GetActorLocation();
+	if (Location.X < BottomRight.X || Location.X > TopLeft.X || Location.Y > BottomRight.Y || Location.Y < TopLeft.Y)
+	{
+		Location.X = FMath::Clamp(Location.X, BottomRight.X, TopLeft.X);
+		Location.Y = FMath::Clamp(Location.Y, TopLeft.Y, BottomRight.Y);
 
-	SetActorLocation(location);
+		SetActorLocation(Location);
+	}
 }
 
 UEXPComponent* APlayerCharacter::GetEXPComponent()
@@ -105,8 +108,6 @@ void APlayerCharacter::OnDeath(FDamageInfo damageInfo)
 	{
 		UGameplayStatics::PlaySoundAtLocation(GetWorld(), OnDeathSound, GetActorLocation());
 	}
-
-	// TODO: End the game
 }
 
 void APlayerCharacter::CameraShakeTimelineCallback(float val)
