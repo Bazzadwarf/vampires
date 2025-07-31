@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "VampireCharacter.h"
 #include "Components/TimelineComponent.h"
+#include "UnrealClient.h"
 #include "PlayerCharacter.generated.h"
 
 struct FDamageInfo;
@@ -47,15 +48,19 @@ private:
 	UPROPERTY()
 	TObjectPtr<APlayerCameraManager> PlayerCameraManager = nullptr;
 
-	APlayerCharacter();
-
 	FOnTimelineFloat OnTimelineCallback;
 	FOnTimelineEventStatic OnTimelineFinishedCallback;
+
+	FTimerHandle ResizeViewportTimerDelegate;
+	FVector TopLeft, TopLeftDir, BottomRight, BottomRightDir;
+	
+	APlayerCharacter();
 
 protected:
 	virtual void BeginPlay() override;
 
 public:
+
 	virtual void Tick(float DeltaTime) override;
 
 	UEXPComponent* GetEXPComponent();
@@ -64,14 +69,19 @@ public:
 
 private:
 	UFUNCTION()
-	virtual void OnDamaged(FDamageInfo damageInfo);
+	virtual void OnDamaged(FDamageInfo DamageInfo);
 
 	UFUNCTION()
-	virtual void OnDeath(FDamageInfo damageInfo);
+	virtual void OnDeath(FDamageInfo DamageInfo);
 
 	UFUNCTION()
-	void CameraShakeTimelineCallback(float val);
+	void CameraShakeTimelineCallback(float Val);
 
 	UFUNCTION()
 	void CameraShakeTimelineFinishedCallback();
+
+	UFUNCTION()
+	void ResizeViewportTimerCallback();
+	
+	void OnViewportResized(FViewport* ViewPort, uint32 val);
 };

@@ -3,14 +3,9 @@
 
 #include "PlayerCharacter.h"
 
-#include "VampirePlayerController.h"
-#include "EnhancedInputComponent.h"
-#include "EnhancedInputSubsystems.h"
 #include "EXPComponent.h"
 #include "GoldComponent.h"
 #include "HealthComponent.h"
-#include "InputMappingContext.h"
-#include "WeaponInventoryComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -55,22 +50,16 @@ void APlayerCharacter::BeginPlay()
 	}
 
 	PlayerCameraManager = GetWorld()->GetFirstPlayerController()->PlayerCameraManager;
+
+	// For some reason, we need a slight delay here. I need to investigate the exact reason, but this is a quick workaround 
+	GEngine->GameViewport->Viewport->ViewportResizedEvent.AddUObject(this, &APlayerCharacter::OnViewportResized);
+	GetWorldTimerManager().SetTimer(ResizeViewportTimerDelegate, this, &APlayerCharacter::ResizeViewportTimerCallback,
+	                                0.01f, false);
 }
 
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-
-	FVector TopLeft, TopLeftDir;
-	FVector BottomRight, BottomRightDir;
-
-	FVector2d ViewportSize;
-	GEngine->GameViewport->GetViewportSize(ViewportSize);
-
-	PlayerController->DeprojectScreenPositionToWorld(0, 0, TopLeft, TopLeftDir);
-	PlayerController->DeprojectScreenPositionToWorld(ViewportSize.X, ViewportSize.Y, BottomRight, BottomRightDir);
 
 	FVector Location = GetActorLocation();
 	if (Location.X < BottomRight.X || Location.X > TopLeft.X || Location.Y > BottomRight.Y || Location.Y < TopLeft.Y)
@@ -92,7 +81,7 @@ UGoldComponent* APlayerCharacter::GetGoldComponent()
 	return GoldComponent;
 }
 
-void APlayerCharacter::OnDamaged(FDamageInfo damageInfo)
+void APlayerCharacter::OnDamaged(FDamageInfo DamageInfo)
 {
 	if (OnDamagedSound)
 	{
@@ -102,7 +91,7 @@ void APlayerCharacter::OnDamaged(FDamageInfo damageInfo)
 	CameraShakeTimelineComponent->PlayFromStart();
 }
 
-void APlayerCharacter::OnDeath(FDamageInfo damageInfo)
+void APlayerCharacter::OnDeath(FDamageInfo DamageInfo)
 {
 	if (OnDeathSound)
 	{
@@ -110,12 +99,12 @@ void APlayerCharacter::OnDeath(FDamageInfo damageInfo)
 	}
 }
 
-void APlayerCharacter::CameraShakeTimelineCallback(float val)
+void APlayerCharacter::CameraShakeTimelineCallback(float Val)
 {
 	auto PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	auto cameraActor = PlayerController->GetViewTarget();
-	cameraActor->SetActorLocation(FVector(FMath::RandRange(0.0f, CameraShakeStrength) * val,
-	                                      FMath::RandRange(0.0f, CameraShakeStrength) * val, 0.0f));
+	cameraActor->SetActorLocation(FVector(FMath::RandRange(0.0f, CameraShakeStrength) * Val,
+	                                      FMath::RandRange(0.0f, CameraShakeStrength) * Val, 0.0f));
 }
 
 void APlayerCharacter::CameraShakeTimelineFinishedCallback()
@@ -123,4 +112,20 @@ void APlayerCharacter::CameraShakeTimelineFinishedCallback()
 	auto PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	auto cameraActor = PlayerController->GetViewTarget();
 	cameraActor->SetActorLocation(FVector::ZeroVector);
+}
+
+void APlayerCharacter::ResizeViewportTimerCallback()
+{
+	OnViewportResized(GEngine->GameViewport->Viewport, 0);
+}
+
+void APlayerCharacter::OnViewportResized(FViewport* ViewPort, uint32 val)
+{
+	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+
+	FVector2d ViewportSize;
+	GEngine->GameViewport->GetViewportSize(ViewportSize);
+
+	PlayerController->DeprojectScreenPositionToWorld(0, 0, TopLeft, TopLeftDir);
+	PlayerController->DeprojectScreenPositionToWorld(ViewportSize.X, ViewportSize.Y, BottomRight, BottomRightDir);
 }
