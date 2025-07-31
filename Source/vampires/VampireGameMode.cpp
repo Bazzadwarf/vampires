@@ -19,7 +19,14 @@ void AVampireGameMode::BeginPlay()
 	Super::BeginPlay();
 
 	PlayerCharacter = Cast<APlayerCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	
 	PlayerController = Cast<AVampirePlayerController>(UGameplayStatics::GetPlayerController(PlayerCharacter, 0));
+
+	if (UHealthComponent* HealthComponent = PlayerCharacter->GetHealthComponent())
+	{
+		HealthComponent->OnDeath.AddDynamic(this, &AVampireGameMode::OnPlayerDeath);
+		HealthComponent->OnDeath.AddDynamic(PlayerController, &AVampirePlayerController::OnDeath);
+	}
 
 	GetWorldTimerManager().SetTimer(SpawnEnemyTimerDelegate, this, &AVampireGameMode::SpawnEnemy, 1.0f, true);
 }
@@ -29,10 +36,10 @@ int AVampireGameMode::GetEnemyDeathCount()
 	return EnemyDeathCount;
 }
 
-void AVampireGameMode::HandleOnEnemyDeath(FDamageInfo damageInfo)
+void AVampireGameMode::HandleOnEnemyDeath(FDamageInfo DamageInfo)
 {
 	IncrementEnemyDeathCount();
-	EnemyObjectPoolManager->ReturnObject(damageInfo.DamagedActor);
+	EnemyObjectPoolManager->ReturnObject(DamageInfo.DamagedActor);
 	OnEnemyDeathCountIncrementDelegate.Broadcast(EnemyDeathCount);
 }
 
@@ -147,6 +154,11 @@ void AVampireGameMode::AddRandomEnemyTypeToPool()
 		SpawnableEnemyDataAssets.Add(EnemyDataAssets[rand]);
 		EnemyDataAssets.RemoveAt(rand);
 	}
+}
+
+void AVampireGameMode::OnPlayerDeath(FDamageInfo DamageInfo)
+{
+	GetWorldTimerManager().ClearTimer(SpawnEnemyTimerDelegate);
 }
 
 void AVampireGameMode::EndGame()

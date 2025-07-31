@@ -15,6 +15,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
+#include "Widgets/GameOverWidget.h"
 #include "Widgets/HUDWidget.h"
 #include "Widgets/LevelUpWidget.h"
 #include "Widgets/PauseWidget.h"
@@ -128,6 +129,24 @@ void AVampirePlayerController::OnPause(const FInputActionValue& PauseInput)
 				UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(this, CurrentPauseUI, EMouseLockMode::LockInFullscreen);
 				bShowMouseCursor = true;
 			}
+		}
+	}
+}
+
+void AVampirePlayerController::OnDeath(FDamageInfo DamageInfo)
+{
+	if (GameOverUI)
+	{
+		if (CurrentPlayerHUD) { CurrentPlayerHUD->RemoveFromParent(); }
+		if (CurrentLevelUpUI) { CurrentLevelUpUI->RemoveFromParent(); }
+		if (CurrentPauseUI) { CurrentPauseUI->RemoveFromParent(); }
+
+		CurrentGameOverUI = CreateWidget<UGameOverWidget, AVampirePlayerController*>(this, GameOverUI.Get());
+		if (CurrentGameOverUI)
+		{
+			CurrentGameOverUI->AddToViewport();
+			UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(this, CurrentPauseUI, EMouseLockMode::LockInFullscreen);
+			bShowMouseCursor = true;
 		}
 	}
 }

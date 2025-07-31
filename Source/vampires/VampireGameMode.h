@@ -71,7 +71,7 @@ public:
 
 protected:
 	UFUNCTION()
-	void HandleOnEnemyDeath(FDamageInfo damageInfo);
+	void HandleOnEnemyDeath(FDamageInfo DamageInfo);
 
 	UFUNCTION()
 	void IncrementEnemyDeathCount();
@@ -85,6 +85,9 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void AddRandomEnemyTypeToPool();
 
+	UFUNCTION()
+	void OnPlayerDeath(FDamageInfo DamageInfo);
+	
 	UFUNCTION(BlueprintCallable)
 	void EndGame();
 

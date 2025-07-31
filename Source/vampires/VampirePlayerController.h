@@ -7,11 +7,14 @@
 #include "Interfaces/Playerable.h"
 #include "VampirePlayerController.generated.h"
 
+struct FDamageInfo;
+class UGameOverWidget;
 class ULevelUpWidget;
 class UPauseWidget;
 struct FInputActionValue;
 class UInputAction;
 class UHUDWidget;
+
 /**
  * 
  */
@@ -22,14 +25,17 @@ class VAMPIRES_API AVampirePlayerController : public APlayerController, public I
 
 public:
 	// UI
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TSubclassOf<UHUDWidget> PlayerHUD = nullptr;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TSubclassOf<UPauseWidget> PauseUI = nullptr;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TSubclassOf<ULevelUpWidget> LevelUpUI = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TSubclassOf<UGameOverWidget> GameOverUI = nullptr;
 
 	// Inputs	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
@@ -39,7 +45,6 @@ public:
 	TObjectPtr<UInputAction> PauseAction;
 
 private:
-
 	UPROPERTY()
 	TObjectPtr<UHUDWidget> CurrentPlayerHUD = nullptr;
 
@@ -48,8 +53,15 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<ULevelUpWidget> CurrentLevelUpUI = nullptr;
+	
+	UPROPERTY()
+	TObjectPtr<UGameOverWidget> CurrentGameOverUI = nullptr;
 
 	FTimerHandle PawnLifeTimeHandle;
+
+public:
+	UFUNCTION()
+	void OnDeath(FDamageInfo DamageInfo);
 
 protected:
 	virtual void OnPossess(APawn* aPawn) override;
@@ -63,6 +75,7 @@ protected:
 
 	UFUNCTION()
 	void OnPause(const FInputActionValue& PauseInput);
+
 
 	UFUNCTION()
 	void UpdatePlayerEXPHUD(int Exp, float CurrentLevelPercent);
