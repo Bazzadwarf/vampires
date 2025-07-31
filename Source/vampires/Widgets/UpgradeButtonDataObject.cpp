@@ -22,7 +22,11 @@ void UUpgradeButtonDataObject::SetData(TSubclassOf<AWeapon> Weapon, UUserWidget*
 {
 	if (AWeapon* tempWeapon = NewObject<AWeapon>(this, Weapon))
 	{
-		SetData(tempWeapon, ParentWidget);
+		WeaponName = tempWeapon->GetWeaponName();
+		WeaponDescription = tempWeapon->GetDescription();
+		WeaponIcon = tempWeapon->GetIcon();
+		WeaponTemplate = Weapon;
+		Parent = ParentWidget;
 	}
 }
 
