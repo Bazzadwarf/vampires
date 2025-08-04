@@ -147,6 +147,26 @@ void AVampirePlayerController::OnDeath(FDamageInfo DamageInfo)
 			CurrentGameOverUI->AddToViewport();
 			UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(this, CurrentPauseUI, EMouseLockMode::LockInFullscreen);
 			bShowMouseCursor = true;
+
+			int Level = -1;
+			if (UEXPComponent* EXPComponent = GetPawn()->GetComponentByClass<UEXPComponent>())
+			{
+				Level = EXPComponent->GetCurrentLevel();
+			}
+
+			int Kills = -1;
+			if (AVampireGameMode* GameMode = Cast<AVampireGameMode>(UGameplayStatics::GetGameMode(GetWorld())))
+			{
+				Kills = GameMode->GetEnemyDeathCount();
+			}
+
+			int Gold = -1;
+			if (UGoldComponent* GoldComponent = GetPawn()->GetComponentByClass<UGoldComponent>())
+			{
+				Gold = GoldComponent->GetCurrentGold();
+			}
+
+			CurrentGameOverUI->SetGameInfo(Level, ElapsedTime, Kills, Gold);
 		}
 	}
 }
@@ -223,6 +243,8 @@ void AVampirePlayerController::UpdateGoldCountHUD(int GoldCount)
 
 void AVampirePlayerController::UpdateTimerHUDElement_Implementation(float DeltaTime)
 {
+	ElapsedTime = DeltaTime;
+
 	if (CurrentPlayerHUD)
 	{
 		CurrentPlayerHUD->UpdateTimerBlock(DeltaTime);

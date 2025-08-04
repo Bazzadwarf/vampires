@@ -59,6 +59,8 @@ private:
 
 	FTimerHandle PawnLifeTimeHandle;
 
+	float ElapsedTime = 0.0f;
+
 public:
 	UFUNCTION()
 	void OnDeath(FDamageInfo DamageInfo);
@@ -75,7 +77,6 @@ protected:
 
 	UFUNCTION()
 	void OnPause(const FInputActionValue& PauseInput);
-
 
 	UFUNCTION()
 	void UpdatePlayerEXPHUD(int Exp, float CurrentLevelPercent);
