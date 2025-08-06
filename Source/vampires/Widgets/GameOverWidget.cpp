@@ -16,6 +16,13 @@ void UGameOverWidget::NativeConstruct()
 	if (ReturnButton)
 	{
 		ReturnButton->OnClicked.AddUniqueDynamic(this, &UGameOverWidget::ReturnButtonClicked);
+		ReturnButton->OnClicked.AddUniqueDynamic(this, &UGameOverWidget::PlayClickedSound);
+
+		ReturnButton->OnHovered.AddUniqueDynamic(this, &UGameOverWidget::PlayHoveredSound);
+		ReturnButton->OnHovered.AddUniqueDynamic(this, &UGameOverWidget::ReturnTextBlockHoveredDelegate);
+
+		ReturnButton->OnUnhovered.AddUniqueDynamic(this, &UGameOverWidget::ReturnTextBlockUnhoveredDelegate);
+		ReturnButton->OnUnhovered.AddUniqueDynamic(this, &UGameOverWidget::PlayUnhoveredSound);
 	}
 }
 

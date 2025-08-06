@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "VampireInteractiveWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "GameOverWidget.generated.h"
 
@@ -12,13 +13,16 @@ class UButton;
  * 
  */
 UCLASS()
-class VAMPIRES_API UGameOverWidget : public UUserWidget
+class VAMPIRES_API UGameOverWidget : public UVampireInteractiveWidget
 {
 	GENERATED_BODY()
 
 protected:
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	TObjectPtr<UButton> ReturnButton;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr <UTextBlock> ReturnBlock;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr <UTextBlock> LevelBlock;
@@ -40,4 +44,10 @@ public:
 private:
 	UFUNCTION()
 	void ReturnButtonClicked();
+
+	UFUNCTION()
+	void ReturnTextBlockHoveredDelegate() { SetTextBlockHovered(ReturnBlock); }
+
+	UFUNCTION()
+	void ReturnTextBlockUnhoveredDelegate() { SetTextBlockUnhovered(ReturnBlock); }
 };
