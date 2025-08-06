@@ -59,11 +59,25 @@ float UHealthComponent::GetCurrentHealth()
 
 void UHealthComponent::SetCurrentHealth(float Value)
 {
-	CurrentHealth = Value;
 
-	if (CurrentHealth > MaxHealth)
+	if (Value > MaxHealth)
 	{
 		CurrentHealth = MaxHealth;
+	}
+	else if (Value <= 0.0f)
+	{
+		IsDead = true;		
+		OnDeath.Broadcast({GetOwner(), CurrentHealth - Value, nullptr, nullptr, nullptr});
+		CurrentHealth = 0.0f;
+	}
+	else
+	{
+		if (Value < CurrentHealth)
+		{
+			OnDamaged.Broadcast({GetOwner(), CurrentHealth - Value, nullptr, nullptr, nullptr});
+		}
+		
+		CurrentHealth = Value;
 	}
 }
 
@@ -75,8 +89,10 @@ void UHealthComponent::ResetHealth()
 
 void UHealthComponent::RecoverHealth(float value)
 {
-	// TODO: We might want to add some extra checking here
-	IncrementHealth(value);
+	if (value > 0)
+	{
+		IncrementHealth(value);
+	}
 }
 
 bool UHealthComponent::GetIsDead()

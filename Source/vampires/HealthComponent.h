@@ -47,6 +47,7 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	float CurrentHealth;
 
+private:
 	bool IsDead = false;
 
 	bool CanDamage = true;
