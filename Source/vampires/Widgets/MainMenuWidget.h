@@ -15,30 +15,33 @@ class VAMPIRES_API UMainMenuWidget : public UVampireInteractiveWidget
 {
 	GENERATED_BODY()
 
-	// TODO: Add options menu
-
 protected:
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> NewGameButton;
 
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> NewGameTextBlock;
 
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UButton> OptionsButton;
+
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UTextBlock> OptionsTextBlock;
+
+	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> QuitButton;
 
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> QuitTextBlock;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Widget Settings | New Game")
-	TSubclassOf<class UUserWidget> NewGameMenuWidget;
+	UPROPERTY(EditDefaultsOnly, Category = "Widget Settings | New Game")
+	TSubclassOf<UUserWidget> NewGameMenuWidget;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Widget Settings | New Game")
+	UPROPERTY(EditDefaultsOnly, Category = "Widget Settings | New Game")
 	TSoftObjectPtr<UWorld> NewGameLevel;
 
-private:
-	UPROPERTY()
-	TObjectPtr<UUserWidget> CurrentNewGameWidget;
+	UPROPERTY(EditDefaultsOnly, Category = "Widget Settings | Options")
+	TSubclassOf<UUserWidget> OptionsMenuWidget;
 
 public:
 	virtual void NativeConstruct() override;
@@ -48,6 +51,9 @@ private:
 	void NewGameButtonOnClicked();
 
 	UFUNCTION()
+	void OptionsButtonOnClicked();
+
+	UFUNCTION()
 	void QuitButtonOnClicked();
 
 	UFUNCTION()
@@ -55,6 +61,12 @@ private:
 
 	UFUNCTION()
 	void NewGameTextBlockUnhoveredDelegate() { SetTextBlockUnhovered(NewGameTextBlock); }
+
+	UFUNCTION()
+	void OptionsTextBlockHoveredDelegate() { SetTextBlockHovered(OptionsTextBlock); }
+
+	UFUNCTION()
+	void OptionsTextBlockUnhoveredDelegate() { SetTextBlockUnhovered(OptionsTextBlock); }
 
 	UFUNCTION()
 	void QuitTextBlockHoveredDelegate() { SetTextBlockHovered(QuitTextBlock); }

@@ -24,6 +24,18 @@ void UMainMenuWidget::NativeConstruct()
 		NewGameButton->OnUnhovered.AddUniqueDynamic(this, &UMainMenuWidget::PlayUnhoveredSound);
 	}
 
+	if (OptionsButton)
+	{
+		OptionsButton->OnClicked.AddUniqueDynamic(this, &UMainMenuWidget::OptionsButtonOnClicked);
+		OptionsButton->OnClicked.AddUniqueDynamic(this, &UMainMenuWidget::PlayClickedSound);
+
+		OptionsButton->OnHovered.AddUniqueDynamic(this, &UMainMenuWidget::PlayHoveredSound);
+		OptionsButton->OnHovered.AddUniqueDynamic(this, &UMainMenuWidget::OptionsTextBlockHoveredDelegate);
+
+		OptionsButton->OnUnhovered.AddUniqueDynamic(this, &UMainMenuWidget::OptionsTextBlockUnhoveredDelegate);
+		OptionsButton->OnUnhovered.AddUniqueDynamic(this, &UMainMenuWidget::PlayUnhoveredSound);
+	}
+
 	if (QuitButton)
 	{
 		QuitButton->OnClicked.AddUniqueDynamic(this, &UMainMenuWidget::QuitButtonOnClicked);
@@ -57,6 +69,22 @@ void UMainMenuWidget::NewGameButtonOnClicked()
 		if (SelectWeaponWidget)
 		{
 			SelectWeaponWidget->AddToViewport();
+		}
+	}
+}
+
+void UMainMenuWidget::OptionsButtonOnClicked()
+{
+	if (OptionsMenuWidget)
+	{
+		RemoveFromParent();
+
+		UUserWidget* OptionWeaponWidget = CreateWidget<UUserWidget, APlayerController*>(
+			UGameplayStatics::GetPlayerController(GetWorld(), 0), OptionsMenuWidget);
+
+		if (OptionWeaponWidget)
+		{
+			OptionWeaponWidget->AddToViewport();
 		}
 	}
 }
