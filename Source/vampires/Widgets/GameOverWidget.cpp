@@ -15,7 +15,7 @@ void UGameOverWidget::NativeConstruct()
 
 	if (ReturnButton)
 	{
-		ReturnButton->OnClicked.AddUniqueDynamic(this, &UGameOverWidget::ReturnButtonClicked);
+		ReturnButton->OnClicked.AddUniqueDynamic(this, &UGameOverWidget::ReturnButtonOnClicked);
 		ReturnButton->OnClicked.AddUniqueDynamic(this, &UGameOverWidget::PlayClickedSound);
 
 		ReturnButton->OnHovered.AddUniqueDynamic(this, &UGameOverWidget::PlayHoveredSound);
@@ -55,7 +55,7 @@ void UGameOverWidget::SetGameInfo(int Level, float Timer, int Kill, int Gold)
 	GoldBlock->SetText(FText::FromString(FString::FromInt(Gold)));
 }
 
-void UGameOverWidget::ReturnButtonClicked()
+void UGameOverWidget::ReturnButtonOnClicked()
 {
 	if (UVampireGameInstance* GameInstance = Cast<UVampireGameInstance>(GetGameInstance()))
 	{

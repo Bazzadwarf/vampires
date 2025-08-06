@@ -43,7 +43,7 @@ public:
 	
 private:
 	UFUNCTION()
-	void ReturnButtonClicked();
+	void ReturnButtonOnClicked();
 
 	UFUNCTION()
 	void ReturnTextBlockHoveredDelegate() { SetTextBlockHovered(ReturnBlock); }
