@@ -30,10 +30,10 @@ protected:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<UTextBlock> QuitTextBlock;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Widget Settings | New Game")
 	TSubclassOf<class UUserWidget> NewGameMenuWidget;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Widget Settings | New Game")
 	TSoftObjectPtr<UWorld> NewGameLevel;
 
 private:

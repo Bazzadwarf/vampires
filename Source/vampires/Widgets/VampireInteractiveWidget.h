@@ -16,19 +16,19 @@ class VAMPIRES_API UVampireInteractiveWidget : public UUserWidget
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Widget Settings | Sound")
 	TObjectPtr<USoundBase> ButtonHoveredSound;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Widget Settings | Color")
 	FLinearColor ButtonHoveredTextColor = {0, 1, 0, 1};
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Widget Settings | Color")
 	FLinearColor ButtonUnhoveredTextColor = {1, 1, 1, 1};
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Widget Settings | Sound")
 	TObjectPtr<USoundBase> ButtonUnhoveredSound;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Widget Settings | Sound")
 	TObjectPtr<USoundBase> ButtonClickedSound;
 
 protected:
