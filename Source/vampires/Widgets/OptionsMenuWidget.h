@@ -7,8 +7,6 @@
 #include "OptionsMenuWidget.generated.h"
 
 class UComboBoxString;
-class UComboBox;
-class UComboBox;
 class UButton;
 /**
  * 
@@ -17,8 +15,7 @@ UCLASS()
 class VAMPIRES_API UOptionsMenuWidget : public UVampireInteractiveWidget
 {
 	GENERATED_BODY()
-	
-public:
+
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UComboBoxString> ResolutionComboBox;
 
@@ -33,13 +30,13 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UComboBoxString> RefreshRateComboBox;
-	
+
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UComboBoxString> DynamicResolutionComboBox;
-	
+
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> ReturnButton;
-	
+
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> ReturnBlock;
 
@@ -56,8 +53,34 @@ protected:
 	virtual void NativeConstruct() override;
 
 private:
+	void GenerateWindowTypeOptions();
+
 	void GenerateResolutionOptions();
-	
+
+	void GenerateDynamicResolutionOptions();
+
+	void GenerateVsyncOptions();
+
+	void GenerateRefreshRateOptions();
+
+	UFUNCTION()
+	void OnResolutionSelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
+
+	UFUNCTION()
+	void OnWindowTypeSelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
+	void SetWindowModeFullscreen();
+	void SetWindowModeWindowedFullscreen();
+	void SetWindowModeWindowed();
+
+	UFUNCTION()
+	void OnDynamicResolutionSelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
+
+	UFUNCTION()
+	void OnVsyncSelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
+
+	UFUNCTION()
+	void OnRefreshRateSelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
+
 	UFUNCTION()
 	void ReturnButtonOnClicked();
 
