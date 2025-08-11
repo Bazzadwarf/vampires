@@ -6,6 +6,7 @@
 #include "VampireInteractiveWidget.h"
 #include "OptionsMenuWidget.generated.h"
 
+class USlider;
 class UComboBoxString;
 class UButton;
 /**
@@ -33,6 +34,12 @@ class VAMPIRES_API UOptionsMenuWidget : public UVampireInteractiveWidget
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UComboBoxString> DynamicResolutionComboBox;
+	
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<USlider> MasterAudioSlider;
+	
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UTextBlock> MasterAudioTextBlock;
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> ReturnButton;
@@ -49,7 +56,11 @@ class VAMPIRES_API UOptionsMenuWidget : public UVampireInteractiveWidget
 	UPROPERTY(EditDefaultsOnly, Category = "Widget Settings | New Game")
 	TSubclassOf<UUserWidget> MainMenuMenuWidget;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Widget Settings | Sound Settings")
+	TObjectPtr<USoundClass> MasterSoundClass = nullptr;
+
 protected:
+	UFUNCTION()
 	virtual void NativeConstruct() override;
 
 private:
@@ -62,6 +73,8 @@ private:
 	void GenerateVsyncOptions();
 
 	void GenerateRefreshRateOptions();
+
+	void GenerateAudioLevelOptions();
 
 	UFUNCTION()
 	void OnResolutionSelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
@@ -80,6 +93,9 @@ private:
 
 	UFUNCTION()
 	void OnRefreshRateSelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
+
+	UFUNCTION()
+	void OnAudioLeverValueChanged(float Value);
 
 	UFUNCTION()
 	void ReturnButtonOnClicked();

@@ -3,12 +3,16 @@
 
 #include "OptionsMenuWidget.h"
 
+#include "AudioMixerDevice.h"
 #include "Components/Button.h"
 #include "Components/ComboBoxString.h"
 #include "GameFramework/GameUserSettings.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "RHI.h"
+#include "Components/Slider.h"
+#include "Components/TextBlock.h"
+#include "Sound/SoundClass.h"
 
 void UOptionsMenuWidget::NativeConstruct()
 {
@@ -29,6 +33,9 @@ void UOptionsMenuWidget::NativeConstruct()
 
 	GenerateRefreshRateOptions();
 	RefreshRateComboBox->OnSelectionChanged.AddDynamic(this, &UOptionsMenuWidget::OnRefreshRateSelectionChanged);
+
+	GenerateAudioLevelOptions();
+	MasterAudioSlider->OnValueChanged.AddDynamic(this, &UOptionsMenuWidget::OnAudioLeverValueChanged);
 
 	if (ReturnButton)
 	{
@@ -138,6 +145,19 @@ void UOptionsMenuWidget::GenerateRefreshRateOptions()
 	}
 }
 
+void UOptionsMenuWidget::GenerateAudioLevelOptions()
+{
+	if (MasterSoundClass)
+	{
+		float CurrentVolume = FMath::Clamp(MasterSoundClass->Properties.Volume, 0.0f, 1.0f);
+
+		MasterAudioSlider->SetValue(CurrentVolume);
+
+		int AudioLevel = CurrentVolume * 100.0f;
+		MasterAudioTextBlock->SetText(FText::FromString(FString::FromInt(AudioLevel) + "%"));
+	}
+}
+
 void UOptionsMenuWidget::OnResolutionSelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType)
 {
 	FString Horizontal;
@@ -233,6 +253,18 @@ void UOptionsMenuWidget::OnRefreshRateSelectionChanged(FString SelectedItem, ESe
 {
 	GEngine->GameUserSettings->SetFrameRateLimit(FCString::Atoi(*SelectedItem));
 	GEngine->GameUserSettings->ApplySettings(false);
+}
+
+void UOptionsMenuWidget::OnAudioLeverValueChanged(float Value)
+{
+	if (MasterSoundClass)
+	{
+		MasterSoundClass->Properties.Volume = FMath::Clamp(Value, 0.0f, 1.0f);
+
+		int AudioLevel = FMath::Clamp(Value, 0.0f, 1.0f) * 100.0f;
+		
+		MasterAudioTextBlock->SetText(FText::FromString(FString::FromInt(AudioLevel) + "%"));
+	}
 }
 
 void UOptionsMenuWidget::ReturnButtonOnClicked()
