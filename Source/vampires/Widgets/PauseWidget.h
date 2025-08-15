@@ -15,23 +15,21 @@ UCLASS()
 class VAMPIRES_API UPauseWidget : public UVampireInteractiveWidget
 {
 	GENERATED_BODY()
-
-public:
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	
+	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UButton> ResumeButton;
 	
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UTextBlock> ResumeTextBlock;
 
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UButton> ReturnToMainMenuButton;
 
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UTextBlock> ReturnToMainMenuTextBlock;
 
 	virtual void NativeConstruct() override;
-
-private:
+	
 	UFUNCTION()
 	void ResumeButtonOnClicked();
 	
