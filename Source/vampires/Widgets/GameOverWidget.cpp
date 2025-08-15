@@ -16,13 +16,8 @@ void UGameOverWidget::NativeConstruct()
 	if (ReturnButton)
 	{
 		ReturnButton->OnClicked.AddUniqueDynamic(this, &UGameOverWidget::ReturnButtonOnClicked);
-		ReturnButton->OnClicked.AddUniqueDynamic(this, &UGameOverWidget::PlayClickedSound);
-
-		ReturnButton->OnHovered.AddUniqueDynamic(this, &UGameOverWidget::PlayHoveredSound);
-		ReturnButton->OnHovered.AddUniqueDynamic(this, &UGameOverWidget::ReturnTextBlockHoveredDelegate);
-
-		ReturnButton->OnUnhovered.AddUniqueDynamic(this, &UGameOverWidget::ReturnTextBlockUnhoveredDelegate);
-		ReturnButton->OnUnhovered.AddUniqueDynamic(this, &UGameOverWidget::PlayUnhoveredSound);
+		ReturnButton->OnHovered.AddUniqueDynamic(this, &UGameOverWidget::ReturnButtonOnHovered);
+		ReturnButton->OnUnhovered.AddUniqueDynamic(this, &UGameOverWidget::ReturnButtonOnUnhovered);
 	}
 }
 
@@ -57,6 +52,8 @@ void UGameOverWidget::SetGameInfo(int Level, float Timer, int Kill, int Gold)
 
 void UGameOverWidget::ReturnButtonOnClicked()
 {
+	PlayClickedSound();
+
 	if (UVampireGameInstance* GameInstance = Cast<UVampireGameInstance>(GetGameInstance()))
 	{
 		if (!GameInstance->MainMenuWorld.IsNull())
@@ -70,4 +67,16 @@ void UGameOverWidget::ReturnButtonOnClicked()
 			SetIsFocusable(true);
 		}
 	}
+}
+
+void UGameOverWidget::ReturnButtonOnHovered()
+{
+	SetTextBlockHovered(ReturnBlock);
+	PlayHoveredSound();
+}
+
+void UGameOverWidget::ReturnButtonOnUnhovered()
+{
+	SetTextBlockUnhovered(ReturnBlock);
+	PlayUnhoveredSound();
 }

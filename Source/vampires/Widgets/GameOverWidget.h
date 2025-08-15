@@ -46,8 +46,8 @@ private:
 	void ReturnButtonOnClicked();
 
 	UFUNCTION()
-	void ReturnTextBlockHoveredDelegate() { SetTextBlockHovered(ReturnBlock); }
+	void ReturnButtonOnHovered();
 
 	UFUNCTION()
-	void ReturnTextBlockUnhoveredDelegate() { SetTextBlockUnhovered(ReturnBlock); }
+	void ReturnButtonOnUnhovered();
 };
