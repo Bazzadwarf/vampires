@@ -14,8 +14,7 @@ UCLASS()
 class VAMPIRES_API UMainMenuWidget : public UVampireInteractiveWidget
 {
 	GENERATED_BODY()
-
-protected:
+	
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> NewGameButton;
 
@@ -57,20 +56,20 @@ private:
 	void QuitButtonOnClicked();
 
 	UFUNCTION()
-	void NewGameTextBlockHoveredDelegate() { SetTextBlockHovered(NewGameTextBlock); }
+	void NewGameButtonOnHovered();
 
 	UFUNCTION()
-	void NewGameTextBlockUnhoveredDelegate() { SetTextBlockUnhovered(NewGameTextBlock); }
+	void NewGameButtonOnUnhovered();
 
 	UFUNCTION()
-	void OptionsTextBlockHoveredDelegate() { SetTextBlockHovered(OptionsTextBlock); }
+	void OptionsButtonOnHovered();
 
 	UFUNCTION()
-	void OptionsTextBlockUnhoveredDelegate() { SetTextBlockUnhovered(OptionsTextBlock); }
+	void OptionsButtonOnUnhovered();
 
 	UFUNCTION()
-	void QuitTextBlockHoveredDelegate() { SetTextBlockHovered(QuitTextBlock); }
+	void QuitButtonOnHovered();
 
 	UFUNCTION()
-	void QuitTextBlockUnhoveredDelegate() { SetTextBlockUnhovered(QuitTextBlock); }
+	void QuitButtonOnUnhovered();
 };

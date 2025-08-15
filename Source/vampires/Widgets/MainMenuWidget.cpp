@@ -15,37 +15,22 @@ void UMainMenuWidget::NativeConstruct()
 	if (NewGameButton)
 	{
 		NewGameButton->OnClicked.AddUniqueDynamic(this, &UMainMenuWidget::NewGameButtonOnClicked);
-		NewGameButton->OnClicked.AddUniqueDynamic(this, &UMainMenuWidget::PlayClickedSound);
-
-		NewGameButton->OnHovered.AddUniqueDynamic(this, &UMainMenuWidget::PlayHoveredSound);
-		NewGameButton->OnHovered.AddUniqueDynamic(this, &UMainMenuWidget::NewGameTextBlockHoveredDelegate);
-
-		NewGameButton->OnUnhovered.AddUniqueDynamic(this, &UMainMenuWidget::NewGameTextBlockUnhoveredDelegate);
-		NewGameButton->OnUnhovered.AddUniqueDynamic(this, &UMainMenuWidget::PlayUnhoveredSound);
+		NewGameButton->OnHovered.AddUniqueDynamic(this, &UMainMenuWidget::NewGameButtonOnHovered);
+		NewGameButton->OnUnhovered.AddUniqueDynamic(this, &UMainMenuWidget::NewGameButtonOnUnhovered);
 	}
 
 	if (OptionsButton)
 	{
 		OptionsButton->OnClicked.AddUniqueDynamic(this, &UMainMenuWidget::OptionsButtonOnClicked);
-		OptionsButton->OnClicked.AddUniqueDynamic(this, &UMainMenuWidget::PlayClickedSound);
-
-		OptionsButton->OnHovered.AddUniqueDynamic(this, &UMainMenuWidget::PlayHoveredSound);
-		OptionsButton->OnHovered.AddUniqueDynamic(this, &UMainMenuWidget::OptionsTextBlockHoveredDelegate);
-
-		OptionsButton->OnUnhovered.AddUniqueDynamic(this, &UMainMenuWidget::OptionsTextBlockUnhoveredDelegate);
-		OptionsButton->OnUnhovered.AddUniqueDynamic(this, &UMainMenuWidget::PlayUnhoveredSound);
+		OptionsButton->OnHovered.AddUniqueDynamic(this, &UMainMenuWidget::OptionsButtonOnHovered);
+		OptionsButton->OnUnhovered.AddUniqueDynamic(this, &UMainMenuWidget::OptionsButtonOnUnhovered);
 	}
 
 	if (QuitButton)
 	{
 		QuitButton->OnClicked.AddUniqueDynamic(this, &UMainMenuWidget::QuitButtonOnClicked);
-		QuitButton->OnClicked.AddUniqueDynamic(this, &UMainMenuWidget::PlayClickedSound);
-
-		QuitButton->OnHovered.AddUniqueDynamic(this, &UMainMenuWidget::PlayHoveredSound);
-		QuitButton->OnHovered.AddUniqueDynamic(this, &UMainMenuWidget::QuitTextBlockHoveredDelegate);
-
-		QuitButton->OnUnhovered.AddUniqueDynamic(this, &UMainMenuWidget::QuitTextBlockUnhoveredDelegate);
-		QuitButton->OnUnhovered.AddUniqueDynamic(this, &UMainMenuWidget::PlayUnhoveredSound);
+		QuitButton->OnHovered.AddUniqueDynamic(this, &UMainMenuWidget::QuitButtonOnHovered);
+		QuitButton->OnUnhovered.AddUniqueDynamic(this, &UMainMenuWidget::QuitButtonOnUnhovered);
 	}
 
 	QuitButton->SetIsEnabled(false);
@@ -59,6 +44,8 @@ void UMainMenuWidget::NativeConstruct()
 
 void UMainMenuWidget::NewGameButtonOnClicked()
 {
+	PlayClickedSound();
+
 	if (NewGameMenuWidget)
 	{
 		RemoveFromParent();
@@ -75,6 +62,8 @@ void UMainMenuWidget::NewGameButtonOnClicked()
 
 void UMainMenuWidget::OptionsButtonOnClicked()
 {
+	PlayClickedSound();
+
 	if (OptionsMenuWidget)
 	{
 		RemoveFromParent();
@@ -91,8 +80,46 @@ void UMainMenuWidget::OptionsButtonOnClicked()
 
 void UMainMenuWidget::QuitButtonOnClicked()
 {
+	PlayClickedSound();
+
 	// TODO: Add platform specific Exit requests
 	// This is not a bit deal for the moment as we are only building for windows
 	// For some reason the generic version does not work the same as FWindowsPlatformMisc
 	FWindowsPlatformMisc::RequestExit(false);
+}
+
+void UMainMenuWidget::NewGameButtonOnHovered()
+{
+	PlayHoveredSound();
+	SetTextBlockHovered(NewGameTextBlock);
+}
+
+void UMainMenuWidget::NewGameButtonOnUnhovered()
+{
+	PlayUnhoveredSound();
+	SetTextBlockUnhovered(NewGameTextBlock);
+}
+
+void UMainMenuWidget::OptionsButtonOnHovered()
+{
+	PlayHoveredSound();
+	SetTextBlockHovered(OptionsTextBlock);
+}
+
+void UMainMenuWidget::OptionsButtonOnUnhovered()
+{
+	PlayUnhoveredSound();
+	SetTextBlockUnhovered(OptionsTextBlock);
+}
+
+void UMainMenuWidget::QuitButtonOnHovered()
+{
+	PlayHoveredSound();
+	SetTextBlockHovered(QuitTextBlock);
+}
+
+void UMainMenuWidget::QuitButtonOnUnhovered()
+{
+	PlayUnhoveredSound();
+	SetTextBlockUnhovered(QuitTextBlock);
 }
