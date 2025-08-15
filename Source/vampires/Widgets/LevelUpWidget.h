@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "VampireInteractiveWidget.h"
 #include "LevelUpWidget.generated.h"
 
 class UUpgradeButtonDataObject;
@@ -13,13 +13,16 @@ class UButton;
  * 
  */
 UCLASS(Blueprintable)
-class VAMPIRES_API ULevelUpWidget : public UUserWidget
+class VAMPIRES_API ULevelUpWidget : public UVampireInteractiveWidget
 {
 	GENERATED_BODY()
 
 protected:
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
-	UButton* ResumeButton;
+	TObjectPtr<UButton> ResumeButton;
+
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	TObjectPtr<UTextBlock> ResumeTextBlock;
 
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	UListView* UpgradesListView;
@@ -29,4 +32,10 @@ protected:
 private:
 	UFUNCTION()
 	void ResumeButtonClicked();
+
+	UFUNCTION()
+	void ResumeButtonOnHovered();
+
+	UFUNCTION()
+	void ResumeButtonOnUnhovered();
 };

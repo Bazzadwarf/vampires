@@ -20,6 +20,8 @@ void ULevelUpWidget::NativeConstruct()
 	if (ResumeButton)
 	{
 		ResumeButton->OnClicked.AddUniqueDynamic(this, &ULevelUpWidget::ResumeButtonClicked);
+		ResumeButton->OnHovered.AddUniqueDynamic(this, &ULevelUpWidget::ResumeButtonOnHovered);
+		ResumeButton->OnUnhovered.AddUniqueDynamic(this, &ULevelUpWidget::ResumeButtonOnUnhovered);
 	}
 
 	if (UpgradesListView)
@@ -91,6 +93,8 @@ void ULevelUpWidget::NativeConstruct()
 
 void ULevelUpWidget::ResumeButtonClicked()
 {
+	PlayClickedSound();
+
 	RemoveFromParent();
 
 	if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
@@ -101,4 +105,16 @@ void ULevelUpWidget::ResumeButtonClicked()
 	}
 
 	SetIsFocusable(false);
+}
+
+void ULevelUpWidget::ResumeButtonOnHovered()
+{
+	SetTextBlockHovered(ResumeTextBlock);
+	PlayHoveredSound();
+}
+
+void ULevelUpWidget::ResumeButtonOnUnhovered()
+{
+	SetTextBlockUnhovered(ResumeTextBlock);
+	PlayUnhoveredSound();
 }
