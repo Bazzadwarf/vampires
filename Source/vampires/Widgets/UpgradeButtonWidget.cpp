@@ -51,12 +51,8 @@ void UUpgradeButtonWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 		if (Body)
 		{
 			Body->OnClicked.AddUniqueDynamic(this, &UUpgradeButtonWidget::OnClicked);
-
-			Body->OnHovered.AddUniqueDynamic(this, &UUpgradeButtonWidget::PlayHoveredSound);
 			Body->OnHovered.AddUniqueDynamic(this, &UUpgradeButtonWidget::OnHoveredDelegate);
-
 			Body->OnUnhovered.AddUniqueDynamic(this, &UUpgradeButtonWidget::OnUnhoveredDelegate);
-			Body->OnUnhovered.AddUniqueDynamic(this, &UUpgradeButtonWidget::PlayUnhoveredSound);
 		}
 	}
 
@@ -81,6 +77,8 @@ void UUpgradeButtonWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 
 void UUpgradeButtonWidget::OnClicked()
 {
+	PlayClickedSound();
+
 	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 
 	switch (UpgradeType)
@@ -90,7 +88,8 @@ void UUpgradeButtonWidget::OnClicked()
 		break;
 
 	case NewWeapon:
-		if (UWeaponInventoryComponent* Inventory = PlayerController->GetPawn()->GetComponentByClass<UWeaponInventoryComponent>())
+		if (UWeaponInventoryComponent* Inventory = PlayerController->GetPawn()->GetComponentByClass<
+			UWeaponInventoryComponent>())
 		{
 			Inventory->AddWeaponToInventory(WeaponTemplate);
 			Inventory->ObtainableWeapons.Remove(WeaponTemplate);
@@ -100,7 +99,8 @@ void UUpgradeButtonWidget::OnClicked()
 	case Health:
 		if (PlayerController)
 		{
-			if (UHealthComponent* HealthComponent = PlayerController->GetPawn()->GetComponentByClass<UHealthComponent>())
+			if (UHealthComponent* HealthComponent = PlayerController->GetPawn()->GetComponentByClass<
+				UHealthComponent>())
 			{
 				HealthComponent->RecoverHealth(HealthComponent->GetMaxHealth() / 10.0f);
 			}
@@ -134,4 +134,18 @@ void UUpgradeButtonWidget::OnClicked()
 
 		Parent->SetIsFocusable(false);
 	}
+}
+
+void UUpgradeButtonWidget::OnHoveredDelegate()
+{
+	PlayHoveredSound();
+	SetTextBlockHovered(WeaponNameTextBlock);
+	SetTextBlockHovered(DescriptionTextBlock);
+}
+
+void UUpgradeButtonWidget::OnUnhoveredDelegate()
+{
+	PlayUnhoveredSound();
+	SetTextBlockUnhovered(WeaponNameTextBlock);
+	SetTextBlockUnhovered(DescriptionTextBlock);
 }

@@ -32,6 +32,20 @@ class VAMPIRES_API UUpgradeButtonWidget : public UVampireInteractiveWidget, publ
 	GENERATED_BODY()
 
 protected:
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UTexture2D> UpgradeIcon;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UTexture2D> NewWeaponIcon;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UTexture2D> HealthIcon;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UTexture2D> GoldIcon;
+
+private:
+	
 	UPROPERTY(EditDefaultsOnly, meta=(BindWidget))
 	TObjectPtr<UButton> Body;
 
@@ -45,24 +59,12 @@ protected:
 	TObjectPtr<UTextBlock> DescriptionTextBlock;
 
 	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UTexture2D> UpgradeIcon;
-
-	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UTexture2D> NewWeaponIcon;
-
-	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UTexture2D> HealthIcon;
-
-	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UTexture2D> GoldIcon;
-
-	UPROPERTY(EditDefaultsOnly)
 	TEnumAsByte<EUpgradeType> UpgradeType;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY()
 	TSubclassOf<AWeapon> WeaponTemplate;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY()
 	TObjectPtr<AWeapon> WeaponInstance;
 
 	UPROPERTY()
@@ -82,8 +84,8 @@ private:
 	virtual void OnClicked();
 
 	UFUNCTION()
-	void OnHoveredDelegate() { SetTextBlockHovered(WeaponNameTextBlock); SetTextBlockHovered(DescriptionTextBlock); }
+	void OnHoveredDelegate();
 
 	UFUNCTION()
-	void OnUnhoveredDelegate() { SetTextBlockUnhovered(WeaponNameTextBlock); SetTextBlockUnhovered(DescriptionTextBlock); }
+	void OnUnhoveredDelegate();
 };
