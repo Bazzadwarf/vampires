@@ -5,10 +5,6 @@
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
 
-void UHUDWidget::Init()
-{
-}
-
 void UHUDWidget::UpdateEXPBar(float CurrentLevelPercent)
 {
 	EXPbar->SetPercent(CurrentLevelPercent);

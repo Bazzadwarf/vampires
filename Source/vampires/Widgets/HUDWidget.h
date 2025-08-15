@@ -16,23 +16,20 @@ class VAMPIRES_API UHUDWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
-protected:
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UPROPERTY(meta = (BindWidget))
 	UProgressBar* EXPbar;
 
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UPROPERTY(meta = (BindWidget))
 	UTextBlock* LevelBlock;
 
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UPROPERTY(meta = (BindWidget))
 	UTextBlock* TimerBLock;
 
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UPROPERTY(meta = (BindWidget))
 	UTextBlock* KillBLock;
 
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UPROPERTY(meta = (BindWidget))
 	UTextBlock* GoldBLock;
-
-	void Init();
 
 public:
 	UFUNCTION()
