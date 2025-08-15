@@ -58,3 +58,15 @@ void UStarterWeaponButtonWidget::OnClicked()
 		}
 	}
 }
+
+void UStarterWeaponButtonWidget::OnHoveredDelegate()
+{
+	SetTextBlockHovered(WeaponNameTextBlock);
+	SetTextBlockHovered(DescriptionTextBlock);
+}
+
+void UStarterWeaponButtonWidget::OnUnhoveredDelegate()
+{
+	SetTextBlockUnhovered(WeaponNameTextBlock);
+	SetTextBlockUnhovered(DescriptionTextBlock);
+}

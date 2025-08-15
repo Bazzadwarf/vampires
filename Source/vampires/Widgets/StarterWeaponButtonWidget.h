@@ -20,20 +20,19 @@ class VAMPIRES_API UStarterWeaponButtonWidget : public UVampireInteractiveWidget
 {
 	GENERATED_BODY()
 
-protected:
-	UPROPERTY(EditDefaultsOnly, meta=(BindWidget))
+	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UButton> Body;
 
-	UPROPERTY(EditDefaultsOnly, meta=(BindWidget))
+	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UImage> WeaponIcon;
 
-	UPROPERTY(EditDefaultsOnly, meta=(BindWidget))
+	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UTextBlock> WeaponNameTextBlock;
 
-	UPROPERTY(EditDefaultsOnly, meta=(BindWidget))
+	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UTextBlock> DescriptionTextBlock;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY()
 	TSubclassOf<AWeapon> WeaponTemplate;
 
 	UPROPERTY()
@@ -43,14 +42,12 @@ protected:
 
 	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
 
-private:
 	UFUNCTION()
 	virtual void OnClicked();
 
 	UFUNCTION()
-	void OnHoveredDelegate() { SetTextBlockHovered(WeaponNameTextBlock); SetTextBlockHovered(DescriptionTextBlock); }
+	void OnHoveredDelegate();
 
 	UFUNCTION()
-	void OnUnhoveredDelegate() { SetTextBlockUnhovered(WeaponNameTextBlock); SetTextBlockUnhovered(DescriptionTextBlock); }
-	
+	void OnUnhoveredDelegate();
 };
