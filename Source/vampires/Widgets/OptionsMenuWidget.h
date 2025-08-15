@@ -98,11 +98,22 @@ private:
 	void OnAudioLeverValueChanged(float Value);
 
 	UFUNCTION()
+	void ResetToDefaultsOnClicked();
+	
+	UFUNCTION()
 	void ReturnButtonOnClicked();
 
+	UFUNCTION()
+	void ResetToDefaultsTextBlockHoveredDelegate() { SetTextBlockHovered(ResetToDefaultsBlock); }
+
+	UFUNCTION()
+	void ResetToDefaultsTextBlockUnhoveredDelegate() { SetTextBlockUnhovered(ResetToDefaultsBlock); }
+	
 	UFUNCTION()
 	void ReturnTextBlockHoveredDelegate() { SetTextBlockHovered(ReturnBlock); }
 
 	UFUNCTION()
 	void ReturnTextBlockUnhoveredDelegate() { SetTextBlockUnhovered(ReturnBlock); }
+
+	void GetListOfUniqueRefreshRates(TArray<uint32>& RefreshRates);
 };

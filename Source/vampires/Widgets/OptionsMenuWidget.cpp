@@ -3,7 +3,6 @@
 
 #include "OptionsMenuWidget.h"
 
-#include "AudioMixerDevice.h"
 #include "Components/Button.h"
 #include "Components/ComboBoxString.h"
 #include "GameFramework/GameUserSettings.h"
@@ -37,6 +36,18 @@ void UOptionsMenuWidget::NativeConstruct()
 	GenerateAudioLevelOptions();
 	MasterAudioSlider->OnValueChanged.AddDynamic(this, &UOptionsMenuWidget::OnAudioLeverValueChanged);
 
+	if (ResetToDefaultsButton)
+	{
+		ResetToDefaultsButton->OnClicked.AddUniqueDynamic(this, &UOptionsMenuWidget::ResetToDefaultsOnClicked);
+		ResetToDefaultsButton->OnClicked.AddUniqueDynamic(this, &UOptionsMenuWidget::PlayClickedSound);
+
+		ResetToDefaultsButton->OnHovered.AddUniqueDynamic(this, &UOptionsMenuWidget::PlayHoveredSound);
+		ResetToDefaultsButton->OnHovered.AddUniqueDynamic(this, &UOptionsMenuWidget::ResetToDefaultsTextBlockHoveredDelegate);
+
+		ResetToDefaultsButton->OnUnhovered.AddUniqueDynamic(this, &UOptionsMenuWidget::ResetToDefaultsTextBlockUnhoveredDelegate);
+		ResetToDefaultsButton->OnUnhovered.AddUniqueDynamic(this, &UOptionsMenuWidget::PlayUnhoveredSound);
+	}
+	
 	if (ReturnButton)
 	{
 		ReturnButton->OnClicked.AddUniqueDynamic(this, &UOptionsMenuWidget::ReturnButtonOnClicked);
@@ -117,15 +128,10 @@ void UOptionsMenuWidget::GenerateRefreshRateOptions()
 {
 	RefreshRateComboBox->ClearOptions();
 
-	FScreenResolutionArray ScreenResolutions;
-	RHIGetAvailableResolutions(ScreenResolutions, false);
 	TArray<uint32> RefreshRates;
-	for (FScreenResolutionRHI ScreenResolution : ScreenResolutions)
-	{
-		RefreshRates.AddUnique(ScreenResolution.RefreshRate);
-	}
-
-	RefreshRates.Sort();
+	
+	GetListOfUniqueRefreshRates(RefreshRates);
+	
 	for (uint32 RefreshRate : RefreshRates)
 	{
 		RefreshRateComboBox->AddOption(FString::FromInt(RefreshRate));
@@ -267,6 +273,53 @@ void UOptionsMenuWidget::OnAudioLeverValueChanged(float Value)
 	}
 }
 
+void UOptionsMenuWidget::ResetToDefaultsOnClicked()
+{
+	// Set Resolution to Monitor Res
+	TArray<FIntPoint> Resolutions;
+	UKismetSystemLibrary::GetSupportedFullscreenResolutions(Resolutions);
+
+	if (Resolutions.Num() > 0)
+	{
+		GEngine->GameUserSettings->SetScreenResolution(Resolutions.Last());
+		FString ResolutionString = FString::FromInt(Resolutions.Last().X) + "x" + FString::FromInt(Resolutions.Last().Y);
+		ResolutionComboBox->SetSelectedOption(ResolutionString);
+	}
+	else
+	{
+		// Fallback to 1080p
+		GEngine->GameUserSettings->SetScreenResolution({1920, 1080});
+		FString ResolutionString = FString::FromInt(1920) + "x" + FString::FromInt(1080);
+		ResolutionComboBox->SetSelectedOption(ResolutionString);
+	}
+	
+	// Set Fullscreen
+	GEngine->GameUserSettings->SetFullscreenMode(EWindowMode::Fullscreen);
+	WindowTypeComboBox->SetSelectedOption(LexToString(GEngine->GameUserSettings->GetFullscreenMode()));
+
+	// Set Dynamic Resolution on
+	GEngine->GameUserSettings->SetDynamicResolutionEnabled(true);
+	DynamicResolutionComboBox->SetSelectedOption("Enabled");
+
+	// Set VSync Off
+	GEngine->GameUserSettings->SetVSyncEnabled(false);
+	VsyncComboBox->SetSelectedOption("Disabled");
+
+	// Set Refresh rate to monitor refresh rate
+	TArray<uint32> RefreshRates;
+	GetListOfUniqueRefreshRates(RefreshRates);
+	GEngine->GameUserSettings->SetFrameRateLimit(RefreshRates.Last());
+	RefreshRateComboBox->SetSelectedOption(FString::FromInt(RefreshRates.Last()));
+
+	// Set Audio Volume to 50%
+	MasterSoundClass->Properties.Volume = 0.5f;
+	MasterAudioTextBlock->SetText(FText::FromString(FString::FromInt(50) + "%"));
+	MasterAudioSlider->SetValue(0.5f);
+
+	// Save Settings
+	GEngine->GameUserSettings->ApplySettings(false);
+}
+
 void UOptionsMenuWidget::ReturnButtonOnClicked()
 {
 	if (MainMenuMenuWidget)
@@ -281,4 +334,16 @@ void UOptionsMenuWidget::ReturnButtonOnClicked()
 			SelectWeaponWidget->AddToViewport();
 		}
 	}
+}
+
+void UOptionsMenuWidget::GetListOfUniqueRefreshRates(TArray<uint32>& RefreshRates)
+{
+	FScreenResolutionArray ScreenResolutions;
+	RHIGetAvailableResolutions(ScreenResolutions, false);
+	for (FScreenResolutionRHI ScreenResolution : ScreenResolutions)
+	{
+		RefreshRates.AddUnique(ScreenResolution.RefreshRate);
+	}
+
+	RefreshRates.Sort();
 }
