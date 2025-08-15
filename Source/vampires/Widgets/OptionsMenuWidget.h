@@ -58,12 +58,10 @@ class VAMPIRES_API UOptionsMenuWidget : public UVampireInteractiveWidget
 
 	UPROPERTY(EditDefaultsOnly, Category = "Widget Settings | Sound Settings")
 	TObjectPtr<USoundClass> MasterSoundClass = nullptr;
-
-protected:
+	
 	UFUNCTION()
 	virtual void NativeConstruct() override;
 
-private:
 	void GenerateWindowTypeOptions();
 
 	void GenerateResolutionOptions();
@@ -104,16 +102,16 @@ private:
 	void ReturnButtonOnClicked();
 
 	UFUNCTION()
-	void ResetToDefaultsTextBlockHoveredDelegate() { SetTextBlockHovered(ResetToDefaultsBlock); }
+	void ResetToDefaultsButtonOnHovered();
 
 	UFUNCTION()
-	void ResetToDefaultsTextBlockUnhoveredDelegate() { SetTextBlockUnhovered(ResetToDefaultsBlock); }
-	
-	UFUNCTION()
-	void ReturnTextBlockHoveredDelegate() { SetTextBlockHovered(ReturnBlock); }
+	void ResetToDefaultsButtonOnUnhovered();
 
 	UFUNCTION()
-	void ReturnTextBlockUnhoveredDelegate() { SetTextBlockUnhovered(ReturnBlock); }
+	void ReturnButtonOnHovered();
+
+	UFUNCTION()
+	void ReturnButtonOnUnhovered();
 
 	void GetListOfUniqueRefreshRates(TArray<uint32>& RefreshRates);
 };

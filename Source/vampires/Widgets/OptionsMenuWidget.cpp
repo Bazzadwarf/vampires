@@ -39,25 +39,15 @@ void UOptionsMenuWidget::NativeConstruct()
 	if (ResetToDefaultsButton)
 	{
 		ResetToDefaultsButton->OnClicked.AddUniqueDynamic(this, &UOptionsMenuWidget::ResetToDefaultsOnClicked);
-		ResetToDefaultsButton->OnClicked.AddUniqueDynamic(this, &UOptionsMenuWidget::PlayClickedSound);
-
-		ResetToDefaultsButton->OnHovered.AddUniqueDynamic(this, &UOptionsMenuWidget::PlayHoveredSound);
-		ResetToDefaultsButton->OnHovered.AddUniqueDynamic(this, &UOptionsMenuWidget::ResetToDefaultsTextBlockHoveredDelegate);
-
-		ResetToDefaultsButton->OnUnhovered.AddUniqueDynamic(this, &UOptionsMenuWidget::ResetToDefaultsTextBlockUnhoveredDelegate);
-		ResetToDefaultsButton->OnUnhovered.AddUniqueDynamic(this, &UOptionsMenuWidget::PlayUnhoveredSound);
+		ResetToDefaultsButton->OnHovered.AddUniqueDynamic(this, &UOptionsMenuWidget::ResetToDefaultsButtonOnHovered);
+		ResetToDefaultsButton->OnUnhovered.AddUniqueDynamic(this, &UOptionsMenuWidget::ResetToDefaultsButtonOnUnhovered);
 	}
-	
+
 	if (ReturnButton)
 	{
 		ReturnButton->OnClicked.AddUniqueDynamic(this, &UOptionsMenuWidget::ReturnButtonOnClicked);
-		ReturnButton->OnClicked.AddUniqueDynamic(this, &UOptionsMenuWidget::PlayClickedSound);
-
-		ReturnButton->OnHovered.AddUniqueDynamic(this, &UOptionsMenuWidget::PlayHoveredSound);
-		ReturnButton->OnHovered.AddUniqueDynamic(this, &UOptionsMenuWidget::ReturnTextBlockHoveredDelegate);
-
-		ReturnButton->OnUnhovered.AddUniqueDynamic(this, &UOptionsMenuWidget::ReturnTextBlockUnhoveredDelegate);
-		ReturnButton->OnUnhovered.AddUniqueDynamic(this, &UOptionsMenuWidget::PlayUnhoveredSound);
+		ReturnButton->OnHovered.AddUniqueDynamic(this, &UOptionsMenuWidget::ReturnButtonOnHovered);
+		ReturnButton->OnUnhovered.AddUniqueDynamic(this, &UOptionsMenuWidget::ReturnButtonOnUnhovered);
 	}
 }
 
@@ -129,9 +119,9 @@ void UOptionsMenuWidget::GenerateRefreshRateOptions()
 	RefreshRateComboBox->ClearOptions();
 
 	TArray<uint32> RefreshRates;
-	
+
 	GetListOfUniqueRefreshRates(RefreshRates);
-	
+
 	for (uint32 RefreshRate : RefreshRates)
 	{
 		RefreshRateComboBox->AddOption(FString::FromInt(RefreshRate));
@@ -268,13 +258,15 @@ void UOptionsMenuWidget::OnAudioLeverValueChanged(float Value)
 		MasterSoundClass->Properties.Volume = FMath::Clamp(Value, 0.0f, 1.0f);
 
 		int AudioLevel = FMath::Clamp(Value, 0.0f, 1.0f) * 100.0f;
-		
+
 		MasterAudioTextBlock->SetText(FText::FromString(FString::FromInt(AudioLevel) + "%"));
 	}
 }
 
 void UOptionsMenuWidget::ResetToDefaultsOnClicked()
 {
+	PlayClickedSound();
+
 	// Set Resolution to Monitor Res
 	TArray<FIntPoint> Resolutions;
 	UKismetSystemLibrary::GetSupportedFullscreenResolutions(Resolutions);
@@ -282,7 +274,8 @@ void UOptionsMenuWidget::ResetToDefaultsOnClicked()
 	if (Resolutions.Num() > 0)
 	{
 		GEngine->GameUserSettings->SetScreenResolution(Resolutions.Last());
-		FString ResolutionString = FString::FromInt(Resolutions.Last().X) + "x" + FString::FromInt(Resolutions.Last().Y);
+		FString ResolutionString = FString::FromInt(Resolutions.Last().X) + "x" +
+			FString::FromInt(Resolutions.Last().Y);
 		ResolutionComboBox->SetSelectedOption(ResolutionString);
 	}
 	else
@@ -292,7 +285,7 @@ void UOptionsMenuWidget::ResetToDefaultsOnClicked()
 		FString ResolutionString = FString::FromInt(1920) + "x" + FString::FromInt(1080);
 		ResolutionComboBox->SetSelectedOption(ResolutionString);
 	}
-	
+
 	// Set Fullscreen
 	GEngine->GameUserSettings->SetFullscreenMode(EWindowMode::Fullscreen);
 	WindowTypeComboBox->SetSelectedOption(LexToString(GEngine->GameUserSettings->GetFullscreenMode()));
@@ -322,6 +315,8 @@ void UOptionsMenuWidget::ResetToDefaultsOnClicked()
 
 void UOptionsMenuWidget::ReturnButtonOnClicked()
 {
+	PlayClickedSound();
+
 	if (MainMenuMenuWidget)
 	{
 		RemoveFromParent();
@@ -334,6 +329,30 @@ void UOptionsMenuWidget::ReturnButtonOnClicked()
 			SelectWeaponWidget->AddToViewport();
 		}
 	}
+}
+
+void UOptionsMenuWidget::ResetToDefaultsButtonOnHovered()
+{
+	PlayHoveredSound();
+	SetTextBlockHovered(ResetToDefaultsBlock);
+}
+
+void UOptionsMenuWidget::ResetToDefaultsButtonOnUnhovered()
+{
+	PlayUnhoveredSound();
+	SetTextBlockUnhovered(ResetToDefaultsBlock);
+}
+
+void UOptionsMenuWidget::ReturnButtonOnHovered()
+{
+	PlayHoveredSound();
+	SetTextBlockHovered(ReturnBlock);
+}
+
+void UOptionsMenuWidget::ReturnButtonOnUnhovered()
+{
+	PlayUnhoveredSound();
+	SetTextBlockUnhovered(ReturnBlock);
 }
 
 void UOptionsMenuWidget::GetListOfUniqueRefreshRates(TArray<uint32>& RefreshRates)
