@@ -17,13 +17,8 @@ void USelectWeaponWidget::NativeConstruct()
 	if (BackButton)
 	{
 		BackButton->OnClicked.AddUniqueDynamic(this, &USelectWeaponWidget::BackButtonClicked);
-		BackButton->OnClicked.AddUniqueDynamic(this, &USelectWeaponWidget::PlayClickedSound);
-
-		BackButton->OnHovered.AddUniqueDynamic(this, &USelectWeaponWidget::PlayHoveredSound);
-		BackButton->OnHovered.AddUniqueDynamic(this, &USelectWeaponWidget::BackButtonTextBlockHoveredDelegate);
-
-		BackButton->OnUnhovered.AddUniqueDynamic(this, &USelectWeaponWidget::BackButtonTextBlockUnhoveredDelegate);
-		BackButton->OnUnhovered.AddUniqueDynamic(this, &USelectWeaponWidget::PlayUnhoveredSound);
+		BackButton->OnHovered.AddUniqueDynamic(this, &USelectWeaponWidget::BackButtonOnHovered);
+		BackButton->OnUnhovered.AddUniqueDynamic(this, &USelectWeaponWidget::BackButtonOnUnhovered);
 	}
 
 	if (UpgradesListView)
@@ -40,6 +35,7 @@ void USelectWeaponWidget::NativeConstruct()
 
 void USelectWeaponWidget::BackButtonClicked()
 {
+	PlayClickedSound();
 	if (PreviousWidget)
 	{
 		RemoveFromParent();
@@ -52,4 +48,16 @@ void USelectWeaponWidget::BackButtonClicked()
 			SelectWeaponWidget->AddToViewport();
 		}
 	}
+}
+
+void USelectWeaponWidget::BackButtonOnHovered()
+{
+	PlayHoveredSound();
+	SetTextBlockHovered(BackTextBlock);
+}
+
+void USelectWeaponWidget::BackButtonOnUnhovered()
+{
+	PlayUnhoveredSound();
+	SetTextBlockUnhovered(BackTextBlock);
 }

@@ -17,16 +17,17 @@ UCLASS()
 class VAMPIRES_API USelectWeaponWidget : public UVampireInteractiveWidget
 {
 	GENERATED_BODY()
-protected:
 
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UButton> BackButton;
 
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UTextBlock> BackTextBlock;
 
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UListView> UpgradesListView;
+
+protected:
 	
 	UPROPERTY(EditDefaultsOnly)
 	TArray<TSubclassOf<AWeapon>> StarterWeapons;
@@ -42,8 +43,8 @@ private:
 	void BackButtonClicked();
 
 	UFUNCTION()
-	void BackButtonTextBlockHoveredDelegate() { SetTextBlockHovered(BackTextBlock); }
+	void BackButtonOnHovered();
 
 	UFUNCTION()
-	void BackButtonTextBlockUnhoveredDelegate() { SetTextBlockUnhovered(BackTextBlock); }
+	void BackButtonOnUnhovered();
 };
