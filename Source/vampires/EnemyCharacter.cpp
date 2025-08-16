@@ -62,7 +62,7 @@ void AEnemyCharacter::OnDamaged(FDamageInfo DamageInfo)
 
 void AEnemyCharacter::OnDeath(FDamageInfo DamageInfo)
 {
-	if (PickupTemplate)
+	if (PickupArray.Num() > 0)
 	{
 		AGameModeBase* Gamemode = UGameplayStatics::GetGameMode(GetWorld());
 		if (UKismetSystemLibrary::DoesImplementInterface(Gamemode, UPools::StaticClass()))
@@ -75,7 +75,20 @@ void AEnemyCharacter::OnDeath(FDamageInfo DamageInfo)
 				{
 					FVector PickupLocation = GetActorLocation();
 					Pickup->SetActorLocation(PickupLocation);
-					IPickupable::Execute_LoadDataFromDataAsset(Pickup, PickupTemplate, PickupLocation);
+
+					int32 Rand = FMath::Rand() % 100;
+					if (Rand < 60 && PickupArray[0])
+					{
+						IPickupable::Execute_LoadDataFromDataAsset(Pickup, PickupArray[0], PickupLocation);
+					}
+					else if (Rand < 90 && PickupArray[1])
+					{
+						IPickupable::Execute_LoadDataFromDataAsset(Pickup, PickupArray[1], PickupLocation);
+					}
+					else if (PickupArray[2])
+					{
+						IPickupable::Execute_LoadDataFromDataAsset(Pickup, PickupArray[2], PickupLocation);
+					}
 				}
 			}
 		}
@@ -98,11 +111,14 @@ void AEnemyCharacter::LoadDataFromDataAsset_Implementation(UEnemyDataAsset* Enem
 	{
 		StaticMeshComponent->SetStaticMesh(EnemyDataAsset->StaticMesh);
 		BehaviorTree = EnemyDataAsset->BehaviorTree;
-		PickupTemplate = EnemyDataAsset->PickupDataAsset;
 		OnDamagedSound = EnemyDataAsset->OnDamagedSoundBase;
 		OnDeathSound = EnemyDataAsset->OnDeathSoundBase;
 		OnDamagedNiagaraSystem = EnemyDataAsset->OnDamagedNiagaraSystem;
 		OnDeathNiagaraSystem = EnemyDataAsset->OnDeathNiagaraSystem;
+
+		PickupArray.Add(EnemyDataAsset->CommonPickupDataAsset);
+		PickupArray.Add(EnemyDataAsset->UncommonPickupDataAsset);
+		PickupArray.Add(EnemyDataAsset->RarePickupDataAsset);
 	}
 }
 
@@ -110,7 +126,7 @@ void AEnemyCharacter::ResetData_Implementation()
 {
 	StaticMeshComponent->SetStaticMesh(nullptr);
 	BehaviorTree = nullptr;
-	PickupTemplate = nullptr;
+	PickupArray.Empty();
 	OnDamagedSound = nullptr;
 	OnDeathSound = nullptr;
 	OnDamagedNiagaraSystem = nullptr;

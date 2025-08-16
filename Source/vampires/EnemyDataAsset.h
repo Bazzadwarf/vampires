@@ -26,7 +26,13 @@ public:
 	TObjectPtr<UBehaviorTree> BehaviorTree = nullptr;
 
 	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UPickupDataAsset> PickupDataAsset = nullptr;
+	TObjectPtr<UPickupDataAsset> CommonPickupDataAsset = nullptr;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UPickupDataAsset> UncommonPickupDataAsset = nullptr;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UPickupDataAsset> RarePickupDataAsset = nullptr;
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<USoundBase> OnDamagedSoundBase = nullptr;

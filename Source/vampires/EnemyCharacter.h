@@ -42,7 +42,7 @@ private:
 	TObjectPtr<UObjectPoolComponent> ObjectPoolComponent = nullptr;
 
 	UPROPERTY()
-	TObjectPtr<UPickupDataAsset> PickupTemplate = nullptr;
+	TArray<TObjectPtr<UPickupDataAsset>> PickupArray;
 
 	TArray<TObjectPtr<AActor>> Player;
 
