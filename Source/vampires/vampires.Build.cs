@@ -10,7 +10,7 @@ public class vampires : ModuleRules
 
 		PublicDependencyModuleNames.AddRange(new[]
 		{
-			"Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "Paper2D", "Niagara", "SlateCore", "RHI"
+			"Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "Paper2D", "Niagara", "SlateCore", "RHI", "Slate"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });

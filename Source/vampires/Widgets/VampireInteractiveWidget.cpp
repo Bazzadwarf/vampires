@@ -6,6 +6,19 @@
 #include "Components/TextBlock.h"
 #include "GameFramework/GameUserSettings.h"
 #include "Kismet/GameplayStatics.h"
+#include "vampires/DetectGamepad.h"
+
+void UVampireInteractiveWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+{
+	Super::NativeTick(MyGeometry, InDeltaTime);
+
+	GamepadConnected = UDetectGamepad::IsControllerConnected();
+}
+
+FReply UVampireInteractiveWidget::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	return Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
+}
 
 void UVampireInteractiveWidget::SetReturnScreen(UUserWidget* UserWidget)
 {

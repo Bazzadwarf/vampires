@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "VampireInteractiveWidget.generated.h"
 
+class UButton;
 class UTextBlock;
 /**
  * 
@@ -31,9 +32,18 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Widget Settings | Sound")
 	TObjectPtr<USoundBase> ButtonClickedSound;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Widget Settings")
+	TArray<TObjectPtr<UButton>> InteractableButtons;
+
 protected:
 	UPROPERTY()
 	TObjectPtr<UUserWidget> PreviousScreen;
+
+	bool GamepadConnected = false;
+
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
+
+	virtual FReply NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 
 public:
 	UFUNCTION()

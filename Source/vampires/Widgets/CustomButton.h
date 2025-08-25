@@ -35,9 +35,33 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnButtonHoverEventCustom OnHovered;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnButtonHoverEventCustom OnUnhovered;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Button Settings | Text")
 	FText ButtonText = FText::FromString("Default");
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Button Settings | Color")
+	FLinearColor ButtonHoveredTextColor = {0, 1, 0, 1};
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Button Settings | Color")
+	FLinearColor ButtonUnhoveredTextColor = {1, 1, 1, 1};
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Button Settings | Sound")
+	TObjectPtr<USoundBase> ButtonClickedSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Button Settings | Sound")
+	TObjectPtr<USoundBase> ButtonPressedSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Button Settings | Sound")
+	TObjectPtr<USoundBase> ButtonReleasedSound;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Button Settings | Sound")
+	TObjectPtr<USoundBase> ButtonHoveredSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Button Settings | Sound")
+	TObjectPtr<USoundBase> ButtonUnhoveredSound;
 
 private:
 	UPROPERTY(meta = (BindWidget))
@@ -68,4 +92,7 @@ private:
 
 	UFUNCTION()
 	void OnButtonHovered();
+
+	UFUNCTION()
+	void OnButtonUnhovered();
 };

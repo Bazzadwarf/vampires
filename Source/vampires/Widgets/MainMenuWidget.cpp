@@ -3,6 +3,7 @@
 
 #include "MainMenuWidget.h"
 
+#include "CustomButton.h"
 #include "SelectWeaponWidget.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Components/Button.h"
@@ -15,37 +16,36 @@ void UMainMenuWidget::NativeConstruct()
 	if (NewGameButton)
 	{
 		NewGameButton->OnClicked.AddUniqueDynamic(this, &UMainMenuWidget::NewGameButtonOnClicked);
-		NewGameButton->OnHovered.AddUniqueDynamic(this, &UMainMenuWidget::NewGameButtonOnHovered);
-		NewGameButton->OnUnhovered.AddUniqueDynamic(this, &UMainMenuWidget::NewGameButtonOnUnhovered);
 	}
 
 	if (OptionsButton)
 	{
 		OptionsButton->OnClicked.AddUniqueDynamic(this, &UMainMenuWidget::OptionsButtonOnClicked);
-		OptionsButton->OnHovered.AddUniqueDynamic(this, &UMainMenuWidget::OptionsButtonOnHovered);
-		OptionsButton->OnUnhovered.AddUniqueDynamic(this, &UMainMenuWidget::OptionsButtonOnUnhovered);
 	}
 
 	if (QuitButton)
 	{
 		QuitButton->OnClicked.AddUniqueDynamic(this, &UMainMenuWidget::QuitButtonOnClicked);
-		QuitButton->OnHovered.AddUniqueDynamic(this, &UMainMenuWidget::QuitButtonOnHovered);
-		QuitButton->OnUnhovered.AddUniqueDynamic(this, &UMainMenuWidget::QuitButtonOnUnhovered);
 	}
 
 	QuitButton->SetIsEnabled(false);
 
 	if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
 	{
-		UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(PlayerController, this, EMouseLockMode::LockAlways);
+		UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(PlayerController, NewGameButton, EMouseLockMode::LockAlways);
 		PlayerController->bShowMouseCursor = true;
 	}
 }
 
+FReply UMainMenuWidget::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	NewGameButton->SetKeyboardFocus();
+	
+	return Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
+}
+
 void UMainMenuWidget::NewGameButtonOnClicked()
 {
-	PlayClickedSound();
-
 	if (NewGameMenuWidget)
 	{
 		RemoveFromParent();
@@ -62,8 +62,6 @@ void UMainMenuWidget::NewGameButtonOnClicked()
 
 void UMainMenuWidget::OptionsButtonOnClicked()
 {
-	PlayClickedSound();
-
 	if (OptionsMenuWidget)
 	{
 		RemoveFromParent();
@@ -80,46 +78,8 @@ void UMainMenuWidget::OptionsButtonOnClicked()
 
 void UMainMenuWidget::QuitButtonOnClicked()
 {
-	PlayClickedSound();
-
 	// TODO: Add platform specific Exit requests
 	// This is not a bit deal for the moment as we are only building for windows
 	// For some reason the generic version does not work the same as FWindowsPlatformMisc
 	FWindowsPlatformMisc::RequestExit(false);
-}
-
-void UMainMenuWidget::NewGameButtonOnHovered()
-{
-	PlayHoveredSound();
-	SetTextBlockHovered(NewGameTextBlock);
-}
-
-void UMainMenuWidget::NewGameButtonOnUnhovered()
-{
-	PlayUnhoveredSound();
-	SetTextBlockUnhovered(NewGameTextBlock);
-}
-
-void UMainMenuWidget::OptionsButtonOnHovered()
-{
-	PlayHoveredSound();
-	SetTextBlockHovered(OptionsTextBlock);
-}
-
-void UMainMenuWidget::OptionsButtonOnUnhovered()
-{
-	PlayUnhoveredSound();
-	SetTextBlockUnhovered(OptionsTextBlock);
-}
-
-void UMainMenuWidget::QuitButtonOnHovered()
-{
-	PlayHoveredSound();
-	SetTextBlockHovered(QuitTextBlock);
-}
-
-void UMainMenuWidget::QuitButtonOnUnhovered()
-{
-	PlayUnhoveredSound();
-	SetTextBlockUnhovered(QuitTextBlock);
 }

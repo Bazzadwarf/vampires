@@ -13,4 +13,9 @@ UCLASS()
 class VAMPIRES_API UDetectGamepad : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
+
+public:
+
+	UFUNCTION(BlueprintCallable, Category = "DetectGamepad")
+	static bool IsControllerConnected();
 };
