@@ -4,7 +4,6 @@
 #include "MainMenuWidget.h"
 
 #include "CustomButton.h"
-#include "SelectWeaponWidget.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
@@ -40,7 +39,7 @@ void UMainMenuWidget::NativeConstruct()
 FReply UMainMenuWidget::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
 	NewGameButton->SetKeyboardFocus();
-	
+
 	return Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
 }
 

@@ -41,6 +41,9 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Button Settings | Text")
 	FText ButtonText = FText::FromString("Default");
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Button Settings | Text")
+	int TextSize = 30.0f;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Button Settings | Color")
 	FLinearColor ButtonHoveredTextColor = {0, 1, 0, 1};

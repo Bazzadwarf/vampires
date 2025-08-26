@@ -7,7 +7,6 @@
 #include "MainMenuWidget.generated.h"
 
 class UCustomButton;
-class UButton;
 /**
  * 
  */
@@ -15,7 +14,7 @@ UCLASS()
 class VAMPIRES_API UMainMenuWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UCustomButton> NewGameButton;
 

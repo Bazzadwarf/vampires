@@ -19,7 +19,7 @@ void UCustomButton::NativeConstruct()
 	ButtonBody->OnHovered.AddUniqueDynamic(this, &UCustomButton::OnButtonHovered);
 	ButtonBody->OnUnhovered.AddUniqueDynamic(this, &UCustomButton::OnButtonUnhovered);
 
-	TextBlock->SetText(ButtonText);
+	SynchronizeProperties();
 }
 
 void UCustomButton::SynchronizeProperties()
@@ -27,6 +27,10 @@ void UCustomButton::SynchronizeProperties()
 	Super::SynchronizeProperties();
 
 	TextBlock->SetText(ButtonText);
+	
+	FSlateFontInfo Font = TextBlock->GetFont();
+	Font.Size = TextSize;
+	TextBlock->SetFont(Font);
 }
 
 TObjectPtr<UTextBlock> UCustomButton::GetTextBlock()

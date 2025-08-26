@@ -7,45 +7,27 @@
 #include "Blueprint/UserWidget.h"
 #include "PauseWidget.generated.h"
 
-class UButton;
+class UCustomButton;
+
 /**
  * 
  */
 UCLASS()
-class VAMPIRES_API UPauseWidget : public UVampireInteractiveWidget
+class VAMPIRES_API UPauseWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
-	UPROPERTY(meta=(BindWidget))
-	TObjectPtr<UButton> ResumeButton;
-	
-	UPROPERTY(meta=(BindWidget))
-	TObjectPtr<UTextBlock> ResumeTextBlock;
 
 	UPROPERTY(meta=(BindWidget))
-	TObjectPtr<UButton> ReturnToMainMenuButton;
+	TObjectPtr<UCustomButton> ResumeButton;
 
 	UPROPERTY(meta=(BindWidget))
-	TObjectPtr<UTextBlock> ReturnToMainMenuTextBlock;
+	TObjectPtr<UCustomButton> ReturnToMainMenuButton;
 
 	virtual void NativeConstruct() override;
-	
-	UFUNCTION()
-	void ResumeButtonOnClicked();
-	
-	UFUNCTION()
-	void ResumeButtonOnHovered();
 
 	UFUNCTION()
-	void ResumeButtonOnUnhovered();
+	void ResumeButtonOnClicked();
 
 	UFUNCTION()
 	void ReturnToMainMenuButtonOnClicked();
-	
-	UFUNCTION()
-	void ReturnToMainMenuButtonOnHovered();
-
-	UFUNCTION()
-	void ReturnToMainMenuButtonOnUnhovered();
-	
 };

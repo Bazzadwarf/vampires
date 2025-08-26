@@ -3,6 +3,7 @@
 
 #include "PauseWidget.h"
 
+#include "CustomButton.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
@@ -15,15 +16,11 @@ void UPauseWidget::NativeConstruct()
 	if (ResumeButton)
 	{
 		ResumeButton->OnClicked.AddUniqueDynamic(this, &UPauseWidget::ResumeButtonOnClicked);
-		ResumeButton->OnHovered.AddUniqueDynamic(this, &UPauseWidget::ResumeButtonOnHovered);
-		ResumeButton->OnUnhovered.AddUniqueDynamic(this, &UPauseWidget::ResumeButtonOnUnhovered);
 	}
 
 	if (ReturnToMainMenuButton)
 	{
 		ReturnToMainMenuButton->OnClicked.AddUniqueDynamic(this, &UPauseWidget::ReturnToMainMenuButtonOnClicked);
-		ReturnToMainMenuButton->OnHovered.AddUniqueDynamic(this, &UPauseWidget::ReturnToMainMenuButtonOnHovered);
-		ReturnToMainMenuButton->OnUnhovered.AddUniqueDynamic(this, &UPauseWidget::ReturnToMainMenuButtonOnUnhovered);
 	}
 
 	SetIsFocusable(true);
@@ -43,19 +40,6 @@ void UPauseWidget::ResumeButtonOnClicked()
 	SetIsFocusable(false);
 }
 
-
-void UPauseWidget::ResumeButtonOnHovered()
-{
-	SetTextBlockHovered(ResumeTextBlock);
-	PlayHoveredSound();
-}
-
-void UPauseWidget::ResumeButtonOnUnhovered()
-{
-	SetTextBlockUnhovered(ResumeTextBlock);
-	PlayUnhoveredSound();
-}
-
 void UPauseWidget::ReturnToMainMenuButtonOnClicked()
 {
 	if (UVampireGameInstance* GameInstance = Cast<UVampireGameInstance>(GetGameInstance()))
@@ -72,16 +56,3 @@ void UPauseWidget::ReturnToMainMenuButtonOnClicked()
 		}
 	}
 }
-
-void UPauseWidget::ReturnToMainMenuButtonOnHovered()
-{
-	SetTextBlockHovered(ReturnToMainMenuTextBlock);
-	PlayHoveredSound();
-}
-
-void UPauseWidget::ReturnToMainMenuButtonOnUnhovered()
-{
-	SetTextBlockUnhovered(ReturnToMainMenuTextBlock);
-	PlayUnhoveredSound();
-}
-
