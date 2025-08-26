@@ -5,42 +5,27 @@
 
 #include "StarterWeaponButtonDataObject.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
-#include "Components/Button.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 #include "vampires/VampireGameInstance.h"
 
-void UStarterWeaponButtonWidget::NativeConstruct()
-{
-	Super::NativeConstruct();
-}
-
 void UStarterWeaponButtonWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 {
 	if (UStarterWeaponButtonDataObject* Item = Cast<UStarterWeaponButtonDataObject>(ListItemObject))
 	{
-		WeaponNameTextBlock->SetText(Item->WeaponName);
+		TextBlock->SetText(Item->WeaponName);
 		DescriptionTextBlock->SetText(Item->WeaponDescription);
 		WeaponIcon->SetBrushFromTexture(Item->WeaponIcon);
 		Parent = Item->Parent;
 		WeaponTemplate = Item->WeaponTemplate;
-
-		if (Body)
-		{
-			Body->OnClicked.AddUniqueDynamic(this, &UStarterWeaponButtonWidget::OnClicked);
-
-			Body->OnHovered.AddUniqueDynamic(this, &UStarterWeaponButtonWidget::PlayHoveredSound);
-			Body->OnHovered.AddUniqueDynamic(this, &UStarterWeaponButtonWidget::OnHoveredDelegate);
-
-			Body->OnUnhovered.AddUniqueDynamic(this, &UStarterWeaponButtonWidget::OnUnhoveredDelegate);
-			Body->OnUnhovered.AddUniqueDynamic(this, &UStarterWeaponButtonWidget::PlayUnhoveredSound);
-		}
 	}
 }
 
-void UStarterWeaponButtonWidget::OnClicked()
+void UStarterWeaponButtonWidget::OnButtonClicked()
 {
+	Super::OnButtonClicked();
+
 	if (UVampireGameInstance* GameInstance = Cast<UVampireGameInstance>(GetGameInstance()))
 	{
 		GameInstance->StarterWeapon = WeaponTemplate;
@@ -57,16 +42,4 @@ void UStarterWeaponButtonWidget::OnClicked()
 			SetIsFocusable(false);
 		}
 	}
-}
-
-void UStarterWeaponButtonWidget::OnHoveredDelegate()
-{
-	SetTextBlockHovered(WeaponNameTextBlock);
-	SetTextBlockHovered(DescriptionTextBlock);
-}
-
-void UStarterWeaponButtonWidget::OnUnhoveredDelegate()
-{
-	SetTextBlockUnhovered(WeaponNameTextBlock);
-	SetTextBlockUnhovered(DescriptionTextBlock);
 }

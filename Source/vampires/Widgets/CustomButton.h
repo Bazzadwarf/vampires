@@ -10,8 +10,11 @@ class UTextBlock;
 class UButton;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnButtonClickedEventCustom);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnButtonPressedEventCustom);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnButtonReleasedEventCustom);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnButtonHoverEventCustom);
 
 /**
@@ -23,7 +26,6 @@ class VAMPIRES_API UCustomButton : public UUserWidget
 	GENERATED_BODY()
 
 public:
-
 	UPROPERTY(BlueprintAssignable)
 	FOnButtonClickedEventCustom OnClicked;
 
@@ -38,13 +40,13 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnButtonHoverEventCustom OnUnhovered;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Button Settings | Text")
 	FText ButtonText = FText::FromString("Default");
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Button Settings | Text")
 	int TextSize = 30.0f;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Button Settings | Color")
 	FLinearColor ButtonHoveredTextColor = {0, 1, 0, 1};
 
@@ -59,33 +61,30 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Button Settings | Sound")
 	TObjectPtr<USoundBase> ButtonReleasedSound;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Button Settings | Sound")
 	TObjectPtr<USoundBase> ButtonHoveredSound;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Button Settings | Sound")
 	TObjectPtr<USoundBase> ButtonUnhoveredSound;
 
-private:
+protected:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> ButtonBody;
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> TextBlock;
 
-protected:
-	
 	virtual void NativeConstruct() override;
 
 	virtual void SynchronizeProperties() override;
 
 public:
-
 	TObjectPtr<UTextBlock> GetTextBlock();
 
-private:
+protected:
 	UFUNCTION()
-	void OnButtonClicked();
+	virtual void OnButtonClicked();
 
 	UFUNCTION()
 	void OnButtonPressed();

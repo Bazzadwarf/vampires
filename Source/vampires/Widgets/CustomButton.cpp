@@ -26,11 +26,14 @@ void UCustomButton::SynchronizeProperties()
 {
 	Super::SynchronizeProperties();
 
-	TextBlock->SetText(ButtonText);
-	
-	FSlateFontInfo Font = TextBlock->GetFont();
-	Font.Size = TextSize;
-	TextBlock->SetFont(Font);
+	if (TextBlock)
+	{
+		TextBlock->SetText(ButtonText);
+
+		FSlateFontInfo Font = TextBlock->GetFont();
+		Font.Size = TextSize;
+		TextBlock->SetFont(Font);
+	}
 }
 
 TObjectPtr<UTextBlock> UCustomButton::GetTextBlock()
@@ -83,7 +86,7 @@ void UCustomButton::OnButtonHovered()
 void UCustomButton::OnButtonUnhovered()
 {
 	OnUnhovered.Broadcast();
-	
+
 	if (ButtonUnhoveredSound)
 	{
 		UGameplayStatics::PlaySound2D(GetWorld(), ButtonUnhoveredSound);
