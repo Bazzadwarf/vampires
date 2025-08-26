@@ -12,19 +12,19 @@ struct FDamageInfo
 	GENERATED_BODY()
 
 	UPROPERTY()
-	AActor* DamagedActor;
+	TObjectPtr<AActor> DamagedActor = nullptr;
 
 	UPROPERTY()
-	float Damage;
+	float Damage = 0.0f;
 
 	UPROPERTY()
-	const UDamageType* DamageType;
+	const UDamageType* DamageType = nullptr;
 
 	UPROPERTY()
-	AController* InstigatedBy;
+	TObjectPtr<AController> InstigatedBy = nullptr;
 
 	UPROPERTY()
-	AActor* DamageCauser;
+	TObjectPtr<AActor> DamageCauser = nullptr;
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDamageDelegate, FDamageInfo, damageInfo);

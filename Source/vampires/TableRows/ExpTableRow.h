@@ -14,14 +14,14 @@ struct FExpTableRow : public FTableRowBase
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int Level;
+	int Level = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int ExpRequiredForNextLevel;
+	int ExpRequiredForNextLevel = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int CumulativeExpForNextLevel;
+	int CumulativeExpForNextLevel = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int CumulativeExpForPreviousLevel;
+	int CumulativeExpForPreviousLevel = 0;
 };
