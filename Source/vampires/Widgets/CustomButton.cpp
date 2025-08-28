@@ -36,7 +36,28 @@ void UCustomButton::SynchronizeProperties()
 	}
 }
 
-TObjectPtr<UTextBlock> UCustomButton::GetTextBlock()
+void UCustomButton::NativeOnAddedToFocusPath(const FFocusEvent& InFocusEvent)
+{
+	Super::NativeOnAddedToFocusPath(InFocusEvent);
+
+	OnFocused.Broadcast(InFocusEvent);
+	OnButtonHovered();
+}
+
+void UCustomButton::NativeOnRemovedFromFocusPath(const FFocusEvent& InFocusEvent)
+{
+	Super::NativeOnRemovedFromFocusPath(InFocusEvent);
+
+	OnUnfocused.Broadcast(InFocusEvent);
+	OnButtonUnhovered();
+}
+
+UButton* UCustomButton::GetButton()
+{
+	return ButtonBody;
+}
+
+UTextBlock* UCustomButton::GetTextBlock()
 {
 	return TextBlock;
 }

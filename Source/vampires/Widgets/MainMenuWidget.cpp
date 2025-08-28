@@ -15,16 +15,19 @@ void UMainMenuWidget::NativeConstruct()
 	if (NewGameButton)
 	{
 		NewGameButton->OnClicked.AddUniqueDynamic(this, &UMainMenuWidget::NewGameButtonOnClicked);
+		NewGameButton->OnFocused.AddUniqueDynamic(this, &UMainMenuWidget::NewGameButtonFocused);
 	}
 
 	if (OptionsButton)
 	{
 		OptionsButton->OnClicked.AddUniqueDynamic(this, &UMainMenuWidget::OptionsButtonOnClicked);
+		OptionsButton->OnFocused.AddUniqueDynamic(this, &UMainMenuWidget::OptionsButtonFocused);
 	}
 
 	if (QuitButton)
 	{
 		QuitButton->OnClicked.AddUniqueDynamic(this, &UMainMenuWidget::QuitButtonOnClicked);
+		QuitButton->OnFocused.AddUniqueDynamic(this, &UMainMenuWidget::QuitButtonFocused);
 	}
 
 	QuitButton->SetIsEnabled(false);
@@ -38,9 +41,24 @@ void UMainMenuWidget::NativeConstruct()
 
 FReply UMainMenuWidget::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
-	NewGameButton->SetKeyboardFocus();
+	CurrentFocus->SetKeyboardFocus();
 
 	return Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
+}
+
+UCustomButton* UMainMenuWidget::GetNewGameButton()
+{
+	return NewGameButton;
+}
+
+UCustomButton* UMainMenuWidget::GetOptionsButton()
+{
+	return OptionsButton;
+}
+
+UCustomButton* UMainMenuWidget::GetQuitButton()
+{
+	return QuitButton;
 }
 
 void UMainMenuWidget::NewGameButtonOnClicked()
@@ -59,6 +77,11 @@ void UMainMenuWidget::NewGameButtonOnClicked()
 	}
 }
 
+void UMainMenuWidget::NewGameButtonFocused(FFocusEvent InFocusEvent)
+{
+	SetCurrentFocus(NewGameButton);
+}
+
 void UMainMenuWidget::OptionsButtonOnClicked()
 {
 	if (OptionsMenuWidget)
@@ -75,10 +98,20 @@ void UMainMenuWidget::OptionsButtonOnClicked()
 	}
 }
 
+void UMainMenuWidget::OptionsButtonFocused(FFocusEvent InFocusEvent)
+{
+	SetCurrentFocus(OptionsButton);
+}
+
 void UMainMenuWidget::QuitButtonOnClicked()
 {
 	// TODO: Add platform specific Exit requests
 	// This is not a bit deal for the moment as we are only building for windows
 	// For some reason the generic version does not work the same as FWindowsPlatformMisc
 	FWindowsPlatformMisc::RequestExit(false);
+}
+
+void UMainMenuWidget::QuitButtonFocused(FFocusEvent InFocusEvent)
+{
+	SetCurrentFocus(QuitButton);
 }

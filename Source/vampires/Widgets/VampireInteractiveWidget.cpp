@@ -28,6 +28,11 @@ void UVampireInteractiveWidget::SetReturnScreen(UUserWidget* UserWidget)
 	}
 }
 
+void UVampireInteractiveWidget::SetCurrentFocus(UUserWidget* UserWidget)
+{
+	CurrentFocus = UserWidget;
+}
+
 void UVampireInteractiveWidget::PlayHoveredSound()
 {
 	if (ButtonHoveredSound)

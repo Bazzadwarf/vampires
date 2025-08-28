@@ -17,6 +17,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnButtonReleasedEventCustom);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnButtonHoverEventCustom);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FFocusPath, FFocusEvent, InFocusEvent);
+
 /**
  * 
  */
@@ -40,6 +42,12 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnButtonHoverEventCustom OnUnhovered;
+
+	UPROPERTY(BlueprintAssignable)
+	FFocusPath OnFocused;
+
+	UPROPERTY(BlueprintAssignable)
+	FFocusPath OnUnfocused;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Button Settings | Text")
 	FText ButtonText = FText::FromString("Default");
@@ -79,8 +87,16 @@ protected:
 
 	virtual void SynchronizeProperties() override;
 
+	virtual void NativeOnAddedToFocusPath(const FFocusEvent& InFocusEvent) override;
+
+	virtual void NativeOnRemovedFromFocusPath(const FFocusEvent& InFocusEvent) override;
+
 public:
-	TObjectPtr<UTextBlock> GetTextBlock();
+	UFUNCTION(BlueprintCallable)
+	UButton* GetButton();
+
+	UFUNCTION(BlueprintCallable)
+	UTextBlock* GetTextBlock();
 
 protected:
 	UFUNCTION()

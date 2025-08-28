@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "VampireInteractiveWidget.generated.h"
 
+class UCustomButton;
 class UButton;
 class UTextBlock;
 /**
@@ -15,6 +16,8 @@ UCLASS()
 class VAMPIRES_API UVampireInteractiveWidget : public UUserWidget
 {
 	GENERATED_BODY()
+
+	// TODO: Remove a lot of this stuff that has now been replaced by UCustomButton
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Widget Settings | Sound")
@@ -35,7 +38,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Widget Settings")
 	TArray<TObjectPtr<UButton>> InteractableButtons;
 
-protected:
+	TObjectPtr<UUserWidget> CurrentFocus;
+
 	UPROPERTY()
 	TObjectPtr<UUserWidget> PreviousScreen;
 
@@ -48,6 +52,9 @@ protected:
 public:
 	UFUNCTION()
 	void SetReturnScreen(UUserWidget* UserWidget);
+
+	UFUNCTION()
+	void SetCurrentFocus(UUserWidget* UserWidget);
 
 protected:
 	UFUNCTION()

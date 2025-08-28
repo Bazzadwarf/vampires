@@ -11,7 +11,7 @@ class UCustomButton;
  * 
  */
 UCLASS()
-class VAMPIRES_API UMainMenuWidget : public UUserWidget
+class VAMPIRES_API UMainMenuWidget : public UVampireInteractiveWidget
 {
 	GENERATED_BODY()
 
@@ -39,13 +39,32 @@ public:
 protected:
 	virtual FReply NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 
+public:
+	UFUNCTION(BlueprintCallable)
+	UCustomButton* GetNewGameButton();
+
+	UFUNCTION(BlueprintCallable)
+	UCustomButton* GetOptionsButton();
+
+	UFUNCTION(BlueprintCallable)
+	UCustomButton* GetQuitButton();
+
 private:
 	UFUNCTION()
 	void NewGameButtonOnClicked();
 
 	UFUNCTION()
+	void NewGameButtonFocused(FFocusEvent InFocusEvent);
+
+	UFUNCTION()
 	void OptionsButtonOnClicked();
 
 	UFUNCTION()
+	void OptionsButtonFocused(FFocusEvent InFocusEvent);
+
+	UFUNCTION()
 	void QuitButtonOnClicked();
+
+	UFUNCTION()
+	void QuitButtonFocused(FFocusEvent InFocusEvent);
 };
