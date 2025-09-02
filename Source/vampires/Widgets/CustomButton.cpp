@@ -19,6 +19,8 @@ void UCustomButton::NativeConstruct()
 	ButtonBody->OnHovered.AddUniqueDynamic(this, &UCustomButton::OnButtonHovered);
 	ButtonBody->OnUnhovered.AddUniqueDynamic(this, &UCustomButton::OnButtonUnhovered);
 
+	SetDesiredFocusWidget(ButtonBody);
+	
 	SynchronizeProperties();
 }
 
@@ -39,7 +41,6 @@ void UCustomButton::SynchronizeProperties()
 void UCustomButton::NativeOnAddedToFocusPath(const FFocusEvent& InFocusEvent)
 {
 	Super::NativeOnAddedToFocusPath(InFocusEvent);
-
 	OnFocused.Broadcast(InFocusEvent);
 	OnButtonHovered();
 }

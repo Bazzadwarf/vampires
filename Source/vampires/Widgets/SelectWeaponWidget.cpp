@@ -6,6 +6,7 @@
 #include "CustomButton.h"
 #include "StarterWeaponButtonDataObject.h"
 #include "StarterWeaponButtonWidget.h"
+#include "Components/Button.h"
 #include "Components/ScrollBox.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -29,7 +30,13 @@ void USelectWeaponWidget::NativeConstruct()
 				Temp->SetData(Weapon, this);
 				Widget->SetData(Temp);
 				StarterWeaponsScrollBox->AddChild(Widget);
+				Buttons.Push(Widget);
 			}
+		}
+
+		if (Buttons.Num() > 0)
+		{
+			Buttons[0]->SetKeyboardFocus();
 		}
 	}
 }

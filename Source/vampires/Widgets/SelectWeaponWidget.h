@@ -45,4 +45,6 @@ protected:
 private:
 	UFUNCTION()
 	void BackButtonClicked();
+
+	TArray<TObjectPtr<UStarterWeaponButtonWidget>> Buttons;
 };
