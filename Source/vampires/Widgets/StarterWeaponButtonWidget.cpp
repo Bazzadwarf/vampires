@@ -3,12 +3,20 @@
 
 #include "StarterWeaponButtonWidget.h"
 
+#include "SelectWeaponWidget.h"
 #include "StarterWeaponButtonDataObject.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 #include "vampires/VampireGameInstance.h"
+
+void UStarterWeaponButtonWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+
+	OnFocused.AddUniqueDynamic(this, &UStarterWeaponButtonWidget::SetFocusInParent);
+}
 
 void UStarterWeaponButtonWidget::SetData(UStarterWeaponButtonDataObject* ListItemObject)
 {
@@ -42,5 +50,13 @@ void UStarterWeaponButtonWidget::OnButtonClicked()
 			}
 			SetIsFocusable(false);
 		}
+	}
+}
+
+void UStarterWeaponButtonWidget::SetFocusInParent(FFocusEvent InFocusEvent)
+{
+	if (USelectWeaponWidget* StarterMenu = Cast<USelectWeaponWidget>(Parent))
+	{
+		StarterMenu->SetCurrentFocus(this);
 	}
 }

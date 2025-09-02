@@ -42,9 +42,14 @@ protected:
 
 	virtual void NativeConstruct() override;
 
+	virtual FReply NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+
 private:
 	UFUNCTION()
 	void BackButtonClicked();
+
+	UFUNCTION()
+	void BackButtonFocused(FFocusEvent InFocusEvent);
 
 	TArray<TObjectPtr<UStarterWeaponButtonWidget>> Buttons;
 };

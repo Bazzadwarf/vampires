@@ -6,7 +6,6 @@
 #include "CustomButton.h"
 #include "StarterWeaponButtonDataObject.h"
 #include "StarterWeaponButtonWidget.h"
-#include "Components/Button.h"
 #include "Components/ScrollBox.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -17,6 +16,7 @@ void USelectWeaponWidget::NativeConstruct()
 	if (BackButton)
 	{
 		BackButton->OnClicked.AddUniqueDynamic(this, &USelectWeaponWidget::BackButtonClicked);
+		BackButton->OnFocused.AddUniqueDynamic(this, &USelectWeaponWidget::BackButtonFocused);
 	}
 
 	if (StarterWeaponsScrollBox && StarterWeaponButtonWidgetTemplate)
@@ -41,6 +41,13 @@ void USelectWeaponWidget::NativeConstruct()
 	}
 }
 
+FReply USelectWeaponWidget::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	CurrentFocus->SetKeyboardFocus();
+
+	return Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
+}
+
 void USelectWeaponWidget::BackButtonClicked()
 {
 	if (PreviousWidget)
@@ -55,4 +62,9 @@ void USelectWeaponWidget::BackButtonClicked()
 			MainMenuWidget->AddToViewport();
 		}
 	}
+}
+
+void USelectWeaponWidget::BackButtonFocused(FFocusEvent InFocusEvent)
+{
+	SetCurrentFocus(BackButton);
 }

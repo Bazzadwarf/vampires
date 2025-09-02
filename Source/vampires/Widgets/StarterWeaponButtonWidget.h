@@ -33,9 +33,15 @@ class VAMPIRES_API UStarterWeaponButtonWidget : public UCustomButton, public IUs
 	UPROPERTY()
 	TObjectPtr<UUserWidget> Parent;
 
+protected:
+	virtual void NativeConstruct() override;
+
 public:
 	void SetData(UStarterWeaponButtonDataObject* ListItemObject);
 
 private:
 	virtual void OnButtonClicked() override;
+
+	UFUNCTION()
+	void SetFocusInParent(FFocusEvent InFocusEvent);
 };
