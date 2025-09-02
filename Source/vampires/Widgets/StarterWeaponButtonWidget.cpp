@@ -10,11 +10,12 @@
 #include "Kismet/GameplayStatics.h"
 #include "vampires/VampireGameInstance.h"
 
-void UStarterWeaponButtonWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
+void UStarterWeaponButtonWidget::SetData(UStarterWeaponButtonDataObject* ListItemObject)
 {
 	if (UStarterWeaponButtonDataObject* Item = Cast<UStarterWeaponButtonDataObject>(ListItemObject))
 	{
 		TextBlock->SetText(Item->WeaponName);
+		ButtonText = Item->WeaponName;
 		DescriptionTextBlock->SetText(Item->WeaponDescription);
 		WeaponIcon->SetBrushFromTexture(Item->WeaponIcon);
 		Parent = Item->Parent;

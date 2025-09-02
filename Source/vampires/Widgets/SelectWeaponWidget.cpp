@@ -3,11 +3,10 @@
 
 #include "SelectWeaponWidget.h"
 
-#include "MainMenuWidget.h"
+#include "CustomButton.h"
 #include "StarterWeaponButtonDataObject.h"
-#include "UpgradeButtonDataObject.h"
-#include "Components/Button.h"
-#include "Components/ListView.h"
+#include "StarterWeaponButtonWidget.h"
+#include "Components/ScrollBox.h"
 #include "Kismet/GameplayStatics.h"
 
 void USelectWeaponWidget::NativeConstruct()
@@ -17,47 +16,36 @@ void USelectWeaponWidget::NativeConstruct()
 	if (BackButton)
 	{
 		BackButton->OnClicked.AddUniqueDynamic(this, &USelectWeaponWidget::BackButtonClicked);
-		BackButton->OnHovered.AddUniqueDynamic(this, &USelectWeaponWidget::BackButtonOnHovered);
-		BackButton->OnUnhovered.AddUniqueDynamic(this, &USelectWeaponWidget::BackButtonOnUnhovered);
 	}
 
-	if (UpgradesListView)
+	if (StarterWeaponsScrollBox && StarterWeaponButtonWidgetTemplate)
 	{
-		// Get a list of weapons that the player owns that can be upgraded
 		for (TSubclassOf<AWeapon> Weapon : StarterWeapons)
 		{
-			UStarterWeaponButtonDataObject* Temp = NewObject<UStarterWeaponButtonDataObject>(this);
-			Temp->SetData(Weapon, this);
-			UpgradesListView->AddItem(Temp);
+			if (UStarterWeaponButtonWidget* Widget = CreateWidget<UStarterWeaponButtonWidget>(
+				GetWorld(), StarterWeaponButtonWidgetTemplate))
+			{
+				UStarterWeaponButtonDataObject* Temp = NewObject<UStarterWeaponButtonDataObject>(this);
+				Temp->SetData(Weapon, this);
+				Widget->SetData(Temp);
+				StarterWeaponsScrollBox->AddChild(Widget);
+			}
 		}
 	}
 }
 
 void USelectWeaponWidget::BackButtonClicked()
 {
-	PlayClickedSound();
 	if (PreviousWidget)
 	{
 		RemoveFromParent();
 
-		UUserWidget* SelectWeaponWidget = CreateWidget<UUserWidget, APlayerController*>(
+		UUserWidget* MainMenuWidget = CreateWidget<UUserWidget, APlayerController*>(
 			UGameplayStatics::GetPlayerController(GetWorld(), 0), PreviousWidget);
 
-		if (SelectWeaponWidget)
+		if (MainMenuWidget)
 		{
-			SelectWeaponWidget->AddToViewport();
+			MainMenuWidget->AddToViewport();
 		}
 	}
-}
-
-void USelectWeaponWidget::BackButtonOnHovered()
-{
-	PlayHoveredSound();
-	SetTextBlockHovered(BackTextBlock);
-}
-
-void USelectWeaponWidget::BackButtonOnUnhovered()
-{
-	PlayUnhoveredSound();
-	SetTextBlockUnhovered(BackTextBlock);
 }

@@ -7,9 +7,12 @@
 #include "SelectWeaponWidget.generated.h"
 
 
+class UStarterWeaponButtonWidget;
+class UScrollBox;
+class UCustomListView;
 class AWeapon;
 class UListView;
-class UButton;
+class UCustomButton;
 /**
  * 
  */
@@ -18,33 +21,28 @@ class VAMPIRES_API USelectWeaponWidget : public UVampireInteractiveWidget
 {
 	GENERATED_BODY()
 
+public:
 	UPROPERTY(meta=(BindWidget))
-	TObjectPtr<UButton> BackButton;
+	TObjectPtr<UCustomButton> BackButton;
 
 	UPROPERTY(meta=(BindWidget))
-	TObjectPtr<UTextBlock> BackTextBlock;
+	TObjectPtr<UScrollBox> StarterWeaponsScrollBox;
 
-	UPROPERTY(meta=(BindWidget))
-	TObjectPtr<UListView> UpgradesListView;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TSubclassOf<UStarterWeaponButtonWidget> StarterWeaponButtonWidgetTemplate;
 
 protected:
-	
 	UPROPERTY(EditDefaultsOnly)
 	TArray<TSubclassOf<AWeapon>> StarterWeapons;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TSubclassOf<class UUserWidget> PreviousWidget;
 
+	FTimerHandle TimerHandle;
+
 	virtual void NativeConstruct() override;
-	
+
 private:
-	
 	UFUNCTION()
 	void BackButtonClicked();
-
-	UFUNCTION()
-	void BackButtonOnHovered();
-
-	UFUNCTION()
-	void BackButtonOnUnhovered();
 };

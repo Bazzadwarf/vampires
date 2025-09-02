@@ -8,6 +8,7 @@
 #include "Blueprint/UserWidget.h"
 #include "StarterWeaponButtonWidget.generated.h"
 
+class UStarterWeaponButtonDataObject;
 class AWeapon;
 class UTextBlock;
 class UImage;
@@ -32,7 +33,9 @@ class VAMPIRES_API UStarterWeaponButtonWidget : public UCustomButton, public IUs
 	UPROPERTY()
 	TObjectPtr<UUserWidget> Parent;
 
-	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
+public:
+	void SetData(UStarterWeaponButtonDataObject* ListItemObject);
 
+private:
 	virtual void OnButtonClicked() override;
 };
