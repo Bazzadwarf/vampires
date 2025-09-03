@@ -6,6 +6,7 @@
 #include "CustomButton.h"
 #include "StarterWeaponButtonDataObject.h"
 #include "StarterWeaponButtonWidget.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Components/ScrollBox.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -36,7 +37,11 @@ void USelectWeaponWidget::NativeConstruct()
 
 		if (Buttons.Num() > 0)
 		{
-			Buttons[0]->SetKeyboardFocus();
+			if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+			{
+				UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(PlayerController, Buttons[0], EMouseLockMode::LockAlways);
+				PlayerController->bShowMouseCursor = true;
+			}
 		}
 	}
 }
