@@ -3,12 +3,16 @@
 
 #include "OptionsMenuWidget.h"
 
+#include "CustomButton.h"
+#include "CustomComboBoxString.h"
+#include "CustomSlider.h"
 #include "Components/Button.h"
-#include "Components/ComboBoxString.h"
 #include "GameFramework/GameUserSettings.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "RHI.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
+#include "Components/ComboBoxString.h"
 #include "Components/Slider.h"
 #include "Components/TextBlock.h"
 #include "Sound/SoundClass.h"
@@ -19,104 +23,127 @@ void UOptionsMenuWidget::NativeConstruct()
 
 	GenerateWindowTypeOptions();
 	WindowTypeComboBox->OnSelectionChanged.AddDynamic(this, &UOptionsMenuWidget::OnWindowTypeSelectionChanged);
+	WindowTypeComboBox->OnFocused.AddDynamic(this, &UOptionsMenuWidget::OnWindowTypeFocused);
 
 	GenerateResolutionOptions();
 	ResolutionComboBox->OnSelectionChanged.AddDynamic(this, &UOptionsMenuWidget::OnResolutionSelectionChanged);
+	ResolutionComboBox->OnFocused.AddDynamic(this, &UOptionsMenuWidget::OnResolutionFocused);
 
 	GenerateDynamicResolutionOptions();
 	DynamicResolutionComboBox->OnSelectionChanged.AddDynamic(
 		this, &UOptionsMenuWidget::OnDynamicResolutionSelectionChanged);
+	DynamicResolutionComboBox->OnFocused.AddDynamic(this, &UOptionsMenuWidget::OnDynamicResolutionFocused);
 
 	GenerateVsyncOptions();
 	VsyncComboBox->OnSelectionChanged.AddDynamic(this, &UOptionsMenuWidget::OnVsyncSelectionChanged);
+	VsyncComboBox->OnFocused.AddDynamic(this, &UOptionsMenuWidget::OnVsyncFocused);
 
 	GenerateRefreshRateOptions();
 	RefreshRateComboBox->OnSelectionChanged.AddDynamic(this, &UOptionsMenuWidget::OnRefreshRateSelectionChanged);
+	RefreshRateComboBox->OnFocused.AddDynamic(this, &UOptionsMenuWidget::OnRefreshRateFocused);
 
 	GenerateAudioLevelOptions();
 	MasterAudioSlider->OnValueChanged.AddDynamic(this, &UOptionsMenuWidget::OnAudioLeverValueChanged);
+	MasterAudioSlider->OnFocused.AddDynamic(this, &UOptionsMenuWidget::OnAudioFocused);
 
 	if (ResetToDefaultsButton)
 	{
 		ResetToDefaultsButton->OnClicked.AddUniqueDynamic(this, &UOptionsMenuWidget::ResetToDefaultsOnClicked);
-		ResetToDefaultsButton->OnHovered.AddUniqueDynamic(this, &UOptionsMenuWidget::ResetToDefaultsButtonOnHovered);
-		ResetToDefaultsButton->OnUnhovered.AddUniqueDynamic(this, &UOptionsMenuWidget::ResetToDefaultsButtonOnUnhovered);
+		ResetToDefaultsButton->OnFocused.AddDynamic(this, &UOptionsMenuWidget::OnResetToDefaultsFocused);
 	}
 
 	if (ReturnButton)
 	{
 		ReturnButton->OnClicked.AddUniqueDynamic(this, &UOptionsMenuWidget::ReturnButtonOnClicked);
-		ReturnButton->OnHovered.AddUniqueDynamic(this, &UOptionsMenuWidget::ReturnButtonOnHovered);
-		ReturnButton->OnUnhovered.AddUniqueDynamic(this, &UOptionsMenuWidget::ReturnButtonOnUnhovered);
+		ReturnButton->OnFocused.AddDynamic(this, &UOptionsMenuWidget::OnReturnButtonFocused);
 	}
+
+	if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+	{
+		UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(PlayerController, WindowTypeComboBox,
+		                                               EMouseLockMode::LockAlways);
+		PlayerController->bShowMouseCursor = true;
+	}
+
+	WindowTypeComboBox->SetKeyboardFocus();
+}
+
+FReply UOptionsMenuWidget::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	if (CurrentFocus)
+	{
+		CurrentFocus->SetKeyboardFocus();
+	}
+
+	return Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
 }
 
 void UOptionsMenuWidget::GenerateWindowTypeOptions()
 {
-	WindowTypeComboBox->ClearOptions();
-	WindowTypeComboBox->AddOption(LexToString(EWindowMode::Fullscreen));
-	WindowTypeComboBox->AddOption(LexToString(EWindowMode::WindowedFullscreen));
-	WindowTypeComboBox->AddOption(LexToString(EWindowMode::Windowed));
-	WindowTypeComboBox->SetSelectedOption(LexToString(GEngine->GameUserSettings->GetFullscreenMode()));
+	WindowTypeComboBox->ComboBox->ClearOptions();
+	WindowTypeComboBox->ComboBox->AddOption(LexToString(EWindowMode::Fullscreen));
+	WindowTypeComboBox->ComboBox->AddOption(LexToString(EWindowMode::WindowedFullscreen));
+	WindowTypeComboBox->ComboBox->AddOption(LexToString(EWindowMode::Windowed));
+	WindowTypeComboBox->ComboBox->SetSelectedOption(LexToString(GEngine->GameUserSettings->GetFullscreenMode()));
 }
 
 void UOptionsMenuWidget::GenerateResolutionOptions()
 {
-	ResolutionComboBox->ClearOptions();
+	ResolutionComboBox->ComboBox->ClearOptions();
 
 	TArray<FIntPoint> Resolutions;
 	UKismetSystemLibrary::GetSupportedFullscreenResolutions(Resolutions);
 	for (FIntPoint Resolution : Resolutions)
 	{
-		ResolutionComboBox->AddOption(FString::FromInt(Resolution.X) + "x" + FString::FromInt(Resolution.Y));
+		ResolutionComboBox->ComboBox->AddOption(FString::FromInt(Resolution.X) + "x" + FString::FromInt(Resolution.Y));
 	}
 
 	FVector2D Resolution = FVector2D::ZeroVector;
 	GEngine->GameViewport->GetViewportSize(Resolution);
 	FString ResolutionString = FString::FromInt(Resolution.X) + "x" + FString::FromInt(Resolution.Y);
-	if (ResolutionComboBox->FindOptionIndex(ResolutionString) == -1)
+	if (ResolutionComboBox->ComboBox->FindOptionIndex(ResolutionString) == -1)
 	{
-		ResolutionComboBox->AddOption(ResolutionString);
+		ResolutionComboBox->ComboBox->AddOption(ResolutionString);
 	}
 
-	ResolutionComboBox->SetSelectedOption(ResolutionString);
+	ResolutionComboBox->ComboBox->SetSelectedOption(ResolutionString);
 }
 
 void UOptionsMenuWidget::GenerateDynamicResolutionOptions()
 {
-	DynamicResolutionComboBox->ClearOptions();
-	DynamicResolutionComboBox->AddOption("Enabled");
-	DynamicResolutionComboBox->AddOption("Disabled");
+	DynamicResolutionComboBox->ComboBox->ClearOptions();
+	DynamicResolutionComboBox->ComboBox->AddOption("Enabled");
+	DynamicResolutionComboBox->ComboBox->AddOption("Disabled");
 
 	if (GEngine->GameUserSettings->IsDynamicResolutionEnabled())
 	{
-		DynamicResolutionComboBox->SetSelectedOption("Enabled");
+		DynamicResolutionComboBox->ComboBox->SetSelectedOption("Enabled");
 	}
 	else
 	{
-		DynamicResolutionComboBox->SetSelectedOption("Disabled");
+		DynamicResolutionComboBox->ComboBox->SetSelectedOption("Disabled");
 	}
 }
 
 void UOptionsMenuWidget::GenerateVsyncOptions()
 {
-	VsyncComboBox->ClearOptions();
-	VsyncComboBox->AddOption("Enabled");
-	VsyncComboBox->AddOption("Disabled");
+	VsyncComboBox->ComboBox->ClearOptions();
+	VsyncComboBox->ComboBox->AddOption("Enabled");
+	VsyncComboBox->ComboBox->AddOption("Disabled");
 
 	if (GEngine->GameUserSettings->IsVSyncEnabled())
 	{
-		VsyncComboBox->SetSelectedOption("Enabled");
+		VsyncComboBox->ComboBox->SetSelectedOption("Enabled");
 	}
 	else
 	{
-		VsyncComboBox->SetSelectedOption("Disabled");
+		VsyncComboBox->ComboBox->SetSelectedOption("Disabled");
 	}
 }
 
 void UOptionsMenuWidget::GenerateRefreshRateOptions()
 {
-	RefreshRateComboBox->ClearOptions();
+	RefreshRateComboBox->ComboBox->ClearOptions();
 
 	TArray<uint32> RefreshRates;
 
@@ -124,20 +151,20 @@ void UOptionsMenuWidget::GenerateRefreshRateOptions()
 
 	for (uint32 RefreshRate : RefreshRates)
 	{
-		RefreshRateComboBox->AddOption(FString::FromInt(RefreshRate));
+		RefreshRateComboBox->ComboBox->AddOption(FString::FromInt(RefreshRate));
 	}
 
-	RefreshRateComboBox->AddOption("Unlimited");
+	RefreshRateComboBox->ComboBox->AddOption("Unlimited");
 
 	float FrameRateLimit = GEngine->GameUserSettings->GetFrameRateLimit();
 
 	if (FrameRateLimit > 0.0f)
 	{
-		RefreshRateComboBox->SetSelectedOption(FString::FromInt(FrameRateLimit));
+		RefreshRateComboBox->ComboBox->SetSelectedOption(FString::FromInt(FrameRateLimit));
 	}
 	else
 	{
-		RefreshRateComboBox->SetSelectedOption("Unlimited");
+		RefreshRateComboBox->ComboBox->SetSelectedOption("Unlimited");
 	}
 }
 
@@ -147,11 +174,16 @@ void UOptionsMenuWidget::GenerateAudioLevelOptions()
 	{
 		float CurrentVolume = FMath::Clamp(MasterSoundClass->Properties.Volume, 0.0f, 1.0f);
 
-		MasterAudioSlider->SetValue(CurrentVolume);
+		MasterAudioSlider->SliderBody->SetValue(CurrentVolume);
 
 		int AudioLevel = CurrentVolume * 100.0f;
 		MasterAudioTextBlock->SetText(FText::FromString(FString::FromInt(AudioLevel) + "%"));
 	}
+}
+
+void UOptionsMenuWidget::OnResolutionFocused(FFocusEvent InFocusEvent)
+{
+	SetCurrentFocus(ResolutionComboBox);
 }
 
 void UOptionsMenuWidget::OnResolutionSelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType)
@@ -171,6 +203,10 @@ void UOptionsMenuWidget::OnResolutionSelectionChanged(FString SelectedItem, ESel
 	GEngine->GameUserSettings->ApplySettings(false);
 }
 
+void UOptionsMenuWidget::OnWindowTypeFocused(FFocusEvent InFocusEvent)
+{
+	SetCurrentFocus(WindowTypeComboBox);
+}
 
 void UOptionsMenuWidget::OnWindowTypeSelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType)
 {
@@ -209,12 +245,17 @@ void UOptionsMenuWidget::SetWindowModeWindowed()
 	GEngine->GameViewport->GetViewportSize(Resolution);
 
 	FString ResolutionString = FString::FromInt(Resolution.X) + "x" + FString::FromInt(Resolution.Y);
-	if (ResolutionComboBox->FindOptionIndex(ResolutionString) == -1)
+	if (ResolutionComboBox->ComboBox->FindOptionIndex(ResolutionString) == -1)
 	{
-		ResolutionComboBox->AddOption(ResolutionString);
+		ResolutionComboBox->ComboBox->AddOption(ResolutionString);
 	}
 
-	ResolutionComboBox->SetSelectedOption(ResolutionString);
+	ResolutionComboBox->ComboBox->SetSelectedOption(ResolutionString);
+}
+
+void UOptionsMenuWidget::OnDynamicResolutionFocused(FFocusEvent InFocusEvent)
+{
+	SetCurrentFocus(DynamicResolutionComboBox);
 }
 
 void UOptionsMenuWidget::OnDynamicResolutionSelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType)
@@ -231,6 +272,11 @@ void UOptionsMenuWidget::OnDynamicResolutionSelectionChanged(FString SelectedIte
 	GEngine->GameUserSettings->ApplySettings(false);
 }
 
+void UOptionsMenuWidget::OnVsyncFocused(FFocusEvent InFocusEvent)
+{
+	SetCurrentFocus(VsyncComboBox);
+}
+
 void UOptionsMenuWidget::OnVsyncSelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType)
 {
 	if (SelectedItem == "Enabled")
@@ -245,10 +291,20 @@ void UOptionsMenuWidget::OnVsyncSelectionChanged(FString SelectedItem, ESelectIn
 	GEngine->GameUserSettings->ApplySettings(false);
 }
 
+void UOptionsMenuWidget::OnRefreshRateFocused(FFocusEvent InFocusEvent)
+{
+	SetCurrentFocus(RefreshRateComboBox);
+}
+
 void UOptionsMenuWidget::OnRefreshRateSelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType)
 {
 	GEngine->GameUserSettings->SetFrameRateLimit(FCString::Atoi(*SelectedItem));
 	GEngine->GameUserSettings->ApplySettings(false);
+}
+
+void UOptionsMenuWidget::OnAudioFocused(FFocusEvent InFocusEvent)
+{
+	SetCurrentFocus(MasterAudioSlider);
 }
 
 void UOptionsMenuWidget::OnAudioLeverValueChanged(float Value)
@@ -263,10 +319,13 @@ void UOptionsMenuWidget::OnAudioLeverValueChanged(float Value)
 	}
 }
 
+void UOptionsMenuWidget::OnResetToDefaultsFocused(FFocusEvent InFocusEvent)
+{
+	SetCurrentFocus(ResetToDefaultsButton);
+}
+
 void UOptionsMenuWidget::ResetToDefaultsOnClicked()
 {
-	PlayClickedSound();
-
 	// Set Resolution to Monitor Res
 	TArray<FIntPoint> Resolutions;
 	UKismetSystemLibrary::GetSupportedFullscreenResolutions(Resolutions);
@@ -276,47 +335,50 @@ void UOptionsMenuWidget::ResetToDefaultsOnClicked()
 		GEngine->GameUserSettings->SetScreenResolution(Resolutions.Last());
 		FString ResolutionString = FString::FromInt(Resolutions.Last().X) + "x" +
 			FString::FromInt(Resolutions.Last().Y);
-		ResolutionComboBox->SetSelectedOption(ResolutionString);
+		ResolutionComboBox->ComboBox->SetSelectedOption(ResolutionString);
 	}
 	else
 	{
 		// Fallback to 1080p
 		GEngine->GameUserSettings->SetScreenResolution({1920, 1080});
 		FString ResolutionString = FString::FromInt(1920) + "x" + FString::FromInt(1080);
-		ResolutionComboBox->SetSelectedOption(ResolutionString);
+		ResolutionComboBox->ComboBox->SetSelectedOption(ResolutionString);
 	}
 
 	// Set Fullscreen
 	GEngine->GameUserSettings->SetFullscreenMode(EWindowMode::Fullscreen);
-	WindowTypeComboBox->SetSelectedOption(LexToString(GEngine->GameUserSettings->GetFullscreenMode()));
+	WindowTypeComboBox->ComboBox->SetSelectedOption(LexToString(GEngine->GameUserSettings->GetFullscreenMode()));
 
 	// Set Dynamic Resolution on
 	GEngine->GameUserSettings->SetDynamicResolutionEnabled(true);
-	DynamicResolutionComboBox->SetSelectedOption("Enabled");
+	DynamicResolutionComboBox->ComboBox->SetSelectedOption("Enabled");
 
 	// Set VSync Off
 	GEngine->GameUserSettings->SetVSyncEnabled(false);
-	VsyncComboBox->SetSelectedOption("Disabled");
+	VsyncComboBox->ComboBox->SetSelectedOption("Disabled");
 
 	// Set Refresh rate to monitor refresh rate
 	TArray<uint32> RefreshRates;
 	GetListOfUniqueRefreshRates(RefreshRates);
 	GEngine->GameUserSettings->SetFrameRateLimit(RefreshRates.Last());
-	RefreshRateComboBox->SetSelectedOption(FString::FromInt(RefreshRates.Last()));
+	RefreshRateComboBox->ComboBox->SetSelectedOption(FString::FromInt(RefreshRates.Last()));
 
 	// Set Audio Volume to 50%
 	MasterSoundClass->Properties.Volume = 0.5f;
 	MasterAudioTextBlock->SetText(FText::FromString(FString::FromInt(50) + "%"));
-	MasterAudioSlider->SetValue(0.5f);
+	MasterAudioSlider->SliderBody->SetValue(0.5f);
 
 	// Save Settings
 	GEngine->GameUserSettings->ApplySettings(false);
 }
 
+void UOptionsMenuWidget::OnReturnButtonFocused(FFocusEvent InFocusEvent)
+{
+	SetCurrentFocus(ReturnButton);
+}
+
 void UOptionsMenuWidget::ReturnButtonOnClicked()
 {
-	PlayClickedSound();
-
 	if (MainMenuMenuWidget)
 	{
 		RemoveFromParent();
@@ -329,30 +391,6 @@ void UOptionsMenuWidget::ReturnButtonOnClicked()
 			SelectWeaponWidget->AddToViewport();
 		}
 	}
-}
-
-void UOptionsMenuWidget::ResetToDefaultsButtonOnHovered()
-{
-	PlayHoveredSound();
-	SetTextBlockHovered(ResetToDefaultsBlock);
-}
-
-void UOptionsMenuWidget::ResetToDefaultsButtonOnUnhovered()
-{
-	PlayUnhoveredSound();
-	SetTextBlockUnhovered(ResetToDefaultsBlock);
-}
-
-void UOptionsMenuWidget::ReturnButtonOnHovered()
-{
-	PlayHoveredSound();
-	SetTextBlockHovered(ReturnBlock);
-}
-
-void UOptionsMenuWidget::ReturnButtonOnUnhovered()
-{
-	PlayUnhoveredSound();
-	SetTextBlockUnhovered(ReturnBlock);
 }
 
 void UOptionsMenuWidget::GetListOfUniqueRefreshRates(TArray<uint32>& RefreshRates)
