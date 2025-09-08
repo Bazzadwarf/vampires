@@ -25,9 +25,6 @@ class VAMPIRES_API UOptionsMenuWidget : public UVampireInteractiveWidget
 	TObjectPtr<UCustomComboBoxString> ResolutionComboBox;
 
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UTextBlock> ResolutionTextBlock;
-
-	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UCustomComboBoxString> WindowTypeComboBox;
 
 	UPROPERTY(meta = (BindWidget))
