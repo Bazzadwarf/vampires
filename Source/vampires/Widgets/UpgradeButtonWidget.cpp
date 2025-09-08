@@ -3,9 +3,9 @@
 
 #include "UpgradeButtonWidget.h"
 
+#include "LevelUpWidget.h"
 #include "UpgradeButtonDataObject.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
-#include "Components/Button.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
@@ -18,13 +18,16 @@
 void UUpgradeButtonWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
+
+	OnFocused.AddUniqueDynamic(this, &UUpgradeButtonWidget::SetFocusInParent);
 }
 
-void UUpgradeButtonWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
+void UUpgradeButtonWidget::SetData(UUpgradeButtonDataObject* ListItemObject)
 {
 	if (UUpgradeButtonDataObject* Item = Cast<UUpgradeButtonDataObject>(ListItemObject))
 	{
-		WeaponNameTextBlock->SetText(Item->WeaponName);
+		TextBlock->SetText(Item->WeaponName);
+		ButtonText = Item->WeaponName;
 		DescriptionTextBlock->SetText(Item->WeaponDescription);
 		WeaponIcon->SetBrushFromTexture(Item->WeaponIcon);
 		Parent = Item->Parent;
@@ -47,13 +50,6 @@ void UUpgradeButtonWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 		{
 			UpgradeType = Gold;
 		}
-
-		if (Body)
-		{
-			Body->OnClicked.AddUniqueDynamic(this, &UUpgradeButtonWidget::OnClicked);
-			Body->OnHovered.AddUniqueDynamic(this, &UUpgradeButtonWidget::OnHoveredDelegate);
-			Body->OnUnhovered.AddUniqueDynamic(this, &UUpgradeButtonWidget::OnUnhoveredDelegate);
-		}
 	}
 
 
@@ -75,9 +71,9 @@ void UUpgradeButtonWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 	}
 }
 
-void UUpgradeButtonWidget::OnClicked()
+void UUpgradeButtonWidget::OnButtonClicked()
 {
-	PlayClickedSound();
+	Super::OnButtonClicked();
 
 	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 
@@ -136,16 +132,10 @@ void UUpgradeButtonWidget::OnClicked()
 	}
 }
 
-void UUpgradeButtonWidget::OnHoveredDelegate()
+void UUpgradeButtonWidget::SetFocusInParent(FFocusEvent InFocusEvent)
 {
-	PlayHoveredSound();
-	SetTextBlockHovered(WeaponNameTextBlock);
-	SetTextBlockHovered(DescriptionTextBlock);
-}
-
-void UUpgradeButtonWidget::OnUnhoveredDelegate()
-{
-	PlayUnhoveredSound();
-	SetTextBlockUnhovered(WeaponNameTextBlock);
-	SetTextBlockUnhovered(DescriptionTextBlock);
+	if (ULevelUpWidget* LevelUpMenu = Cast<ULevelUpWidget>(Parent))
+	{
+		LevelUpMenu->SetCurrentFocus(this);
+	}
 }

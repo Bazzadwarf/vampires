@@ -6,6 +6,8 @@
 #include "VampireInteractiveWidget.h"
 #include "LevelUpWidget.generated.h"
 
+class UUpgradeButtonWidget;
+class UScrollBox;
 class UUpgradeButtonDataObject;
 class UListView;
 class UButton;
@@ -17,23 +19,25 @@ class VAMPIRES_API ULevelUpWidget : public UVampireInteractiveWidget
 {
 	GENERATED_BODY()
 
+public:
 	UPROPERTY(meta=(BindWidget))
-	TObjectPtr<UButton> ResumeButton;
+	TObjectPtr<UCustomButton> ResumeButton;
 
 	UPROPERTY(meta=(BindWidget))
-	TObjectPtr<UTextBlock> ResumeTextBlock;
+	TObjectPtr<UScrollBox> UpgradesScrollBox;
 
-	UPROPERTY(meta=(BindWidget))
-	UListView* UpgradesListView;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TSubclassOf<UUpgradeButtonWidget> UpgradeButtonWidgetTemplate;
 
+protected:
 	virtual void NativeConstruct() override;
 
+	virtual FReply NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+
+private:
 	UFUNCTION()
 	void ResumeButtonClicked();
 
 	UFUNCTION()
-	void ResumeButtonOnHovered();
-
-	UFUNCTION()
-	void ResumeButtonOnUnhovered();
+	void BackButtonFocused(FFocusEvent InFocusEvent);
 };

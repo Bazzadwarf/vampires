@@ -3,11 +3,13 @@
 
 #include "LevelUpWidget.h"
 
+#include "CustomButton.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
-#include "Components/Button.h"
 #include "Components/ListView.h"
 #include "Kismet/GameplayStatics.h"
 #include "UpgradeButtonDataObject.h"
+#include "UpgradeButtonWidget.h"
+#include "Components/ScrollBox.h"
 #include "GameFramework/Character.h"
 #include "vampires/VampireCharacter.h"
 #include "vampires/Weapon.h"
@@ -20,11 +22,10 @@ void ULevelUpWidget::NativeConstruct()
 	if (ResumeButton)
 	{
 		ResumeButton->OnClicked.AddUniqueDynamic(this, &ULevelUpWidget::ResumeButtonClicked);
-		ResumeButton->OnHovered.AddUniqueDynamic(this, &ULevelUpWidget::ResumeButtonOnHovered);
-		ResumeButton->OnUnhovered.AddUniqueDynamic(this, &ULevelUpWidget::ResumeButtonOnUnhovered);
+		ResumeButton->OnFocused.AddUniqueDynamic(this, &ULevelUpWidget::BackButtonFocused);
 	}
 
-	if (UpgradesListView)
+	if (UpgradesScrollBox && UpgradeButtonWidgetTemplate)
 	{
 		ACharacter* Player = Cast<AVampireCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 		if (!Player)
@@ -38,7 +39,7 @@ void ULevelUpWidget::NativeConstruct()
 			return;
 		}
 
-		UpgradesListView->ClearListItems();
+		UpgradesScrollBox->ClearChildren();
 		TArray<AWeapon*> Inventory = InventoryComponent->GetInventory();
 
 		// Get list of weapons that the player owns that can be upgraded
@@ -84,17 +85,34 @@ void ULevelUpWidget::NativeConstruct()
 		for (int i = 0; i < 3 && UpgradeItems.Num() > 0; i++)
 		{
 			int Rand = FMath::RandRange(0, UpgradeItems.Num() - 1);
-			UpgradesListView->AddItem(UpgradeItems[Rand]);
+			UUpgradeButtonDataObject* Selection = UpgradeItems[Rand];
+			UUpgradeButtonWidget* Widget = CreateWidget<UUpgradeButtonWidget>(
+				GetWorld(), UpgradeButtonWidgetTemplate);
+			Widget->SetData(Selection);
+			UpgradesScrollBox->AddChild(Widget);
 			UpgradeItems.RemoveAt(Rand);
 		}
+
+		if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+		{
+			UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(PlayerController, UpgradesScrollBox->GetChildAt(0),
+			                                               EMouseLockMode::LockAlways);
+			PlayerController->bShowMouseCursor = true;
+		}
 	}
-	SetIsFocusable(true);
+
+	SetIsFocusable(false);
+}
+
+FReply ULevelUpWidget::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	CurrentFocus->SetKeyboardFocus();
+
+	return Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
 }
 
 void ULevelUpWidget::ResumeButtonClicked()
 {
-	PlayClickedSound();
-
 	RemoveFromParent();
 
 	if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
@@ -107,14 +125,7 @@ void ULevelUpWidget::ResumeButtonClicked()
 	SetIsFocusable(false);
 }
 
-void ULevelUpWidget::ResumeButtonOnHovered()
+void ULevelUpWidget::BackButtonFocused(FFocusEvent InFocusEvent)
 {
-	SetTextBlockHovered(ResumeTextBlock);
-	PlayHoveredSound();
-}
-
-void ULevelUpWidget::ResumeButtonOnUnhovered()
-{
-	SetTextBlockUnhovered(ResumeTextBlock);
-	PlayUnhoveredSound();
+	SetCurrentFocus(ResumeButton);
 }

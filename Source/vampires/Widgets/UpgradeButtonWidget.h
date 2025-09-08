@@ -3,11 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "VampireInteractiveWidget.h"
+#include "CustomButton.h"
 #include "Blueprint/IUserObjectListEntry.h"
 #include "Blueprint/UserWidget.h"
 #include "UpgradeButtonWidget.generated.h"
 
+class UUpgradeButtonDataObject;
 class AWeapon;
 
 UENUM(BlueprintType)
@@ -27,7 +28,7 @@ class UButton;
  * 
  */
 UCLASS()
-class VAMPIRES_API UUpgradeButtonWidget : public UVampireInteractiveWidget, public IUserObjectListEntry
+class VAMPIRES_API UUpgradeButtonWidget : public UCustomButton, public IUserObjectListEntry
 {
 	GENERATED_BODY()
 
@@ -45,15 +46,8 @@ protected:
 	TObjectPtr<UTexture2D> GoldIcon;
 
 private:
-	
-	UPROPERTY(EditDefaultsOnly, meta=(BindWidget))
-	TObjectPtr<UButton> Body;
-
 	UPROPERTY(EditDefaultsOnly, meta=(BindWidget))
 	TObjectPtr<UImage> WeaponIcon;
-
-	UPROPERTY(EditDefaultsOnly, meta=(BindWidget))
-	TObjectPtr<UTextBlock> WeaponNameTextBlock;
 
 	UPROPERTY(EditDefaultsOnly, meta=(BindWidget))
 	TObjectPtr<UTextBlock> DescriptionTextBlock;
@@ -70,22 +64,18 @@ private:
 	UPROPERTY()
 	TObjectPtr<UUserWidget> Parent;
 
-private:
 	UPROPERTY(meta=(BindWidget))
 	UImage* UpgradeTypeIcon;
 
 protected:
 	virtual void NativeConstruct() override;
 
-	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
+public:
+	virtual void SetData(UUpgradeButtonDataObject* ListItemObject);
 
 private:
-	UFUNCTION()
-	virtual void OnClicked();
+	virtual void OnButtonClicked() override;
 
 	UFUNCTION()
-	void OnHoveredDelegate();
-
-	UFUNCTION()
-	void OnUnhoveredDelegate();
+	void SetFocusInParent(FFocusEvent InFocusEvent);
 };

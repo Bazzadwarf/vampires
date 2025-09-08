@@ -11,7 +11,7 @@ void UUpgradeButtonDataObject::SetData(AWeapon* Weapon, UUserWidget* ParentWidge
 	WeaponIcon = Weapon->GetIcon();
 	WeaponInstance = Weapon;
 	Parent = ParentWidget;
-	
+
 	if (Weapon->GetUpgradeDescriptions().Num() > Weapon->GetWeaponLevel())
 	{
 		WeaponDescription = Weapon->GetUpgradeDescriptions()[Weapon->GetWeaponLevel()];

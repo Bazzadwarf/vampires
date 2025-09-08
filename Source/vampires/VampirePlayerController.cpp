@@ -202,9 +202,6 @@ void AVampirePlayerController::ShowLevelUpScreen(int Level)
 			if (CurrentLevelUpUI)
 			{
 				CurrentLevelUpUI->AddToViewport();
-				UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(this, CurrentLevelUpUI,
-				                                               EMouseLockMode::LockInFullscreen);
-				bShowMouseCursor = true;
 			}
 		}
 	}
