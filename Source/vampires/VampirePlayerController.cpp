@@ -15,6 +15,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
+#include "Widgets/CustomButton.h"
 #include "Widgets/GameOverWidget.h"
 #include "Widgets/HUDWidget.h"
 #include "Widgets/LevelUpWidget.h"
@@ -126,7 +127,7 @@ void AVampirePlayerController::OnPause(const FInputActionValue& PauseInput)
 			if (CurrentPauseUI)
 			{
 				CurrentPauseUI->AddToViewport();
-				UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(this, CurrentPauseUI, EMouseLockMode::LockInFullscreen);
+				UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(this, CurrentPauseUI->ResumeButton, EMouseLockMode::LockInFullscreen);
 				bShowMouseCursor = true;
 			}
 		}

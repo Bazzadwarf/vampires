@@ -13,17 +13,28 @@ void UPauseWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+	SetIsFocusable(false);
+	
 	if (ResumeButton)
 	{
 		ResumeButton->OnClicked.AddUniqueDynamic(this, &UPauseWidget::ResumeButtonOnClicked);
+		ResumeButton->OnFocused.AddUniqueDynamic(this, &UPauseWidget::ResumeButtonOnFocused);
 	}
 
 	if (ReturnToMainMenuButton)
 	{
 		ReturnToMainMenuButton->OnClicked.AddUniqueDynamic(this, &UPauseWidget::ReturnToMainMenuButtonOnClicked);
+		ReturnToMainMenuButton->OnFocused.AddUniqueDynamic(this, &UPauseWidget::ReturnToMainMenuButtonOnFocused);
 	}
 
-	SetIsFocusable(true);
+	ResumeButton->SetKeyboardFocus();
+}
+
+FReply UPauseWidget::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	CurrentFocus->SetKeyboardFocus();
+
+	return Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
 }
 
 void UPauseWidget::ResumeButtonOnClicked()
@@ -36,8 +47,11 @@ void UPauseWidget::ResumeButtonOnClicked()
 		PlayerController->bShowMouseCursor = false;
 		PlayerController->SetPause(false);
 	}
+}
 
-	SetIsFocusable(false);
+void UPauseWidget::ResumeButtonOnFocused(FFocusEvent InFocusEvent)
+{
+	SetCurrentFocus(ResumeButton);
 }
 
 void UPauseWidget::ReturnToMainMenuButtonOnClicked()
@@ -55,4 +69,9 @@ void UPauseWidget::ReturnToMainMenuButtonOnClicked()
 			SetIsFocusable(true);
 		}
 	}
+}
+
+void UPauseWidget::ReturnToMainMenuButtonOnFocused(FFocusEvent InFocusEvent)
+{
+	SetCurrentFocus(ReturnToMainMenuButton);
 }
