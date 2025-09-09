@@ -37,6 +37,8 @@ void UMainMenuWidget::NativeConstruct()
 		UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(PlayerController, NewGameButton, EMouseLockMode::LockAlways);
 		PlayerController->bShowMouseCursor = true;
 	}
+
+	NewGameButton->SetKeyboardFocus();
 }
 
 FReply UMainMenuWidget::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)

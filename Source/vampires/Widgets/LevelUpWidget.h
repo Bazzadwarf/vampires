@@ -6,6 +6,7 @@
 #include "VampireInteractiveWidget.h"
 #include "LevelUpWidget.generated.h"
 
+class UCustomButton;
 class UUpgradeButtonWidget;
 class UScrollBox;
 class UUpgradeButtonDataObject;

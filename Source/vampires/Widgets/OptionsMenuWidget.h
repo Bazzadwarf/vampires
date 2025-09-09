@@ -6,6 +6,7 @@
 #include "VampireInteractiveWidget.h"
 #include "OptionsMenuWidget.generated.h"
 
+class UTextBlock;
 class UCustomSlider;
 class UCustomComboBoxString;
 class USlider;
