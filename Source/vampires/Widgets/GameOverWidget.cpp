@@ -3,8 +3,7 @@
 
 #include "GameOverWidget.h"
 
-#include "Blueprint/WidgetBlueprintLibrary.h"
-#include "Components/Button.h"
+#include "CustomButton.h"
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 #include "vampires/VampireGameInstance.h"
@@ -13,12 +12,22 @@ void UGameOverWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+	SetIsFocusable(false);
+	
 	if (ReturnButton)
 	{
 		ReturnButton->OnClicked.AddUniqueDynamic(this, &UGameOverWidget::ReturnButtonOnClicked);
-		ReturnButton->OnHovered.AddUniqueDynamic(this, &UGameOverWidget::ReturnButtonOnHovered);
-		ReturnButton->OnUnhovered.AddUniqueDynamic(this, &UGameOverWidget::ReturnButtonOnUnhovered);
+		ReturnButton->OnFocused.AddUniqueDynamic(this, &UGameOverWidget::ReturnButtonOnFocused);
 	}
+
+	ReturnButton->SetKeyboardFocus();
+}
+
+FReply UGameOverWidget::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	CurrentFocus->SetKeyboardFocus();
+	
+	return Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
 }
 
 void UGameOverWidget::SetGameInfo(int Level, float Timer, int Kill, int Gold)
@@ -52,8 +61,6 @@ void UGameOverWidget::SetGameInfo(int Level, float Timer, int Kill, int Gold)
 
 void UGameOverWidget::ReturnButtonOnClicked()
 {
-	PlayClickedSound();
-
 	if (UVampireGameInstance* GameInstance = Cast<UVampireGameInstance>(GetGameInstance()))
 	{
 		if (!GameInstance->MainMenuWorld.IsNull())
@@ -69,14 +76,7 @@ void UGameOverWidget::ReturnButtonOnClicked()
 	}
 }
 
-void UGameOverWidget::ReturnButtonOnHovered()
+void UGameOverWidget::ReturnButtonOnFocused(FFocusEvent InFocusEvent)
 {
-	SetTextBlockHovered(ReturnBlock);
-	PlayHoveredSound();
-}
-
-void UGameOverWidget::ReturnButtonOnUnhovered()
-{
-	SetTextBlockUnhovered(ReturnBlock);
-	PlayUnhoveredSound();
+	SetCurrentFocus(ReturnButton);
 }

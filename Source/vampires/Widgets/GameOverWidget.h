@@ -4,11 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "VampireInteractiveWidget.h"
-#include "Blueprint/UserWidget.h"
 #include "GameOverWidget.generated.h"
 
+class UCustomButton;
 class UTextBlock;
-class UButton;
 /**
  * 
  */
@@ -18,10 +17,7 @@ class VAMPIRES_API UGameOverWidget : public UVampireInteractiveWidget
 	GENERATED_BODY()
 
 	UPROPERTY(meta=(BindWidget))
-	TObjectPtr<UButton> ReturnButton;
-
-	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UTextBlock> ReturnBlock;
+	TObjectPtr<UCustomButton> ReturnButton;
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> LevelBlock;
@@ -37,6 +33,8 @@ class VAMPIRES_API UGameOverWidget : public UVampireInteractiveWidget
 
 	virtual void NativeConstruct() override;
 
+	virtual FReply NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+
 public:
 	void SetGameInfo(int Level, float Timer, int Kill, int Gold);
 
@@ -45,8 +43,5 @@ private:
 	void ReturnButtonOnClicked();
 
 	UFUNCTION()
-	void ReturnButtonOnHovered();
-
-	UFUNCTION()
-	void ReturnButtonOnUnhovered();
+	void ReturnButtonOnFocused(FFocusEvent InFocusEvent);
 };
