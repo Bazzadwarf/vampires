@@ -189,8 +189,10 @@ void AEnemyCharacter::ResetHealth()
 
 void AEnemyCharacter::DamagePlayer()
 {
-	for (auto DamagedPlayer : Player)
+	if (Player.Num() == 0) return;
+
+	for (int i = 0; i < Player.Num(); i++)
 	{
-		UGameplayStatics::ApplyDamage(DamagedPlayer, Damage, GetController(), this, nullptr);
+		UGameplayStatics::ApplyDamage(Player[i], Damage, GetController(), this, nullptr);
 	}
 }
