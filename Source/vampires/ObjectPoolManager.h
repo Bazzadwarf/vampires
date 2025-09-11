@@ -22,6 +22,8 @@ public:
 
 	void ReturnObject(AActor* Object);
 
+	void ReturnAllObjects();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

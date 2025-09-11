@@ -159,6 +159,21 @@ void AVampireGameMode::AddRandomEnemyTypeToPool()
 void AVampireGameMode::OnPlayerDeath(FDamageInfo DamageInfo)
 {
 	GetWorldTimerManager().ClearTimer(SpawnEnemyTimerDelegate);
+
+	if (EnemyObjectPoolManager)
+	{
+		EnemyObjectPoolManager->ReturnAllObjects();
+	}
+
+	if (ProjectileObjectPoolManager)
+	{
+		ProjectileObjectPoolManager->ReturnAllObjects();
+	}
+
+	if (PickupObjectPoolManager)
+	{
+		PickupObjectPoolManager->ReturnAllObjects();
+	}
 }
 
 void AVampireGameMode::EndGame()

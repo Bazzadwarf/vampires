@@ -70,6 +70,19 @@ void AObjectPoolManager::ReturnObject(AActor* Object)
 	}
 }
 
+void AObjectPoolManager::ReturnAllObjects()
+{
+	int ObjectPoolSize = ObjectPool.Num();
+
+	for (int i = 0; i < ObjectPoolSize; i++)
+	{
+		if (!ObjectPool[i]->IsHidden())
+		{
+			ReturnObject(ObjectPool[i]);			
+		}
+	}
+}
+
 void AObjectPoolManager::SetObjectStatus(bool bEnabled, AActor* Object)
 {
 	Object->SetActorHiddenInGame(!bEnabled);
