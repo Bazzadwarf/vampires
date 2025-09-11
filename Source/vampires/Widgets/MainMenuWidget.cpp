@@ -30,8 +30,6 @@ void UMainMenuWidget::NativeConstruct()
 		QuitButton->OnFocused.AddUniqueDynamic(this, &UMainMenuWidget::QuitButtonFocused);
 	}
 
-	QuitButton->SetIsEnabled(false);
-
 	if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
 	{
 		UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(PlayerController, NewGameButton, EMouseLockMode::LockAlways);
