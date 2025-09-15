@@ -19,30 +19,36 @@ class VAMPIRES_API UEnemyDataAsset : public UDataAsset
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Mesh")
 	TObjectPtr<UStaticMesh> StaticMesh;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "AI")
 	TObjectPtr<UBehaviorTree> BehaviorTree = nullptr;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Pickups")
 	TObjectPtr<UPickupDataAsset> CommonPickupDataAsset = nullptr;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Pickups")
 	TObjectPtr<UPickupDataAsset> UncommonPickupDataAsset = nullptr;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Pickups")
 	TObjectPtr<UPickupDataAsset> RarePickupDataAsset = nullptr;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
 	TObjectPtr<USoundBase> OnDamagedSoundBase = nullptr;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
 	TObjectPtr<USoundBase> OnDeathSoundBase = nullptr;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Particles")
 	TObjectPtr<UNiagaraSystem> OnDamagedNiagaraSystem;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Particles")
 	TObjectPtr<UNiagaraSystem> OnDeathNiagaraSystem;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Properties")
+	float MaxHealth = 100.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Properties")
+	float MovementSpeed = 300.0f;
 };

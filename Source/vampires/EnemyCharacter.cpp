@@ -14,6 +14,7 @@
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "NiagaraFunctionLibrary.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 AEnemyCharacter::AEnemyCharacter(const FObjectInitializer& ObjectInitializer)
 {
@@ -115,6 +116,8 @@ void AEnemyCharacter::LoadDataFromDataAsset_Implementation(UEnemyDataAsset* Enem
 		OnDeathSound = EnemyDataAsset->OnDeathSoundBase;
 		OnDamagedNiagaraSystem = EnemyDataAsset->OnDamagedNiagaraSystem;
 		OnDeathNiagaraSystem = EnemyDataAsset->OnDeathNiagaraSystem;
+		HealthComponent->SetMaxHealth(EnemyDataAsset->MaxHealth);
+		GetCharacterMovement()->MaxWalkSpeed = EnemyDataAsset->MovementSpeed;
 
 		PickupArray.Add(EnemyDataAsset->CommonPickupDataAsset);
 		PickupArray.Add(EnemyDataAsset->UncommonPickupDataAsset);
@@ -131,6 +134,8 @@ void AEnemyCharacter::ResetData_Implementation()
 	OnDeathSound = nullptr;
 	OnDamagedNiagaraSystem = nullptr;
 	OnDeathNiagaraSystem = nullptr;
+	HealthComponent->SetMaxHealth(100.0f);
+	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
 }
 
 float AEnemyCharacter::GetCapsuleRadius_Implementation()
