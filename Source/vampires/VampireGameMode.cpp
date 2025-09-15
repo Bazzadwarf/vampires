@@ -148,12 +148,14 @@ AObjectPoolManager* AVampireGameMode::GetPickupObjectPoolManager_Implementation(
 
 void AVampireGameMode::AddRandomEnemyTypeToPool()
 {
-	if (EnemyDataAssets.Num() > 0)
-	{
-		int32 rand = FMath::RandRange(0, EnemyDataAssets.Num() - 1);
-		SpawnableEnemyDataAssets.Add(EnemyDataAssets[rand]);
-		EnemyDataAssets.RemoveAt(rand);
-	}
+	// if (EnemyDataAssets.Num() > 0)
+	// {
+	// 	int32 rand = FMath::RandRange(0, EnemyDataAssets.Num() - 1);
+	// 	SpawnableEnemyDataAssets.Add(EnemyDataAssets[rand]);
+	// 	EnemyDataAssets.RemoveAt(rand);
+	// }
+
+	SpawnableEnemyDataAssets = EnemyDataAssets;
 }
 
 void AVampireGameMode::OnPlayerDeath(FDamageInfo DamageInfo)

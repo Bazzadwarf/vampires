@@ -51,4 +51,7 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Properties")
 	float MovementSpeed = 300.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Properties")
+	float Damage = 5.0f;
 };

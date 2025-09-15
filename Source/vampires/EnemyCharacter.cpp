@@ -118,6 +118,7 @@ void AEnemyCharacter::LoadDataFromDataAsset_Implementation(UEnemyDataAsset* Enem
 		OnDeathNiagaraSystem = EnemyDataAsset->OnDeathNiagaraSystem;
 		HealthComponent->SetMaxHealth(EnemyDataAsset->MaxHealth);
 		GetCharacterMovement()->MaxWalkSpeed = EnemyDataAsset->MovementSpeed;
+		Damage = EnemyDataAsset->Damage;
 
 		PickupArray.Add(EnemyDataAsset->CommonPickupDataAsset);
 		PickupArray.Add(EnemyDataAsset->UncommonPickupDataAsset);
@@ -136,6 +137,7 @@ void AEnemyCharacter::ResetData_Implementation()
 	OnDeathNiagaraSystem = nullptr;
 	HealthComponent->SetMaxHealth(100.0f);
 	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
+	Damage = 5.0f;
 }
 
 float AEnemyCharacter::GetCapsuleRadius_Implementation()
